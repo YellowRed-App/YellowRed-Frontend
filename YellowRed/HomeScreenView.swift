@@ -9,72 +9,76 @@ import SwiftUI
 
 struct HomeScreenView: View {
     @State private var greeting: String = ""
+    @State private var isGetStartedActive = false
     
     var body: some View {
-        ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: [Color.yellow, Color.red]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .edgesIgnoringSafeArea(.all)
-            
-            VStack {
-                Spacer()
-                
-                HStack {
-                    // placeholder for logo
-                    Image(systemName: "circle.fill")
-                        .font(.largeTitle)
-                        .foregroundColor(.white)
-                    Text("YellowRed")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                }
-                .padding()
-                
-                Text("Our Sick Motto!!!!!")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-            
-                Spacer()
+        NavigationView {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.yellow, Color.red]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    Text(greeting)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.black)
-                        .padding()
-                        .frame(maxWidth: .infinity)
+                    Spacer()
                     
-                    Button(action: {
-                        // action for button tap
-                    }) {
-                        Text("Get Started")
+                    HStack {
+                        Image(systemName: "circle.fill")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                        Text("YellowRed")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.black)
+                    }
+                    .padding()
+                    
+                    Text("Our Sick Motto!!!!!")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                
+                    Spacer()
+                    
+                    VStack {
+                        Text(greeting)
                             .font(.title)
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding(10)
-                            .frame(width: 300)
-                            .background(LinearGradient(
-                                gradient: Gradient(colors: [Color.yellow, Color.red]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ))
-                            .cornerRadius(10)
-                            .padding(.bottom, 25)
+                            .foregroundColor(.black)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                        
+                        NavigationLink(
+                            destination: GetStartedView(),
+                            isActive: $isGetStartedActive,
+                            label: {
+                                Text("Get Started")
+                                    .font(.title)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                                    .padding(10)
+                                    .frame(width: 300)
+                                    .background(LinearGradient(
+                                        gradient: Gradient(colors: [Color.yellow, Color.red]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ))
+                                    .cornerRadius(10)
+                                    .padding(.bottom, 25)
+                            })
+                            .isDetailLink(false)
                     }
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(20)
                 }
-                .padding()
-                .background(.white)
-                .cornerRadius(20)
+                .ignoresSafeArea()
             }
-            .ignoresSafeArea()
-        }
-        .onAppear {
-            setGreeting()
+            .onAppear {
+                setGreeting()
+            }
         }
     }
     

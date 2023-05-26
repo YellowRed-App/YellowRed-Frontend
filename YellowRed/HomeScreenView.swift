@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeScreenView: View {
+    @State private var greeting: String = ""
     
     var body: some View {
         ZStack {
@@ -41,7 +42,7 @@ struct HomeScreenView: View {
                 Spacer()
                 
                 VStack {
-                    Text("Hello!")
+                    Text(greeting)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
@@ -72,8 +73,26 @@ struct HomeScreenView: View {
             }
             .ignoresSafeArea()
         }
+        .onAppear {
+            setGreeting()
+        }
     }
     
+    private func setGreeting() {
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: Date())
+        
+        switch hour {
+        case 5..<12:
+            greeting = "Good Morning"
+        case 12..<17:
+            greeting = "Good Afternoon"
+        case 17..<21:
+            greeting = "Good Evening"
+        default:
+            greeting = "Good Night"
+        }
+    }
 }
 
 struct HomeScreenView_Previews: PreviewProvider {

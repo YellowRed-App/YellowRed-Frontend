@@ -11,7 +11,7 @@ import SwiftUI
 struct YellowRedApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeScreenView()
         }
     }
 }

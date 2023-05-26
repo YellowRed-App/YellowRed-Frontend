@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E902A20B92E00A2BB2D /* YellowRedApp.swift */; };
-		71567E932A20B92E00A2BB2D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E922A20B92E00A2BB2D /* ContentView.swift */; };
+		71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E922A20B92E00A2BB2D /* HomeScreenView.swift */; };
 		71567E952A20B93300A2BB2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71567E942A20B93300A2BB2D /* Assets.xcassets */; };
 		71567E982A20B93300A2BB2D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71567E972A20B93300A2BB2D /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -16,7 +16,7 @@
 /* Begin PBXFileReference section */
 		71567E8D2A20B92E00A2BB2D /* YellowRed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YellowRed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71567E902A20B92E00A2BB2D /* YellowRedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowRedApp.swift; sourceTree = "<group>"; };
-		71567E922A20B92E00A2BB2D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		71567E922A20B92E00A2BB2D /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
 		71567E942A20B93300A2BB2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71567E972A20B93300A2BB2D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,7 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				71567E902A20B92E00A2BB2D /* YellowRedApp.swift */,
-				71567E922A20B92E00A2BB2D /* ContentView.swift */,
+				71567E922A20B92E00A2BB2D /* HomeScreenView.swift */,
 				71567E942A20B93300A2BB2D /* Assets.xcassets */,
 				71567E962A20B93300A2BB2D /* Preview Content */,
 			);
@@ -137,7 +137,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71567E932A20B92E00A2BB2D /* ContentView.swift in Sources */,
+				71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */,
 				71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

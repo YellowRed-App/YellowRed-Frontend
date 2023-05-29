@@ -51,25 +51,38 @@ struct HomeScreenView: View {
                             .padding()
                             .frame(maxWidth: .infinity)
                         
-                        NavigationLink(
-                            destination: GetStartedNameView(),
-                            isActive: $getStarted,
-                            label: {
-                                Text("Get Started")
-                                    .font(.title)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.white)
-                                    .padding(10)
-                                    .frame(width: 300)
-                                    .background(LinearGradient(
-                                        gradient: Gradient(colors: [.yellow, .red]),
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ))
-                                    .cornerRadius(10)
-                                    .padding(.bottom, 25)
-                            })
-                        .isDetailLink(false)
+                        Button(action: {
+                            getStarted = true
+                        }) {
+                            Text("Get Started")
+                                .font(.title)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .padding(10)
+                                .frame(width: 300)
+                                .background(.yellow)
+                                .cornerRadius(10)
+                                .padding(.bottom, 25)
+                        }
+                        .fullScreenCover(isPresented: $getStarted) {
+                            GetStartedNameView()
+                        }
+                        
+//                        NavigationLink(
+//                            destination: GetStartedNameView(),
+//                            isActive: $getStarted,
+//                            label: {
+//                                Text("Get Started")
+//                                    .font(.title)
+//                                    .fontWeight(.semibold)
+//                                    .foregroundColor(.white)
+//                                    .padding(10)
+//                                    .frame(width: 300)
+//                                    .background(.yellow)
+//                                    .cornerRadius(10)
+//                                    .padding(.bottom, 25)
+//                            })
+//                        .isDetailLink(false)
                     }
                     .padding()
                     .background(.white)

@@ -11,7 +11,8 @@
 		71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E922A20B92E00A2BB2D /* HomeScreenView.swift */; };
 		71567E952A20B93300A2BB2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71567E942A20B93300A2BB2D /* Assets.xcassets */; };
 		71567E982A20B93300A2BB2D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71567E972A20B93300A2BB2D /* Preview Assets.xcassets */; };
-		71567EA12A20D10D00A2BB2D /* GetStartedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567EA02A20D10D00A2BB2D /* GetStartedView.swift */; };
+		71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */; };
+		71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,7 +21,8 @@
 		71567E922A20B92E00A2BB2D /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
 		71567E942A20B93300A2BB2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71567E972A20B93300A2BB2D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		71567EA02A20D10D00A2BB2D /* GetStartedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedView.swift; sourceTree = "<group>"; };
+		71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedNameView.swift; sourceTree = "<group>"; };
+		71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedNumberView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +57,8 @@
 			children = (
 				71567E902A20B92E00A2BB2D /* YellowRedApp.swift */,
 				71567E922A20B92E00A2BB2D /* HomeScreenView.swift */,
-				71567EA02A20D10D00A2BB2D /* GetStartedView.swift */,
+				71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */,
+				71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */,
 				71567E942A20B93300A2BB2D /* Assets.xcassets */,
 				71567E962A20B93300A2BB2D /* Preview Content */,
 			);
@@ -140,8 +143,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */,
 				71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */,
-				71567EA12A20D10D00A2BB2D /* GetStartedView.swift in Sources */,
+				71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */,
 				71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,7 +203,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -253,7 +257,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -274,11 +278,12 @@
 				DEVELOPMENT_TEAM = 52Q2RK6NP4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = YellowRed;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -286,6 +291,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yellow-red.YellowRed.YellowRed";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -303,11 +311,12 @@
 				DEVELOPMENT_TEAM = 52Q2RK6NP4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = YellowRed;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,6 +324,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yellow-red.YellowRed.YellowRed";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

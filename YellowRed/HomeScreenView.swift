@@ -9,13 +9,13 @@ import SwiftUI
 
 struct HomeScreenView: View {
     @State private var greeting: String = ""
-    @State private var isGetStartedActive = false
+    @State private var getStarted: Bool = false
     
     var body: some View {
         NavigationView {
             ZStack {
                 LinearGradient(
-                    gradient: Gradient(colors: [Color.yellow, Color.red]),
+                    gradient: Gradient(colors: [.yellow, .red]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
@@ -25,6 +25,7 @@ struct HomeScreenView: View {
                     Spacer()
                     
                     HStack {
+                        // placeholder for logo
                         Image(systemName: "circle.fill")
                             .font(.largeTitle)
                             .foregroundColor(.white)
@@ -35,11 +36,11 @@ struct HomeScreenView: View {
                     }
                     .padding()
                     
-                    Text("Our Sick Motto!!!!!")
+                    Text("Safety, One Click Away")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
-                
+                    
                     Spacer()
                     
                     VStack {
@@ -51,8 +52,8 @@ struct HomeScreenView: View {
                             .frame(maxWidth: .infinity)
                         
                         NavigationLink(
-                            destination: GetStartedView(),
-                            isActive: $isGetStartedActive,
+                            destination: GetStartedNameView(),
+                            isActive: $getStarted,
                             label: {
                                 Text("Get Started")
                                     .font(.title)
@@ -61,17 +62,17 @@ struct HomeScreenView: View {
                                     .padding(10)
                                     .frame(width: 300)
                                     .background(LinearGradient(
-                                        gradient: Gradient(colors: [Color.yellow, Color.red]),
+                                        gradient: Gradient(colors: [.yellow, .red]),
                                         startPoint: .topLeading,
                                         endPoint: .bottomTrailing
                                     ))
                                     .cornerRadius(10)
                                     .padding(.bottom, 25)
                             })
-                            .isDetailLink(false)
+                        .isDetailLink(false)
                     }
                     .padding()
-                    .background(Color.white)
+                    .background(.white)
                     .cornerRadius(20)
                 }
                 .ignoresSafeArea()
@@ -91,10 +92,8 @@ struct HomeScreenView: View {
             greeting = "Good Morning"
         case 12..<17:
             greeting = "Good Afternoon"
-        case 17..<21:
-            greeting = "Good Evening"
         default:
-            greeting = "Good Night"
+            greeting = "Good Evening"
         }
     }
 }

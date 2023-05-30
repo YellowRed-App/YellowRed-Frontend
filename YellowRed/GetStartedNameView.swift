@@ -62,7 +62,6 @@ struct GetStartedNameView: View {
     }
 }
 
-
 struct GetStartedNameView_Previews: PreviewProvider {
     static var previews: some View {
         GetStartedNameView()

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct GetStartedAffiliationView: View {
+    @Environment(\.presentationMode) var presentationMode
     let fullName: String
     var firstName: String {
         return fullName.components(separatedBy: " ").first ?? ""

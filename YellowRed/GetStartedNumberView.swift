@@ -29,7 +29,7 @@ struct GetStartedNumberView: View {
                 .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    Text("Hello, \(firstName)...")
+                    Text("Welcome, \(firstName)...")
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
@@ -63,7 +63,7 @@ struct GetStartedNumberView: View {
                             .padding(.bottom, 25)
                     }
                     
-                    NavigationLink(destination: GetStartedEmailView(), isActive: $next) {
+                    NavigationLink(destination: GetStartedEmailView(fullName: fullName), isActive: $next) {
                         Button(action: {
                             if isVerificationEnabled {
                                 next = true

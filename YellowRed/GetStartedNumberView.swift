@@ -9,6 +9,8 @@ import SwiftUI
 
 struct GetStartedNumberView: View {
     @State private var phoneNumber: String = ""
+    @State private var verificationCode: String = ""
+    @State private var isVerificationEnabled: Bool = false
     @State private var next: Bool = false
     
     let fullName: String
@@ -48,10 +50,27 @@ struct GetStartedNumberView: View {
                         .cornerRadius(10)
                         .padding(.bottom, 25)
                     
+                    if isVerificationEnabled {
+                        TextField("Verification Code", text: $verificationCode)
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
+                            .padding()
+                            .frame(width: 300)
+                            .background(.white)
+                            .cornerRadius(10)
+                            .padding(.bottom, 25)
+                    }
+                    
                     Button(action: {
-                        next = true
+                        if isVerificationEnabled {
+                            next = true
+                        } else {
+                            sendVerificationCode()
+                            isVerificationEnabled = true
+                        }
                     }) {
-                        Text("Verify")
+                        Text(isVerificationEnabled ? "Next" : "Verify")
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
@@ -61,14 +80,16 @@ struct GetStartedNumberView: View {
                             .cornerRadius(10)
                             .padding(.bottom, 25)
                     }
-                    .fullScreenCover(isPresented: $next) {
-                        GetStartedEmailView()
-                    }
+                    .padding(.bottom, 25)
                 }
                 .padding()
                 .cornerRadius(20)
             }
         }
+    }
+    
+    private func sendVerificationCode() {
+        // TODO: verification algorithm
     }
 }
 

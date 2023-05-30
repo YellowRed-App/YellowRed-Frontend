@@ -13,6 +13,7 @@
 		71567E982A20B93300A2BB2D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71567E972A20B93300A2BB2D /* Preview Assets.xcassets */; };
 		71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */; };
 		71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */; };
+		71CF77CB2A25EA81001D81E0 /* GetStartedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		71567E972A20B93300A2BB2D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedNameView.swift; sourceTree = "<group>"; };
 		71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedNumberView.swift; sourceTree = "<group>"; };
+		71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedEmailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				71567E922A20B92E00A2BB2D /* HomeScreenView.swift */,
 				71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */,
 				71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */,
+				71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */,
 				71567E942A20B93300A2BB2D /* Assets.xcassets */,
 				71567E962A20B93300A2BB2D /* Preview Content */,
 			);
@@ -144,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */,
+				71CF77CB2A25EA81001D81E0 /* GetStartedEmailView.swift in Sources */,
 				71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */,
 				71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */,
 				71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */,

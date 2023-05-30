@@ -49,6 +49,7 @@ struct GetStartedNumberView: View {
                         .background(.white)
                         .cornerRadius(10)
                         .padding(.bottom, 25)
+                        .disabled(isVerificationEnabled)
                     
                     if isVerificationEnabled {
                         TextField("Verification Code", text: $verificationCode)
@@ -62,25 +63,27 @@ struct GetStartedNumberView: View {
                             .padding(.bottom, 25)
                     }
                     
-                    Button(action: {
-                        if isVerificationEnabled {
-                            next = true
-                        } else {
-                            sendVerificationCode()
-                            isVerificationEnabled = true
+                    NavigationLink(destination: GetStartedEmailView(), isActive: $next) {
+                        Button(action: {
+                            if isVerificationEnabled {
+                                next = true
+                            } else {
+                                sendVerificationCode()
+                                isVerificationEnabled = true
+                            }
+                        }) {
+                            Text(isVerificationEnabled ? "Next" : "Verify")
+                                .font(.title)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .padding(10)
+                                .frame(width: 100)
+                                .background(.yellow)
+                                .cornerRadius(10)
+                                .padding(.bottom, 25)
                         }
-                    }) {
-                        Text(isVerificationEnabled ? "Next" : "Verify")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding(10)
-                            .frame(width: 100)
-                            .background(.yellow)
-                            .cornerRadius(10)
-                            .padding(.bottom, 25)
+                        .padding(.bottom, 25)
                     }
-                    .padding(.bottom, 25)
                 }
                 .padding()
                 .cornerRadius(20)

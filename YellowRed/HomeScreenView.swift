@@ -68,21 +68,21 @@ struct HomeScreenView: View {
                             GetStartedNameView()
                         }
                         
-//                        NavigationLink(
-//                            destination: GetStartedNameView(),
-//                            isActive: $getStarted,
-//                            label: {
-//                                Text("Get Started")
-//                                    .font(.title)
-//                                    .fontWeight(.semibold)
-//                                    .foregroundColor(.white)
-//                                    .padding(10)
-//                                    .frame(width: 300)
-//                                    .background(.yellow)
-//                                    .cornerRadius(10)
-//                                    .padding(.bottom, 25)
-//                            })
-//                        .isDetailLink(false)
+                        //                        NavigationLink(
+                        //                            destination: GetStartedNameView(),
+                        //                            isActive: $getStarted,
+                        //                            label: {
+                        //                                Text("Get Started")
+                        //                                    .font(.title)
+                        //                                    .fontWeight(.semibold)
+                        //                                    .foregroundColor(.white)
+                        //                                    .padding(10)
+                        //                                    .frame(width: 300)
+                        //                                    .background(.yellow)
+                        //                                    .cornerRadius(10)
+                        //                                    .padding(.bottom, 25)
+                        //                            })
+                        //                        .isDetailLink(false)
                     }
                     .padding()
                     .background(.white)

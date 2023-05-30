@@ -14,16 +14,16 @@ struct GetStartedAffiliationView: View {
     }
     
     var body: some View {
-             ZStack {
-                 LinearGradient(
-                     gradient: Gradient(colors: [Color.yellow, Color.red]),
-                     startPoint: .topLeading,
-                     endPoint: .bottomTrailing
-                 )
-                 .edgesIgnoringSafeArea(.all)
-
-             }
-         }
+        ZStack {
+            LinearGradient(
+                gradient: Gradient(colors: [Color.yellow, Color.red]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .edgesIgnoringSafeArea(.all)
+            
+        }
+    }
 }
 
 struct GetStartedAffiliationView_Previews: PreviewProvider {

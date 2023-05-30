@@ -1,5 +1,5 @@
 //
-//  GetStartedView.swift
+//  GetStartedNameView.swift
 //  YellowRed
 //
 //  Created by Krish Mehta on 26/5/23.
@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GetStartedNameView: View {
     @State private var fullName: String = ""
-    @State private var proceed: Bool = false
+    @State private var next: Bool = false
     
     var body: some View {
         NavigationView {
@@ -44,20 +44,20 @@ struct GetStartedNameView: View {
                         .padding(.bottom, 25)
                     
                     Button(action: {
-                        proceed = true
+                        next = true
                     }) {
-                        Text("Proceed")
+                        Text("Next")
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
                             .padding(10)
-                            .frame(width: 300)
+                            .frame(width: 100)
                             .background(.yellow)
                             .cornerRadius(10)
                             .padding(.bottom, 25)
                     }
-                    .fullScreenCover(isPresented: $proceed) {
-                        GetStartedNumberView()
+                    .fullScreenCover(isPresented: $next) {
+                        GetStartedNumberView(fullName: fullName)
                     }
                 }
                 .padding()

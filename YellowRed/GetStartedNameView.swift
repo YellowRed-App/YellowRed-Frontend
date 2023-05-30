@@ -9,7 +9,6 @@ import SwiftUI
 
 struct GetStartedNameView: View {
     @State private var fullName: String = ""
-    @State private var next: Bool = false
     
     var body: some View {
         NavigationView {
@@ -43,9 +42,7 @@ struct GetStartedNameView: View {
                         .cornerRadius(10)
                         .padding(.bottom, 25)
                     
-                    Button(action: {
-                        next = true
-                    }) {
+                    NavigationLink(destination: GetStartedNumberView(fullName: fullName)) {
                         Text("Next")
                             .font(.title)
                             .fontWeight(.semibold)
@@ -56,9 +53,7 @@ struct GetStartedNameView: View {
                             .cornerRadius(10)
                             .padding(.bottom, 25)
                     }
-                    .fullScreenCover(isPresented: $next) {
-                        GetStartedNumberView(fullName: fullName)
-                    }
+                    .padding(.bottom, 25)
                 }
                 .padding()
                 .cornerRadius(20)
@@ -66,6 +61,7 @@ struct GetStartedNameView: View {
         }
     }
 }
+
 
 struct GetStartedNameView_Previews: PreviewProvider {
     static var previews: some View {

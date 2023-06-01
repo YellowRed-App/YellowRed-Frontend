@@ -11,6 +11,9 @@ struct GetStartedEmailView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var email: String = ""
+    @State private var verificationCode: String = ""
+    @State private var isVerificationEnabled: Bool = false
+    @State private var next: Bool = false
     
     let fullName: String
     var firstName: String {
@@ -33,7 +36,7 @@ struct GetStartedEmailView: View {
                     .foregroundColor(.black)
                     .padding(.bottom, 50)
                 
-                Text("Enter Email")
+                Text("Enter Your Organization Email")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.black)
@@ -49,16 +52,39 @@ struct GetStartedEmailView: View {
                     .cornerRadius(10)
                     .padding(.bottom, 25)
                 
-                NavigationLink(destination: GetStartedAffiliationView(fullName: fullName)) {
-                    Text("Next")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .frame(width: 100)
-                        .background(.yellow)
+                if isVerificationEnabled {
+                    TextField("Verification Code", text: $verificationCode)
+                        .font(.title3)
+                        .fontWeight(.medium)
+                        .foregroundColor(.black)
+                        .autocapitalization(.none)
+                        .padding()
+                        .frame(width: 300)
+                        .background(.white)
                         .cornerRadius(10)
                         .padding(.bottom, 25)
+                }
+                
+                NavigationLink(destination: GetStartedAffiliationView(fullName: fullName), isActive: $next) {
+                    Button(action: {
+                        if isVerificationEnabled {
+                            next = true
+                        } else {
+                            sendVerificationCode()
+                            isVerificationEnabled = true
+                        }
+                    }) {
+                        Text(isVerificationEnabled ? "Next" : "Verify")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .padding(10)
+                            .frame(width: 100)
+                            .background(.yellow)
+                            .cornerRadius(10)
+                            .padding(.bottom, 25)
+                    }
+                    .padding(.bottom, 25)
                 }
                 .padding(.bottom, 25)
             }
@@ -67,6 +93,10 @@ struct GetStartedEmailView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
         }
+    }
+    
+    private func sendVerificationCode() {
+        // TODO: verification algorithm
     }
     
     private var backButton: some View {

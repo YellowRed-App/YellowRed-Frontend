@@ -300,7 +300,7 @@ struct GetStartedNumberView: View {
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.black)
-                    .frame(width: 250)
+                    .frame(width: 300)
                     .background(.white)
                     .cornerRadius(10)
                     
@@ -310,14 +310,14 @@ struct GetStartedNumberView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .padding(.vertical)
-                            .frame(width: 75)
+                            .frame(width: 100)
                         
                         TextField("(123) 456 7890", text: $phoneNumber)
                             .font(.title3)
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .padding(.vertical)
-                            .frame(width: 175)
+                            .frame(width: 200)
                     }
                     .background(.white)
                     .cornerRadius(10)

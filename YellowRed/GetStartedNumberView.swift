@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+struct Country: Hashable {
+    let name: String
+    let code: String
+}
+
 struct GetStartedNumberView: View {
     @Environment(\.presentationMode) var presentationMode
     
@@ -15,10 +20,20 @@ struct GetStartedNumberView: View {
     @State private var isVerificationEnabled: Bool = false
     @State private var next: Bool = false
     
+    @State private var country: Country = Country(name: "United States", code: "+1")
+    @State private var isCountryPickerOpen: Bool = false
+    
     let fullName: String
     var firstName: String {
         return fullName.components(separatedBy: " ").first ?? ""
     }
+    
+    let countries = [
+        Country(name: "United States", code: "+1"),
+        Country(name: "United Kingdom", code: "+44"),
+        Country(name: "Australia", code: "+61"),
+        // add more countries
+    ]
     
     var body: some View {
         ZStack {
@@ -41,16 +56,46 @@ struct GetStartedNumberView: View {
                     .fontWeight(.semibold)
                     .foregroundColor(.black)
                 
-                TextField("(123) 456-7890", text: $phoneNumber)
+                VStack {
+                    Picker(selection: $country, label: Text("Select Country")) {
+                        ForEach(countries, id: \.self) { country in
+                            Text(country.name)
+                                .tag(country)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.black)
-                    .padding()
-                    .frame(width: 300)
+                    .frame(width: 250)
+                    .background(.white)
+                    .cornerRadius(10)
+                    
+                    HStack(spacing: 0) {
+                        Button(action: {
+                            isCountryPickerOpen = true
+                        }) {
+                            Text(country.code)
+                                .font(.title3)
+                                .fontWeight(.medium)
+                                .foregroundColor(.black)
+                                .padding(.vertical)
+                                .frame(width: 50)
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                        
+                        TextField("(123) 456 7890", text: $phoneNumber)
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
+                            .padding(.vertical)
+                            .frame(width: 200)
+                    }
                     .background(.white)
                     .cornerRadius(10)
                     .padding(.bottom, 25)
                     .disabled(isVerificationEnabled)
+                }
                 
                 if isVerificationEnabled {
                     TextField("Verification Code", text: $verificationCode)
@@ -92,10 +137,23 @@ struct GetStartedNumberView: View {
                 .navigationBarItems(leading: backButton)
             }
         }
+        .sheet(isPresented: $isCountryPickerOpen) {
+            countryPicker
+        }
     }
     
     private func sendVerificationCode() {
         // TODO: verification algorithm
+    }
+    
+    private var countryPicker: some View {
+        Picker(selection: $country, label: Text("Select Country")) {
+            ForEach(countries, id: \.self) { country in
+                Text(country.name)
+                    .tag(country)
+            }
+        }
+        .pickerStyle(MenuPickerStyle())
     }
     
     private var backButton: some View {
@@ -110,7 +168,6 @@ struct GetStartedNumberView: View {
             }
         }
     }
-    
 }
 
 struct GetStartedNumberView_Previews: PreviewProvider {

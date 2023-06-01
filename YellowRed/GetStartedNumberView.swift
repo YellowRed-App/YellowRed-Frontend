@@ -268,7 +268,7 @@ struct GetStartedNumberView: View {
         Country(name: "Zambia", code: "+260"),
         Country(name: "Zimbabwe", code: "+263")
     ]
-
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -306,17 +306,12 @@ struct GetStartedNumberView: View {
                     .cornerRadius(10)
                     
                     HStack(spacing: 0) {
-                        Button(action: {
-                            isCountryPickerOpen = true
-                        }) {
-                            Text(country.code)
-                                .font(.title3)
-                                .fontWeight(.medium)
-                                .foregroundColor(.black)
-                                .padding(.vertical)
-                                .frame(width: 75)
-                        }
-                        .buttonStyle(BorderlessButtonStyle())
+                        Text(country.code)
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
+                            .padding(.vertical)
+                            .frame(width: 75)
                         
                         TextField("(123) 456 7890", text: $phoneNumber)
                             .font(.title3)
@@ -383,8 +378,14 @@ struct GetStartedNumberView: View {
     private var countryPicker: some View {
         Picker(selection: $country, label: Text("Select Country")) {
             ForEach(countries, id: \.self) { country in
-                Text(country.name)
-                    .tag(country)
+                HStack {
+                    Text(country.name)
+                    Spacer()
+                    Text(country.code)
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                }
+                .tag(country)
             }
         }
         .pickerStyle(MenuPickerStyle())

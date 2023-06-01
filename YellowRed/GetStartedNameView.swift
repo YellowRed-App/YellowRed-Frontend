@@ -9,6 +9,9 @@ import SwiftUI
 
 struct GetStartedNameView: View {
     @State private var fullName: String = ""
+    @State private var isFullNameValid = true
+    
+    @State private var next = false
     
     var body: some View {
         NavigationView {
@@ -40,9 +43,17 @@ struct GetStartedNameView: View {
                         .frame(width: 300)
                         .background(.white)
                         .cornerRadius(10)
-                        .padding(.bottom, 25)
                     
-                    NavigationLink(destination: GetStartedNumberView(fullName: fullName)) {
+                    if !isFullNameValid {
+                        Text("Please enter a valid name!")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                    }
+                    
+                    Button(action: {
+                        isFullNameValid = validateFullName(fullName)
+                        next = isFullNameValid
+                    }) {
                         Text("Next")
                             .font(.title)
                             .fontWeight(.semibold)
@@ -53,13 +64,30 @@ struct GetStartedNameView: View {
                             .cornerRadius(10)
                             .padding(.bottom, 25)
                     }
-                    .padding(.bottom, 25)
+                    .padding(.vertical, 25)
+                    .background(
+                        NavigationLink(
+                            destination: GetStartedNumberView(fullName: fullName),
+                            isActive: $next,
+                            label: {
+                                EmptyView()
+                            }
+                        )
+                        .hidden()
+                    )
                 }
                 .padding()
                 .cornerRadius(20)
             }
         }
     }
+    
+    func validateFullName(_ name: String) -> Bool {
+        let nameRegex = "[A-Za-z ]{2,}"
+        let namePredicate = NSPredicate(format: "SELF MATCHES %@", nameRegex)
+        return namePredicate.evaluate(with: name)
+    }
+    
 }
 
 struct GetStartedNameView_Previews: PreviewProvider {

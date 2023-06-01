@@ -21,7 +21,6 @@ struct GetStartedNumberView: View {
     @State private var next: Bool = false
     
     @State private var country: Country = Country(name: "United States", code: "+1")
-    @State private var isCountryPickerOpen: Bool = false
     
     let fullName: String
     var firstName: String {
@@ -366,29 +365,10 @@ struct GetStartedNumberView: View {
                 .navigationBarItems(leading: backButton)
             }
         }
-        .sheet(isPresented: $isCountryPickerOpen) {
-            countryPicker
-        }
     }
     
     private func sendVerificationCode() {
         // TODO: verification algorithm
-    }
-    
-    private var countryPicker: some View {
-        Picker(selection: $country, label: Text("Select Country")) {
-            ForEach(countries, id: \.self) { country in
-                HStack {
-                    Text(country.name)
-                    Spacer()
-                    Text(country.code)
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
-                }
-                .tag(country)
-            }
-        }
-        .pickerStyle(MenuPickerStyle())
     }
     
     private var backButton: some View {

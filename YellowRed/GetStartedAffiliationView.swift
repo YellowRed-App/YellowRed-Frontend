@@ -13,6 +13,8 @@ struct GetStartedAffiliationView: View {
     @State private var affiliation: String = ""
     @State private var isAffiliationValid = true
     
+    @State private var university: String = ""
+    
     @State private var next = false
     
     let fullName: String
@@ -54,6 +56,11 @@ struct GetStartedAffiliationView: View {
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
+                    if affiliation == "other" {
+                        TextField("University Name", text: $university)
+                            .font(.title3)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    }
                     RadioButton(
                         id: "none",
                         label: "Not Affiliated",
@@ -115,7 +122,11 @@ struct GetStartedAffiliationView: View {
     }
     
     private func validateAffiliation(_ affiliation: String) -> Bool {
-        return !affiliation.isEmpty
+        if affiliation == "other" {
+            return !university.isEmpty
+        } else {
+            return !affiliation.isEmpty
+        }
     }
 }
 

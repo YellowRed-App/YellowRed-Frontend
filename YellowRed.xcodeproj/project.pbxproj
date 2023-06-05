@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		715086372A2E1DC700841F44 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715086362A2E1DC700841F44 /* NotificationsView.swift */; };
 		71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E902A20B92E00A2BB2D /* YellowRedApp.swift */; };
 		71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E922A20B92E00A2BB2D /* HomeScreenView.swift */; };
 		71567E952A20B93300A2BB2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71567E942A20B93300A2BB2D /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		715086362A2E1DC700841F44 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		71567E8D2A20B92E00A2BB2D /* YellowRed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YellowRed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71567E902A20B92E00A2BB2D /* YellowRedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowRedApp.swift; sourceTree = "<group>"; };
 		71567E922A20B92E00A2BB2D /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */,
 				71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */,
 				717B156B2A2605A300096580 /* GetStartedAffiliationView.swift */,
+				715086362A2E1DC700841F44 /* NotificationsView.swift */,
 				71567E942A20B93300A2BB2D /* Assets.xcassets */,
 				71567E962A20B93300A2BB2D /* Preview Content */,
 			);
@@ -160,6 +163,7 @@
 				71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */,
 				71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */,
 				71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */,
+				715086372A2E1DC700841F44 /* NotificationsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

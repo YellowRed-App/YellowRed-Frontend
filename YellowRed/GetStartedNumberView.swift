@@ -321,7 +321,6 @@ struct GetStartedNumberView: View {
                     }
                     .background(.white)
                     .cornerRadius(10)
-                    .padding(.bottom, 25)
                     .disabled(isVerificationEnabled)
                 }
                 
@@ -335,7 +334,6 @@ struct GetStartedNumberView: View {
                         .frame(width: 300)
                         .background(.white)
                         .cornerRadius(10)
-                        .padding(.bottom, 25)
                 }
                 
                 NavigationLink(destination: GetStartedEmailView(fullName: fullName), isActive: $next) {
@@ -355,9 +353,7 @@ struct GetStartedNumberView: View {
                             .frame(width: 100)
                             .background(.yellow)
                             .cornerRadius(10)
-                            .padding(.bottom, 25)
                     }
-                    .padding(.bottom, 25)
                 }
                 .padding()
                 .cornerRadius(20)
@@ -365,10 +361,6 @@ struct GetStartedNumberView: View {
                 .navigationBarItems(leading: backButton)
             }
         }
-    }
-    
-    private func sendVerificationCode() {
-        // TODO: verification algorithm
     }
     
     private var backButton: some View {
@@ -383,6 +375,11 @@ struct GetStartedNumberView: View {
             }
         }
     }
+    
+    private func sendVerificationCode() {
+        // TODO: verification algorithm
+    }
+    
 }
 
 struct GetStartedNumberView_Previews: PreviewProvider {

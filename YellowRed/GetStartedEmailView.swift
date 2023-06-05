@@ -36,7 +36,7 @@ struct GetStartedEmailView: View {
                     .foregroundColor(.black)
                     .padding(.bottom, 50)
                 
-                Text("Enter Your Organization Email")
+                Text("Enter Your Email")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.black)
@@ -50,7 +50,6 @@ struct GetStartedEmailView: View {
                     .frame(width: 300)
                     .background(.white)
                     .cornerRadius(10)
-                    .padding(.bottom, 25)
                 
                 if isVerificationEnabled {
                     TextField("Verification Code", text: $verificationCode)
@@ -62,7 +61,6 @@ struct GetStartedEmailView: View {
                         .frame(width: 300)
                         .background(.white)
                         .cornerRadius(10)
-                        .padding(.bottom, 25)
                 }
                 
                 NavigationLink(destination: GetStartedAffiliationView(fullName: fullName), isActive: $next) {
@@ -84,19 +82,14 @@ struct GetStartedEmailView: View {
                             .cornerRadius(10)
                             .padding(.bottom, 25)
                     }
-                    .padding(.bottom, 25)
                 }
-                .padding(.bottom, 25)
+                .padding(.vertical, 25)
             }
             .padding()
             .cornerRadius(20)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
         }
-    }
-    
-    private func sendVerificationCode() {
-        // TODO: verification algorithm
     }
     
     private var backButton: some View {
@@ -110,6 +103,10 @@ struct GetStartedEmailView: View {
                     .foregroundColor(.blue)
             }
         }
+    }
+    
+    private func sendVerificationCode() {
+        // TODO: verification algorithm
     }
     
 }

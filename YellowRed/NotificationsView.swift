@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct NotificationsView: View {
+    @State private var next = false
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -75,17 +78,29 @@ struct NotificationsView: View {
                 }
                 .ignoresSafeArea()
             }
+            .background(
+                NavigationLink(
+                    destination: LocationView(),
+                    isActive: $next,
+                    label: { EmptyView() }
+                )
+            )
         }
     }
     
     private func handleYesButtonTap() {
-        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+            if granted {
+                DispatchQueue.main.async {
+                    next = true
+                }
+            }
+        }
     }
     
     private func handleNoButtonTap() {
-
+        next = true
     }
-    
 }
 
 struct NotificationsView_Previews: PreviewProvider {

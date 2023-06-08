@@ -30,7 +30,7 @@ struct GetStartedEmailView: View {
             .edgesIgnoringSafeArea(.all)
             
             VStack {
-                Text("Hello, \(firstName)...")
+                Text("Welcome, \(firstName)...")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.black)

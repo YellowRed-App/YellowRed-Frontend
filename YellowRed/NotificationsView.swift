@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct NotificationsView: View {
     @Environment(\.presentationMode) var presentationMode
     

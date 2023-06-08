@@ -24,18 +24,14 @@ struct HomeScreenView: View {
                 VStack {
                     Spacer()
                     
-                    HStack {
-                        // placeholder for logo
-                        Image(systemName: "circle.fill")
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
-                        Text("YellowRed")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.black)
-                    }
-                    .padding()
-                    
+                    Image("AppLogo")
+                        .resizable()
+                        .frame(width: 128, height: 128)
+                    Text("YellowRed")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                        .padding()
                     Text("Safety, One Click Away")
                         .font(.title2)
                         .fontWeight(.bold)

@@ -31,13 +31,13 @@ struct GetStartedEmailView: View {
             .edgesIgnoringSafeArea(.all)
             
             VStack {
-                Text("Hello, \(firstName)...")
+                Text("Welcome, \(firstName)...")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
                     .padding(.bottom, 50)
                 
-                Text("Enter Your Organization Email")
+                Text("Enter Your Email")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.black)
@@ -70,7 +70,6 @@ struct GetStartedEmailView: View {
                         .frame(width: 300)
                         .background(.white)
                         .cornerRadius(10)
-                        .padding(.bottom, 25)
                 }
                 
                 NavigationLink(destination: GetStartedAffiliationView(fullName: fullName), isActive: $next) {
@@ -101,9 +100,8 @@ struct GetStartedEmailView: View {
                             .cornerRadius(10)
                             .padding(.bottom, 25)
                     }
-                    .padding(.bottom, 25)
                 }
-                .padding(.bottom, 25)
+                .padding(.vertical, 25)
             }
             .padding()
             .cornerRadius(20)
@@ -135,6 +133,7 @@ struct GetStartedEmailView: View {
             }
         }
     }
+    
     
 }
 

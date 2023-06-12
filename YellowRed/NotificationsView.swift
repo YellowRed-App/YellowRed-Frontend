@@ -38,6 +38,7 @@ struct NotificationsView: View {
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.black)
+                        .multilineTextAlignment(.center)
                         .padding()
                     
                     Spacer()
@@ -52,6 +53,7 @@ struct NotificationsView: View {
                                 .foregroundColor(.white)
                                 .padding(10)
                                 .frame(width: 100)
+                            // We should place a gradient on all buttons for a better look!
                                 .background(.yellow)
                                 .cornerRadius(10)
                         }

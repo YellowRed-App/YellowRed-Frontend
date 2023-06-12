@@ -20,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		427061C82A367A7F002DB411 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		715086362A2E1DC700841F44 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		71567E8D2A20B92E00A2BB2D /* YellowRed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YellowRed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71567E902A20B92E00A2BB2D /* YellowRedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowRedApp.swift; sourceTree = "<group>"; };
@@ -63,6 +64,7 @@
 		71567E8F2A20B92E00A2BB2D /* YellowRed */ = {
 			isa = PBXGroup;
 			children = (
+				427061C82A367A7F002DB411 /* Info.plist */,
 				71567E902A20B92E00A2BB2D /* YellowRedApp.swift */,
 				71567E922A20B92E00A2BB2D /* HomeScreenView.swift */,
 				71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */,
@@ -300,8 +302,10 @@
 				DEVELOPMENT_TEAM = 52Q2RK6NP4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YellowRed/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YellowRed;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "YellowRed requires location services to function";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -334,8 +338,10 @@
 				DEVELOPMENT_TEAM = 52Q2RK6NP4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YellowRed/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YellowRed;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "YellowRed requires location services to function";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

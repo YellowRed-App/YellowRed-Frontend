@@ -43,6 +43,10 @@ struct GetStartedNameView: View {
                         .frame(width: 300)
                         .background(.white)
                         .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.black, lineWidth: isFullNameValid ? 0 : 1)
+                        )
                     
                     if !isFullNameValid {
                         Text("Please enter a valid name!")

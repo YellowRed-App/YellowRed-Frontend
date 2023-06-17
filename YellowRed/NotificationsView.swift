@@ -33,11 +33,13 @@ struct NotificationsView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
+                        .multilineTextAlignment(.center)
                         .padding()
                     Text("YellowRed will keep you posted with push notifications.")
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.black)
+                        .multilineTextAlignment(.center)
                         .padding()
                     
                     Spacer()

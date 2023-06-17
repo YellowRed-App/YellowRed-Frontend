@@ -14,6 +14,7 @@ struct GetStartedEmailView: View {
     @State private var isEmailValid = true
     @State private var verificationCode: String = ""
     @State private var isVerificationEnabled: Bool = false
+    @State private var isVerified: Bool = false
     
     @State private var next: Bool = false
     
@@ -63,7 +64,7 @@ struct GetStartedEmailView: View {
                         .foregroundColor(.white)
                 }
                 
-                if isEmailValid && isVerificationEnabled {
+                if isEmailValid && isVerificationEnabled && isVerified {
                     TextField("Verification Code", text: $verificationCode)
                         .font(.title3)
                         .fontWeight(.medium)
@@ -78,12 +79,13 @@ struct GetStartedEmailView: View {
                 NavigationLink(destination: GetStartedAffiliationView(fullName: fullName), isActive: $next) {
                     Button(action: {
                         isEmailValid = validateEmail(email)
-                        isVerificationEnabled = isEmailValid
-                        if isVerificationEnabled {
-                            next = isEmailValid
-                        } else {
-                            sendVerificationCode()
-                            isVerificationEnabled = true
+                        if isEmailValid {
+                            if isVerificationEnabled {
+                                next = true
+                            } else {
+                                sendVerificationCode()
+                                isVerificationEnabled = true
+                            }
                         }
                     }) {
                         Text(isVerificationEnabled ? "Next" : "Verify")
@@ -127,6 +129,7 @@ struct GetStartedEmailView: View {
     
     private func sendVerificationCode() {
         // TODO: verification algorithm
+        isVerified = true
     }
 }
 

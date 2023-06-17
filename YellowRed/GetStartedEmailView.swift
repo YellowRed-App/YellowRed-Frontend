@@ -14,6 +14,7 @@ struct GetStartedEmailView: View {
     @State private var isEmailValid = true
     @State private var verificationCode: String = ""
     @State private var isVerificationEnabled: Bool = false
+    
     @State private var next: Bool = false
     
     let fullName: String

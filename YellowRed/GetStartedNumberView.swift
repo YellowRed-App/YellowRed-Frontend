@@ -16,6 +16,7 @@ struct GetStartedNumberView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var phoneNumber: String = ""
+    @State private var isPhoneNumberValid = true
     @State private var verificationCode: String = ""
     @State private var isVerificationEnabled: Bool = false
     @State private var next: Bool = false
@@ -321,7 +322,17 @@ struct GetStartedNumberView: View {
                     }
                     .background(.white)
                     .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.black, lineWidth: isPhoneNumberValid ? 0 : 1)
+                    )
                     .disabled(isVerificationEnabled)
+                    
+                    if !isPhoneNumberValid {
+                        Text("Please enter a valid phone number!")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                    }
                 }
                 
                 if isVerificationEnabled {
@@ -338,11 +349,14 @@ struct GetStartedNumberView: View {
                 
                 NavigationLink(destination: GetStartedEmailView(fullName: fullName), isActive: $next) {
                     Button(action: {
-                        if isVerificationEnabled {
-                            next = true
-                        } else {
-                            sendVerificationCode()
-                            isVerificationEnabled = true
+                        isPhoneNumberValid = validatePhoneNumber(phoneNumber)
+                        if isPhoneNumberValid {
+                            if isVerificationEnabled {
+                                next = true
+                            } else {
+                                sendVerificationCode()
+                                isVerificationEnabled = true
+                            }
                         }
                     }) {
                         Text(isVerificationEnabled ? "Next" : "Verify")
@@ -378,6 +392,12 @@ struct GetStartedNumberView: View {
     
     private func sendVerificationCode() {
         // TODO: verification algorithm
+    }
+    
+    private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
+        let phoneRegex = "^\\+?[1-9]\\d{1,14}$"
+        let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+        return phonePredicate.evaluate(with: phoneNumber)
     }
     
 }

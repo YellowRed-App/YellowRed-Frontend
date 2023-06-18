@@ -11,9 +11,11 @@ struct GetStartedEmailView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var email: String = ""
-    @State private var isEmailValid: Bool = true
+    @State private var isEmailValid = true
     @State private var verificationCode: String = ""
-   @State private var isVerificationEnabled: Bool = false
+    @State private var isVerificationEnabled: Bool = false
+    @State private var isVerified: Bool = false
+    
     @State private var next: Bool = false
     
     let fullName: String
@@ -37,7 +39,7 @@ struct GetStartedEmailView: View {
                     .foregroundColor(.black)
                     .padding(.bottom, 50)
                 
-                Text("Enter Your Email")
+                Text("Enter Organization Email")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.black)
@@ -51,16 +53,18 @@ struct GetStartedEmailView: View {
                     .frame(width: 300)
                     .background(.white)
                     .cornerRadius(10)
-                    .padding(.bottom, 5)
-                
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.black, lineWidth: isEmailValid ? 0 : 1)
+                    )
                 
                 if !isEmailValid {
-                    Text("Please enter a valid email")
+                    Text("Please enter a valid email address!")
                         .font(.subheadline)
                         .foregroundColor(.white)
                 }
                 
-                if isEmailValid && isVerificationEnabled {
+                if isEmailValid && isVerificationEnabled && isVerified {
                     TextField("Verification Code", text: $verificationCode)
                         .font(.title3)
                         .fontWeight(.medium)
@@ -74,23 +78,17 @@ struct GetStartedEmailView: View {
                 
                 NavigationLink(destination: GetStartedAffiliationView(fullName: fullName), isActive: $next) {
                     Button(action: {
-                        print("button time")
                         isEmailValid = validateEmail(email)
-                        
-                        if isEmailValid{
-                            isVerificationEnabled = true
+                        if isEmailValid {
+                            if isVerificationEnabled {
+                                next = true
+                            } else {
+                                sendVerificationCode()
+                                isVerificationEnabled = true
+                            }
                         }
-// Verification Code Commented out Temporarily
-                        
-//                        if isVerificationEnabled {
-//                            next = true
-//                        } else {
-//                            sendVerificationCode()
-//                            isVerificationEnabled = true
-//                        }
-                       
                     }) {
-                        Text(isVerificationEnabled  ? "Verify" : "Next")
+                        Text(isVerificationEnabled ? "Next" : "Verify")
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
@@ -110,17 +108,6 @@ struct GetStartedEmailView: View {
         }
     }
     
-    func validateEmail(_ email: String) -> Bool {
-            print("working")
-            let emailRegex = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-            let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-            return emailPredicate.evaluate(with: email)
-    }
-    
-    private func sendVerificationCode() {
-        // TODO: verification algorithm
-    }
-    
     private var backButton: some View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
@@ -134,7 +121,16 @@ struct GetStartedEmailView: View {
         }
     }
     
+    private func validateEmail(_ email: String) -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
+    }
     
+    private func sendVerificationCode() {
+        // TODO: verification algorithm
+        isVerified = true
+    }
 }
 
 struct GetStartedEmailView_Previews: PreviewProvider {

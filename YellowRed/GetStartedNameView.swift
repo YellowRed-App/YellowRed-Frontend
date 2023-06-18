@@ -88,7 +88,7 @@ struct GetStartedNameView: View {
     }
     
     private func validateFullName(_ name: String) -> Bool {
-        let nameRegex = "^[A-Za-z]+\\s[A-Za-z]+$"
+        let nameRegex = "^[a-zA-Z\\.\\'\\-]{2,50}(?: [a-zA-Z\\.\\'\\-]{2,50})+$"
         let namePredicate = NSPredicate(format: "SELF MATCHES %@", nameRegex)
         return namePredicate.evaluate(with: name)
     }

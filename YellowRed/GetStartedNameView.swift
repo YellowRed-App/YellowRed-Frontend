@@ -39,6 +39,7 @@ struct GetStartedNameView: View {
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.black)
+                        .autocapitalization(.words)
                         .padding()
                         .frame(width: 300)
                         .background(.white)

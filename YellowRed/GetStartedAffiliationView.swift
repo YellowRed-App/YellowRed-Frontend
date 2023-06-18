@@ -60,6 +60,7 @@ struct GetStartedAffiliationView: View {
                         TextField("University Name", text: $university)
                             .font(.title3)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .autocapitalization(.none)
                     }
                     RadioButton(
                         id: "none",

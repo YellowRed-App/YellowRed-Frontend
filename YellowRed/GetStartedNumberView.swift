@@ -16,6 +16,7 @@ struct GetStartedNumberView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var phoneNumber: String = ""
+    @State private var isNumberValid: Bool = true;
     @State private var verificationCode: String = ""
     @State private var isVerificationEnabled: Bool = false
     @State private var next: Bool = false
@@ -26,6 +27,149 @@ struct GetStartedNumberView: View {
     var firstName: String {
         return fullName.components(separatedBy: " ").first ?? ""
     }
+    
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                gradient: Gradient(colors: [.yellow, .red]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Text("Welcome, \(firstName)...")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                    .padding(.bottom, 50)
+                
+                Text("Enter Phone Number")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
+                
+                VStack {
+                    Picker(selection: $country, label: Text("Select Country")) {
+                        ForEach(countries, id: \.self) { country in
+                            Text(country.name)
+                                .tag(country)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .font(.title3)
+                    .fontWeight(.medium)
+                    .foregroundColor(.black)
+                    .frame(width: 300)
+                    .background(.white)
+                    .cornerRadius(10)
+                    
+                    HStack(spacing: 0) {
+                        Text(country.code)
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
+                            .padding(.vertical)
+                            .frame(width: 100)
+                        
+                        TextField("(123) 456 7890", text: $phoneNumber)
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
+                            .padding(.vertical)
+                            .frame(width: 200)
+                        
+                        
+                    }
+                    .background(.white)
+                    .cornerRadius(10)
+                    .disabled(isVerificationEnabled)
+                    
+                    if !isNumberValid {
+                        Text("Please enter a valid phone number")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                    }
+                    
+                }
+                
+                if isVerificationEnabled {
+                    TextField("Verification Code", text: $verificationCode)
+                        .font(.title3)
+                        .fontWeight(.medium)
+                        .foregroundColor(.black)
+                        .autocapitalization(.none)
+                        .padding()
+                        .frame(width: 300)
+                        .background(.white)
+                        .cornerRadius(10)
+                }
+                
+                NavigationLink(destination: GetStartedEmailView(fullName: fullName), isActive: $next) {
+                    Button(action: {
+                        print("current phone#: \(phoneNumber)")
+                        isNumberValid = validatePhoneNumber(phoneNumber)
+                        
+     // Verification Enabling still needs setting up
+     // Skipped for now
+                        if isNumberValid {
+                            print("number is ok")
+                            isVerificationEnabled = true
+                            
+                        }
+                        if isVerificationEnabled {
+                            next = true
+                        } else {
+                            sendVerificationCode()
+                            isVerificationEnabled = true
+                        }
+                    }) {
+                        Text(isVerificationEnabled ? "Verify" : "Next")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .padding(10)
+                            .frame(width: 100)
+                            .background(.yellow)
+                            .cornerRadius(10)
+                    }
+                }
+                .padding()
+                .cornerRadius(20)
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: backButton)
+            }
+        }
+    }
+    
+    private var backButton: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(systemName: "chevron.left")
+                    .foregroundColor(.blue)
+                Text("Back")
+                    .foregroundColor(.blue)
+            }
+        }
+    }
+    
+    func validatePhoneNumber(_ phoneNumber: String) -> Bool {
+            print("regex executed with number")
+            print(phoneNumber)
+            //let phoneRegex = #"^\+?\d{1,3}?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$"#
+            let phoneRegex = #"^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$"#
+            let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+            print(phonePredicate.evaluate(with: phoneNumber))
+            return phonePredicate.evaluate(with: phoneNumber)
+        }
+
+    
+    private func sendVerificationCode() {
+        // TODO: verification algorithm
+    }
+    
     
     let countries = [
         Country(name: "Afghanistan", code: "+93"),
@@ -267,118 +411,6 @@ struct GetStartedNumberView: View {
         Country(name: "Zambia", code: "+260"),
         Country(name: "Zimbabwe", code: "+263")
     ]
-    
-    var body: some View {
-        ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: [.yellow, .red]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .edgesIgnoringSafeArea(.all)
-            
-            VStack {
-                Text("Welcome, \(firstName)...")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-                    .padding(.bottom, 50)
-                
-                Text("Enter Phone Number")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.black)
-                
-                VStack {
-                    Picker(selection: $country, label: Text("Select Country")) {
-                        ForEach(countries, id: \.self) { country in
-                            Text(country.name)
-                                .tag(country)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .font(.title3)
-                    .fontWeight(.medium)
-                    .foregroundColor(.black)
-                    .frame(width: 300)
-                    .background(.white)
-                    .cornerRadius(10)
-                    
-                    HStack(spacing: 0) {
-                        Text(country.code)
-                            .font(.title3)
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                            .padding(.vertical)
-                            .frame(width: 100)
-                        
-                        TextField("(123) 456 7890", text: $phoneNumber)
-                            .font(.title3)
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                            .padding(.vertical)
-                            .frame(width: 200)
-                    }
-                    .background(.white)
-                    .cornerRadius(10)
-                    .disabled(isVerificationEnabled)
-                }
-                
-                if isVerificationEnabled {
-                    TextField("Verification Code", text: $verificationCode)
-                        .font(.title3)
-                        .fontWeight(.medium)
-                        .foregroundColor(.black)
-                        .autocapitalization(.none)
-                        .padding()
-                        .frame(width: 300)
-                        .background(.white)
-                        .cornerRadius(10)
-                }
-                
-                NavigationLink(destination: GetStartedEmailView(fullName: fullName), isActive: $next) {
-                    Button(action: {
-                        if isVerificationEnabled {
-                            next = true
-                        } else {
-                            sendVerificationCode()
-                            isVerificationEnabled = true
-                        }
-                    }) {
-                        Text(isVerificationEnabled ? "Next" : "Verify")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding(10)
-                            .frame(width: 100)
-                            .background(.yellow)
-                            .cornerRadius(10)
-                    }
-                }
-                .padding()
-                .cornerRadius(20)
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: backButton)
-            }
-        }
-    }
-    
-    private var backButton: some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }) {
-            HStack {
-                Image(systemName: "chevron.left")
-                    .foregroundColor(.blue)
-                Text("Back")
-                    .foregroundColor(.blue)
-            }
-        }
-    }
-    
-    private func sendVerificationCode() {
-        // TODO: verification algorithm
-    }
     
 }
 

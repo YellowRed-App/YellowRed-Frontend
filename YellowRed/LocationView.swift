@@ -103,9 +103,7 @@ struct LocationView: View {
     private func handleYesButtonTap() {
         let status = CLLocationManager.authorizationStatus()
         if status == .authorizedAlways || status == .authorizedWhenInUse {
-            DispatchQueue.main.async {
-                next = true
-            }
+            next = true
         } else {
             let locationManager = CLLocationManager()
             locationManager.requestAlwaysAuthorization()

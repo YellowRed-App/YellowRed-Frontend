@@ -97,6 +97,8 @@ struct NotificationsView: View {
                 DispatchQueue.main.async {
                     next = true
                 }
+            } else {
+                next = true
             }
         }
     }

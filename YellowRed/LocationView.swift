@@ -56,6 +56,7 @@ struct LocationView: View {
                 
                 VStack {
                     Button(action: {
+                        next = true
                         handleYesButtonTap()
                     }) {
                         Text("Yes")
@@ -107,6 +108,7 @@ struct LocationView: View {
         } else {
             let locationManager = CLLocationManager()
             locationManager.requestAlwaysAuthorization()
+            next = true
         }
     }
     

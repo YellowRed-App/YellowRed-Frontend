@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import MessageUI
 
 struct Country: Hashable {
     let name: String
@@ -15,8 +14,6 @@ struct Country: Hashable {
 
 struct GetStartedNumberView: View {
     @Environment(\.presentationMode) var presentationMode
-    
-    @State private var messageComposeDelegate = MessageComposeDelegate()
     
     @State private var phoneNumber: String = ""
     @State private var isPhoneNumberValid: Bool = true
@@ -277,10 +274,6 @@ struct GetStartedNumberView: View {
         Country(name: "Zimbabwe", code: "+263")
     ]
     
-    var countryCode: String {
-        country.code
-    }
-    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -421,61 +414,12 @@ struct GetStartedNumberView: View {
         // Generate a random six-digit code
         let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
         
+        // TODO: Implement code to send the verification code via SMS to the phoneNumber
         // For demonstration purposes, we'll print the code to the console
         print("Verification Code: \(randomCode)")
         
         // Update the verificationCodeSent with the generated code
         verificationCodeSent = randomCode
-        
-        // Send the verification code via SMS
-        sendMessage()
-    }
-    
-    private func sendMessage() {
-        // Check if the device can send SMS messages
-        guard MFMessageComposeViewController.canSendText() else {
-            // Show an alert or perform any error handling if SMS sending is not available
-            print("Error, SMS sending is not available")
-            return
-        }
-        
-        // Create an instance of MFMessageComposeViewController
-        let messageComposeViewController = MFMessageComposeViewController()
-        messageComposeViewController.messageComposeDelegate = messageComposeDelegate
-        
-        // Set the recipients and body of the message
-        messageComposeViewController.recipients = [countryCode + phoneNumber]
-        messageComposeViewController.body = "Your verification code is: \(verificationCodeSent)"
-        
-        // Present the message compose view controller
-        UIApplication.shared.windows.first?.rootViewController?.present(messageComposeViewController, animated: true, completion: nil)
-    }
-    
-    // MARK: - MFMessageComposeViewControllerDelegate
-    
-    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        // Dismiss the message compose view controller
-        controller.dismiss(animated: true, completion: nil)
-        
-        // Check the result of the SMS sending
-        switch result {
-        case .cancelled:
-            // Handle cancellation
-            print("Cancelled")
-            break
-        case .sent:
-            // Handle successful sending
-            print("Sent")
-            break
-        case .failed:
-            // Handle failure
-            print("Failed")
-            break
-        @unknown default:
-            // Handle unknown cases
-            print("I give up...")
-            break
-        }
     }
     
 }
@@ -483,13 +427,5 @@ struct GetStartedNumberView: View {
 struct GetStartedNumberView_Previews: PreviewProvider {
     static var previews: some View {
         GetStartedNumberView(fullName: "John Smith")
-    }
-}
-
-class MessageComposeDelegate: NSObject, MFMessageComposeViewControllerDelegate {
-    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        // Handle the result of the SMS sending
-        // Add your code here
-        print("SMS sending result!")
     }
 }

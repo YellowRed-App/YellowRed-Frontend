@@ -24,7 +24,7 @@ struct HomeScreenView: View {
                 VStack {
                     Spacer()
                     
-                    Image("AppLogo")
+                    Image("AppLogoTransparent")
                         .resizable()
                         .frame(width: 128, height: 128)
                     Text("YellowRed")
@@ -32,7 +32,7 @@ struct HomeScreenView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.black)
                         .padding()
-                    Text("Safety, One Click Away")
+                    Text("Your Peace of Mind Companion")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.black)

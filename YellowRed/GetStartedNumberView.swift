@@ -16,9 +16,14 @@ struct GetStartedNumberView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var phoneNumber: String = ""
-    @State private var isPhoneNumberValid = true
+    @State private var isPhoneNumberValid: Bool = true
+    
     @State private var verificationCode: String = ""
+    @State private var verificationCodeSent: String = ""
+    
     @State private var isVerificationEnabled: Bool = false
+    
+    @State private var display: Bool = false
     @State private var next: Bool = false
     
     @State private var country: Country = Country(name: "United States", code: "+1")
@@ -345,17 +350,26 @@ struct GetStartedNumberView: View {
                         .frame(width: 300)
                         .background(.white)
                         .cornerRadius(10)
+                    
+                    if display {
+                        Text("Invalid verification code. Please try again!")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                    }
                 }
                 
                 NavigationLink(destination: GetStartedEmailView(fullName: fullName), isActive: $next) {
                     Button(action: {
                         isPhoneNumberValid = validatePhoneNumber(phoneNumber)
                         if isPhoneNumberValid {
-                            if isVerificationEnabled {
+                            if isVerificationEnabled && verificationCode == verificationCodeSent {
+                                display = false
                                 next = true
+                            } else if isVerificationEnabled {
+                                display = true
                             } else {
-                                sendVerificationCode()
                                 isVerificationEnabled = true
+                                sendVerificationCode()
                             }
                         }
                     }) {
@@ -390,14 +404,22 @@ struct GetStartedNumberView: View {
         }
     }
     
-    private func sendVerificationCode() {
-        // TODO: verification algorithm
-    }
-    
     private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
         let phoneRegex = "^\\+?[1-9]\\d{1,14}$"
         let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
         return phonePredicate.evaluate(with: phoneNumber)
+    }
+    
+    private func sendVerificationCode() {
+        // Generate a random six-digit code
+        let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
+        
+        // TODO: Implement code to send the verification code via SMS to the phoneNumber
+        // For demonstration purposes, we'll print the code to the console
+        print("Verification Code: \(randomCode)")
+        
+        // Update the verificationCodeSent with the generated code
+        verificationCodeSent = randomCode
     }
     
 }

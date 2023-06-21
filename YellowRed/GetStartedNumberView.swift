@@ -399,7 +399,6 @@ struct GetStartedNumberView: View {
                     )
                     .hidden()
                 )
-
             }
         }
     }

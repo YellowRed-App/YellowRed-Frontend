@@ -12,10 +12,13 @@ struct GetStartedEmailView: View {
     
     @State private var email: String = ""
     @State private var isEmailValid = true
-    @State private var verificationCode: String = ""
-    @State private var isVerificationEnabled: Bool = false
-    @State private var isVerified: Bool = false
     
+    @State private var verificationCode: String = ""
+    @State private var verificationCodeSent: String = ""
+    
+    @State private var isVerificationEnabled: Bool = false
+    
+    @State private var display: Bool = false
     @State private var next: Bool = false
     
     let fullName: String
@@ -57,6 +60,7 @@ struct GetStartedEmailView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: isEmailValid ? 0 : 1)
                     )
+                    .disabled(isVerificationEnabled)
                 
                 if !isEmailValid {
                     Text("Please enter a valid email address!")
@@ -64,7 +68,7 @@ struct GetStartedEmailView: View {
                         .foregroundColor(.white)
                 }
                 
-                if isEmailValid && isVerificationEnabled && isVerified {
+                if isVerificationEnabled {
                     TextField("Verification Code", text: $verificationCode)
                         .font(.title3)
                         .fontWeight(.medium)
@@ -74,37 +78,56 @@ struct GetStartedEmailView: View {
                         .frame(width: 300)
                         .background(.white)
                         .cornerRadius(10)
-                }
-                
-                NavigationLink(destination: GetStartedAffiliationView(fullName: fullName), isActive: $next) {
-                    Button(action: {
-                        isEmailValid = validateEmail(email)
-                        if isEmailValid {
-                            if isVerificationEnabled {
-                                next = true
-                            } else {
-                                sendVerificationCode()
-                                isVerificationEnabled = true
-                            }
-                        }
-                    }) {
-                        Text(isVerificationEnabled ? "Next" : "Verify")
-                            .font(.title)
-                            .fontWeight(.semibold)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.black, lineWidth: display ? 1 : 0)
+                        )
+                    
+                    if display {
+                        Text("Invalid verification code. Please try again!")
+                            .font(.subheadline)
                             .foregroundColor(.white)
-                            .padding(10)
-                            .frame(width: 100)
-                            .background(.yellow)
-                            .cornerRadius(10)
-                            .padding(.bottom, 25)
                     }
                 }
-                .padding(.vertical, 25)
+                
+                Button(action: {
+                    isEmailValid = validateEmail(email)
+                    if isEmailValid {
+                        if isVerificationEnabled && verificationCode == verificationCodeSent {
+                            display = false
+                            next = true
+                        } else if isVerificationEnabled {
+                            display = true
+                        } else {
+                            isVerificationEnabled = true
+                            sendVerificationCode()
+                        }
+                    }
+                }) {
+                    Text(isVerificationEnabled ? "Next" : "Verify")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .frame(width: 100)
+                        .background(.yellow)
+                        .cornerRadius(10)
+                }
+                .padding()
+                .cornerRadius(20)
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: backButton)
+                .background(
+                    NavigationLink(
+                        destination: GetStartedAffiliationView(fullName: fullName),
+                        isActive: $next,
+                        label: {
+                            EmptyView()
+                        }
+                    )
+                    .hidden()
+                )
             }
-            .padding()
-            .cornerRadius(20)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: backButton)
         }
     }
     
@@ -128,9 +151,17 @@ struct GetStartedEmailView: View {
     }
     
     private func sendVerificationCode() {
-        // TODO: verification algorithm
-        isVerified = true
+        // Generate a random six-digit code
+        let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
+        
+        // TODO: Implement code to send the verification code via SMS to the phoneNumber
+        // For demonstration purposes, we'll print the code to the console
+        print("Verification Code: \(randomCode)")
+        
+        // Update the verificationCodeSent with the generated code
+        verificationCodeSent = randomCode
     }
+    
 }
 
 struct GetStartedEmailView_Previews: PreviewProvider {

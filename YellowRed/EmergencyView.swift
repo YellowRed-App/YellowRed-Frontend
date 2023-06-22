@@ -13,6 +13,8 @@ struct EmergencyView: View {
     
     @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 3)
     
+    @State private var valid = true
+    
     @State private var next = false
     
     var body: some View {
@@ -55,10 +57,17 @@ struct EmergencyView: View {
                     }
                 }
                 
+                if !valid {
+                    Text("Please select three unique emergency contacts!")
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                }
+                
                 Spacer()
                 
                 Button(action: {
-                    next = true
+                    valid = validate(emergencyContacts: emergencyContacts)
+                    next = valid
                 }) {
                     Text("Next")
                         .font(.title)
@@ -80,6 +89,20 @@ struct EmergencyView: View {
             }
             .navigationBarBackButtonHidden(true)
         }
+    }
+    
+    private func validate(emergencyContacts: [EmergencyContact]) -> Bool {
+        guard emergencyContacts.allSatisfy({ $0.isSelected }) else {
+            return false
+        }
+        
+        let phoneNumbers = emergencyContacts.map({ $0.phoneNumber })
+        let uniquePhoneNumbers = Set(phoneNumbers)
+        guard phoneNumbers.count == uniquePhoneNumbers.count else {
+            return false
+        }
+        
+        return true
     }
     
 }
@@ -114,10 +137,10 @@ struct EmergencyContactPicker: View {
             }
             .actionSheet(isPresented: $showPhoneNumberSelection) {
                 ActionSheet(title: Text("Select a Phone Number"), buttons: phoneNumbers.map { phoneNumber in
-                    .default(Text(phoneNumber.stringValue)) {
-                        contact.phoneNumber = phoneNumber.stringValue
-                        showPhoneNumberSelection = false
-                    }
+                        .default(Text(phoneNumber.stringValue)) {
+                            contact.phoneNumber = phoneNumber.stringValue
+                            showPhoneNumberSelection = false
+                        }
                 })
             }
         }

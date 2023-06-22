@@ -1,13 +1,13 @@
 //
-//  WelcomeView.swift
+//  MessagesView.swift
 //  YellowRed
 //
-//  Created by Krish Mehta on 17/6/23.
+//  Created by Krish Mehta on 22/6/23.
 //
 
 import SwiftUI
 
-struct WelcomeView: View {
+struct MessagesView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -23,8 +23,8 @@ struct WelcomeView: View {
     }
 }
 
-struct WelcomeView_Previews: PreviewProvider {
+struct MessagesView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView()
+        MessagesView()
     }
 }

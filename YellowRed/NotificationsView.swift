@@ -25,7 +25,7 @@ struct NotificationsView: View {
             VStack() {
                 Spacer()
                 
-                Image(systemName: "iphone")
+                Image(systemName: "bell.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 128, height: 128)

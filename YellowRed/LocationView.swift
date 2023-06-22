@@ -25,7 +25,7 @@ struct LocationView: View {
             VStack {
                 Spacer()
                 
-                Image(systemName: "location.circle.fill")
+                Image(systemName: "location.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 128, height: 128)
@@ -94,7 +94,7 @@ struct LocationView: View {
         }
         .background(
             NavigationLink(
-                destination: WelcomeView(),
+                destination: EmergencyView(),
                 isActive: $next,
                 label: { EmptyView() }
             )

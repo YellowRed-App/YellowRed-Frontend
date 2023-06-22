@@ -86,6 +86,8 @@ struct EmergencyView: View {
 
 struct EmergencyContactPicker: View {
     @State private var isContactPickerPresented = false
+    @State private var showPhoneNumberSelection = false
+    @State private var phoneNumbers: [CNPhoneNumber] = []
     @Binding var contact: EmergencyContact
     
     var body: some View {
@@ -93,7 +95,7 @@ struct EmergencyContactPicker: View {
             Button(action: {
                 isContactPickerPresented = true
             }) {
-                Text(contact.isSelected ? contact.displayName : "Select Contact")
+                Text(contact.isSelected ? "\(contact.displayName) (\(contact.phoneNumber))" : "Select Contact")
                     .foregroundColor(.blue)
                     .frame(maxWidth: 300, alignment: .leading)
             }
@@ -102,7 +104,7 @@ struct EmergencyContactPicker: View {
             .cornerRadius(10)
             .sheet(isPresented: $isContactPickerPresented) {
                 NavigationView {
-                    ContactPickerView(contact: $contact)
+                    ContactPickerView(showPhoneNumberSelection: $showPhoneNumberSelection, phoneNumbers: $phoneNumbers, contact: $contact)
                         .navigationBarItems(
                             leading: Button("Cancel") {
                                 isContactPickerPresented = false
@@ -110,11 +112,21 @@ struct EmergencyContactPicker: View {
                         )
                 }
             }
+            .actionSheet(isPresented: $showPhoneNumberSelection) {
+                ActionSheet(title: Text("Select a Phone Number"), buttons: phoneNumbers.map { phoneNumber in
+                    .default(Text(phoneNumber.stringValue)) {
+                        contact.phoneNumber = phoneNumber.stringValue
+                        showPhoneNumberSelection = false
+                    }
+                })
+            }
         }
     }
 }
 
 struct ContactPickerView: UIViewControllerRepresentable {
+    @Binding var showPhoneNumberSelection: Bool
+    @Binding var phoneNumbers: [CNPhoneNumber]
     @Binding var contact: EmergencyContact
     
     func makeUIViewController(context: Context) -> some UIViewController {
@@ -138,8 +150,15 @@ struct ContactPickerView: UIViewControllerRepresentable {
         
         func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
             parent.contact.displayName = CNContactFormatter.string(from: contact, style: .fullName) ?? ""
-            parent.contact.phoneNumber = contact.phoneNumbers.first?.value.stringValue ?? ""
             parent.contact.isSelected = true
+            
+            let phoneNumbers = contact.phoneNumbers
+            if phoneNumbers.count == 1 {
+                parent.contact.phoneNumber = phoneNumbers.first?.value.stringValue ?? ""
+            } else if phoneNumbers.count > 1 {
+                parent.phoneNumbers = phoneNumbers.map { $0.value }
+                parent.showPhoneNumberSelection = true
+            }
         }
         
         func contactPickerDidCancel(_ picker: CNContactPickerViewController) {

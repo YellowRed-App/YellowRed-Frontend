@@ -42,7 +42,7 @@ struct GetStartedNameView: View {
                         .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.black, lineWidth: isFullNameValid ? 0 : 1)
+                                .stroke(.black, lineWidth: isFullNameValid ? 0 : 1)
                         )
                         .padding(.horizontal, 20)
                     

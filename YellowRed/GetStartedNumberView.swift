@@ -54,10 +54,10 @@ struct GetStartedNumberView: View {
                 }
                 .font(.title3)
                 .padding()
-                .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
+                .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.black, lineWidth: isPhoneNumberValid ? 0 : 1)
+                        .stroke(.black, lineWidth: isPhoneNumberValid ? 0 : 1)
                 )
                 .padding(.horizontal, 20)
                 .disabled(isVerificationEnabled)
@@ -73,10 +73,10 @@ struct GetStartedNumberView: View {
                     TextField("Verification Code", text: $verificationCode)
                         .font(.title3)
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
+                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.black, lineWidth: display ? 1 : 0)
+                                .stroke(.black, lineWidth: display ? 1 : 0)
                         )
                         .padding(.horizontal, 20)
                     

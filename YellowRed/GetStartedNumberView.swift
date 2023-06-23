@@ -35,68 +35,56 @@ struct GetStartedNumberView: View {
             )
             .edgesIgnoringSafeArea(.all)
             
-            VStack {
+            VStack(spacing: 20) {
                 Text("Welcome, \(firstName)...")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-                    .padding(.bottom, 50)
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 Text("Enter Phone Number")
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
-                VStack {
-                    HStack(spacing: 0) {
-                        Text("+1")
-                            .font(.title3)
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                            .padding(.vertical)
-                            .frame(width: 75)
-                        
-                        TextField("(123) 456-7890", text: $phoneNumber)
-                            .font(.title3)
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                            .padding(.vertical)
-                            .frame(width: 225)
-                    }
-                    .background(.white)
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: isPhoneNumberValid ? 0 : 1)
-                    )
-                    .disabled(isVerificationEnabled)
-                    
-                    if !isPhoneNumberValid {
-                        Text("Please enter a valid phone number!")
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                    }
+                HStack(spacing: 10) {
+                    Text("+1")
+                    TextField("(123) 456-7890", text: $phoneNumber)
+                }
+                .font(.title3)
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.black, lineWidth: isPhoneNumberValid ? 0 : 1)
+                )
+                .padding(.horizontal, 20)
+                .disabled(isVerificationEnabled)
+                
+                if !isPhoneNumberValid {
+                    Text("Please enter a valid phone number!")
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 }
                 
                 if isVerificationEnabled {
                     TextField("Verification Code", text: $verificationCode)
                         .font(.title3)
-                        .fontWeight(.medium)
-                        .foregroundColor(.black)
-                        .autocapitalization(.none)
                         .padding()
-                        .frame(width: 300)
-                        .background(.white)
-                        .cornerRadius(10)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: display ? 1 : 0)
+                                .stroke(Color.black, lineWidth: display ? 1 : 0)
                         )
+                        .padding(.horizontal, 20)
                     
                     if display {
                         Text("Invalid verification code. Please try again!")
                             .font(.subheadline)
                             .foregroundColor(.white)
+                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     }
                 }
                 
@@ -114,19 +102,24 @@ struct GetStartedNumberView: View {
                         }
                     }
                 }) {
-                    Text(isVerificationEnabled ? "Next" : "Verify")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .frame(width: 100)
-                        .background(.yellow)
-                        .cornerRadius(10)
+                    HStack {
+                        Text(isVerificationEnabled ? "Next" : "Verify")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                        
+                        Image(systemName: isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
+                            .font(.title)
+                            .foregroundColor(.black)
+                    }
+                    .padding(12.5)
+                    .frame(maxWidth: .infinity)
+                    .background(.white)
+                    .cornerRadius(15)
+                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
                 }
-                .padding()
-                .cornerRadius(20)
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: backButton)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 25)
                 .background(
                     NavigationLink(
                         destination: GetStartedEmailView(fullName: fullName),
@@ -137,7 +130,10 @@ struct GetStartedNumberView: View {
                     )
                     .hidden()
                 )
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: backButton)
             }
+            .padding(.horizontal)
         }
     }
     
@@ -147,9 +143,9 @@ struct GetStartedNumberView: View {
         }) {
             HStack {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(.blue)
+                    .foregroundColor(.white)
                 Text("Back")
-                    .foregroundColor(.blue)
+                    .foregroundColor(.white)
             }
         }
     }

@@ -55,15 +55,21 @@ struct HomeScreenView: View {
                         Button(action: {
                             getStarted = true
                         }) {
-                            Text("Get Started")
-                                .font(.title)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.black)
-                                .padding(12.5)
-                                .frame(maxWidth: .infinity)
-                                .background(.white)
-                                .cornerRadius(15)
-                                .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                            HStack {
+                                Text("Next")
+                                    .font(.title)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.black)
+                                
+                                Image(systemName: "arrow.right.circle.fill")
+                                    .font(.title)
+                                    .foregroundColor(.black)
+                            }
+                            .padding(12.5)
+                            .frame(maxWidth: .infinity)
+                            .background(.white)
+                            .cornerRadius(15)
+                            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
                         }
                         .fullScreenCover(isPresented: $getStarted) {
                             GetStartedNameView()

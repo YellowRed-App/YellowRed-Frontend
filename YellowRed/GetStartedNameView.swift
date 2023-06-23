@@ -23,53 +23,58 @@ struct GetStartedNameView: View {
                 )
                 .edgesIgnoringSafeArea(.all)
                 
-                VStack {
+                VStack(spacing: 20) {
                     Text("Get Started")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                        .padding(.bottom, 50)
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     
                     Text("Enter Full Name")
                         .font(.title2)
                         .fontWeight(.semibold)
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     
                     TextField("John Smith", text: $fullName)
                         .font(.title3)
-                        .fontWeight(.medium)
-                        .foregroundColor(.black)
-                        .autocapitalization(.words)
                         .padding()
-                        .frame(width: 300)
-                        .background(.white)
-                        .cornerRadius(10)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: isFullNameValid ? 0 : 1)
+                                .stroke(Color.black, lineWidth: isFullNameValid ? 0 : 1)
                         )
+                        .padding(.horizontal, 20)
                     
                     if !isFullNameValid {
                         Text("Please enter a valid name!")
                             .font(.subheadline)
                             .foregroundColor(.white)
+                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     }
                     
                     Button(action: {
                         isFullNameValid = validateFullName(fullName)
                         next = isFullNameValid
                     }) {
-                        Text("Next")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding(10)
-                            .frame(width: 100)
-                            .background(.yellow)
-                            .cornerRadius(10)
-                            .padding(.bottom, 25)
+                        HStack {
+                            Text("Next")
+                                .font(.title)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.black)
+                            
+                            Image(systemName: "arrow.right.circle.fill")
+                                .font(.title)
+                                .foregroundColor(.black)
+                        }
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.white)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
                     }
-                    .padding(.vertical, 25)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 25)
                     .background(
                         NavigationLink(
                             destination: GetStartedNumberView(fullName: fullName),
@@ -81,8 +86,7 @@ struct GetStartedNameView: View {
                         .hidden()
                     )
                 }
-                .padding()
-                .cornerRadius(20)
+                .padding(.horizontal)
             }
         }
     }
@@ -92,7 +96,6 @@ struct GetStartedNameView: View {
         let namePredicate = NSPredicate(format: "SELF MATCHES %@", nameRegex)
         return namePredicate.evaluate(with: name)
     }
-    
 }
 
 struct GetStartedNameView_Previews: PreviewProvider {

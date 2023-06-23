@@ -22,39 +22,42 @@ struct LocationView: View {
             )
             .edgesIgnoringSafeArea(.all)
             
-            VStack {
+            VStack(spacing: 20) {
                 Spacer()
                 
                 Image(systemName: "location.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 128, height: 128)
-                    .padding()
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 Text("Enable Location Services")
                     .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .fontWeight(.heavy)
+                    .foregroundColor(.white)
                     .multilineTextAlignment(.center)
-                    .padding()
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 Text("YellowRed will keep you posted with location-based services.")
                     .font(.title3)
                     .fontWeight(.medium)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     .multilineTextAlignment(.center)
-                    .padding()
+                    .padding(.horizontal)
                 
                 Text("In order to receive alerts based on your geographic location, you must have your location sharing permissions set to \"Always\" with \"Precise Location\" enabled.")
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     .multilineTextAlignment(.center)
-                    .padding()
+                    .padding(.horizontal)
                 
                 Spacer()
                 
-                VStack {
+                VStack(spacing: 20) {
                     Button(action: {
                         next = true
                         handleYesButtonTap()
@@ -62,13 +65,13 @@ struct LocationView: View {
                         Text("Yes")
                             .font(.title)
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding(10)
-                            .frame(width: 100)
-                            .background(.yellow)
-                            .cornerRadius(10)
+                            .foregroundColor(.black)
+                            .padding(12.5)
+                            .frame(maxWidth: .infinity)
+                            .background(.white)
+                            .cornerRadius(15)
+                            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
                     }
-                    .padding(.top)
                     
                     Button(action: {
                         handleNoButtonTap()
@@ -77,20 +80,18 @@ struct LocationView: View {
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)
-                            .padding(10)
-                            .frame(width: 100)
+                            .padding(12.5)
+                            .frame(maxWidth: .infinity)
                             .background(.white)
-                            .cornerRadius(10)
+                            .cornerRadius(15)
+                            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
                     }
-                    .padding(.bottom)
                 }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(.white)
-                .cornerRadius(20)
-                .navigationBarBackButtonHidden(true)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 40)
             }
-            .ignoresSafeArea()
+            .navigationBarBackButtonHidden(true)
+            .ignoresSafeArea(.all)
         }
         .background(
             NavigationLink(

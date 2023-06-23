@@ -26,41 +26,43 @@ struct EmergencyView: View {
             )
             .edgesIgnoringSafeArea(.all)
             
-            VStack {
+            VStack(spacing: 20) {
                 Spacer()
                 
                 Image(systemName: "phone.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 128, height: 128)
-                    .padding()
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 Text("Emergency Contacts")
                     .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-                    .multilineTextAlignment(.center)
-                    .padding()
+                    .fontWeight(.heavy)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 Text("Please get started by selecting three emergency contacts. You will be able to change this later.")
                     .font(.title3)
                     .fontWeight(.medium)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     .multilineTextAlignment(.center)
-                    .padding()
+                    .padding(.horizontal)
                 
-                Spacer()
-                
-                VStack(spacing: 20) {
+                VStack(spacing: 15) {
                     ForEach(0..<3, id: \.self) { index in
                         EmergencyContactPicker(contact: $emergencyContacts[index])
                     }
                 }
+                .padding(.horizontal, 20)
                 
                 if !valid {
                     Text("Please select three unique emergency contacts!")
                         .font(.subheadline)
+                        .fontWeight(.medium)
                         .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 }
                 
                 Spacer()
@@ -69,16 +71,24 @@ struct EmergencyView: View {
                     valid = validate(emergencyContacts: emergencyContacts)
                     next = valid
                 }) {
-                    Text("Next")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .frame(width: 100)
-                        .background(.yellow)
-                        .cornerRadius(10)
+                    HStack {
+                        Text("Next")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                        
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title)
+                            .foregroundColor(.black)
+                    }
+                    .padding(12.5)
+                    .frame(maxWidth: .infinity)
+                    .background(.white)
+                    .cornerRadius(15)
+                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
                 }
-                .padding(.bottom)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 40)
                 .background(
                     NavigationLink(
                         destination: MessagesView(),
@@ -88,6 +98,7 @@ struct EmergencyView: View {
                 )
             }
             .navigationBarBackButtonHidden(true)
+            .ignoresSafeArea(.all)
         }
     }
     

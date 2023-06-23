@@ -21,21 +21,27 @@ struct HomeScreenView: View {
                 )
                 .edgesIgnoringSafeArea(.all)
                 
-                VStack {
+                VStack(spacing: 20) {
+                    
                     Spacer()
                     
                     Image("AppLogoTransparent")
                         .resizable()
-                        .frame(width: 128, height: 128)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 150, height: 150)
+                        .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                    
                     Text("YellowRed")
                         .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                        .padding()
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    
                     Text("Your Peace of Mind Companion")
                         .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     
                     Spacer()
                     
@@ -43,9 +49,8 @@ struct HomeScreenView: View {
                         Text(greeting)
                             .font(.title)
                             .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                            .padding()
-                            .frame(maxWidth: .infinity)
+                            .foregroundColor(.white)
+                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                         
                         Button(action: {
                             getStarted = true
@@ -53,43 +58,27 @@ struct HomeScreenView: View {
                             Text("Get Started")
                                 .font(.title)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.white)
-                                .padding(10)
-                                .frame(width: 300)
-                                .background(.yellow)
-                                .cornerRadius(10)
-                                .padding(.bottom, 25)
+                                .foregroundColor(.black)
+                                .padding(12.5)
+                                .frame(maxWidth: .infinity)
+                                .background(.white)
+                                .cornerRadius(15)
+                                .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
                         }
                         .fullScreenCover(isPresented: $getStarted) {
                             GetStartedNameView()
                         }
-                        
-                        //                        NavigationLink(
-                        //                            destination: GetStartedNameView(),
-                        //                            isActive: $getStarted,
-                        //                            label: {
-                        //                                Text("Get Started")
-                        //                                    .font(.title)
-                        //                                    .fontWeight(.semibold)
-                        //                                    .foregroundColor(.white)
-                        //                                    .padding(10)
-                        //                                    .frame(width: 300)
-                        //                                    .background(.yellow)
-                        //                                    .cornerRadius(10)
-                        //                                    .padding(.bottom, 25)
-                        //                            })
-                        //                        .isDetailLink(false)
                     }
-                    .padding()
-                    .background(.white)
-                    .cornerRadius(20)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 40)
                 }
-                .ignoresSafeArea()
+                .padding(.horizontal)
             }
             .onAppear {
                 setGreeting()
             }
         }
+        .navigationBarHidden(true)
     }
     
     private func setGreeting() {

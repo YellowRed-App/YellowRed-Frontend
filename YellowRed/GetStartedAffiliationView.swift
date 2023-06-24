@@ -53,6 +53,7 @@ struct GetStartedAffiliationView: View {
                         isAffiliationValid: $isAffiliationValid
                     )
                     .padding(.horizontal)
+                    .padding(.top)
                     
                     RadioButton(
                         id: "other",
@@ -65,6 +66,7 @@ struct GetStartedAffiliationView: View {
                     if affiliation == "other" {
                         TextField("University Name", text: $university)
                             .font(.title3)
+                            .foregroundColor(.black)
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                             .padding(.horizontal)
@@ -77,11 +79,12 @@ struct GetStartedAffiliationView: View {
                         isAffiliationValid: $isAffiliationValid
                     )
                     .padding(.horizontal)
+                    .padding(.bottom)
                 }
                 .background(.white.opacity(0.2))
                 .cornerRadius(10)
-                .padding(.horizontal)
-                
+                .padding()
+            
                 if !isAffiliationValid {
                     Text("Please select an affiliation!")
                         .font(.subheadline)

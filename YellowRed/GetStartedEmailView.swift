@@ -50,6 +50,7 @@ struct GetStartedEmailView: View {
                 
                 TextField("abc5xy@virginia.edu", text: $email)
                     .font(.title3)
+                    .foregroundColor(.black)
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                     .overlay(
@@ -69,6 +70,7 @@ struct GetStartedEmailView: View {
                 if isVerificationEnabled {
                     TextField("Verification Code", text: $verificationCode)
                         .font(.title3)
+                        .foregroundColor(.black)
                         .padding()
                         .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .overlay(

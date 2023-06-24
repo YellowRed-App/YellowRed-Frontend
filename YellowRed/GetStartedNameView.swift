@@ -38,8 +38,9 @@ struct GetStartedNameView: View {
                     
                     TextField("John Smith", text: $fullName)
                         .font(.title3)
+                        .foregroundColor(.black)
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
+                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.black, lineWidth: isFullNameValid ? 0 : 1)

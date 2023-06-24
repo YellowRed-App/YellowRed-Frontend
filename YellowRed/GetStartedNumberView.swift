@@ -53,6 +53,7 @@ struct GetStartedNumberView: View {
                     TextField("(123) 456-7890", text: $phoneNumber)
                 }
                 .font(.title3)
+                .foregroundColor(.black)
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                 .overlay(
@@ -72,6 +73,7 @@ struct GetStartedNumberView: View {
                 if isVerificationEnabled {
                     TextField("Verification Code", text: $verificationCode)
                         .font(.title3)
+                        .foregroundColor(.black)
                         .padding()
                         .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .overlay(

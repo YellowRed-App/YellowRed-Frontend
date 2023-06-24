@@ -39,6 +39,7 @@ struct GetStartedNameView: View {
                     TextField("John Smith", text: $fullName)
                         .font(.title3)
                         .foregroundColor(.black)
+                        .autocapitalization(.words)
                         .padding()
                         .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .overlay(

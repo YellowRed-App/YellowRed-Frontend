@@ -61,7 +61,7 @@ struct YellowMessageView: View {
                                 .foregroundColor(.black)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
-                                .background(.white)
+                                .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 2)
@@ -72,17 +72,19 @@ struct YellowMessageView: View {
                     }
                     
                     ZStack(alignment: .leading) {
-                        if customMessage.isEmpty {
-                            Text("Custom Yellow Button Message")
-                                .foregroundColor(.gray)
-                                .padding(.leading)
-                        }
                         TextEditor(text: $customMessage)
                             .foregroundColor(.black)
                             .frame(height: 50)
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                             .cornerRadius(10)
+                            .colorScheme(.light)
+                        
+                        if customMessage.isEmpty {
+                            Text("Custom Yellow Button Message")
+                                .foregroundColor(.gray)
+                                .padding(.leading, 15)
+                        }
                     }
                 }
                 .padding(.horizontal, 20)

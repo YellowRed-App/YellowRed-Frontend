@@ -91,7 +91,7 @@ struct EmergencyView: View {
                 .padding(.bottom, 40)
                 .background(
                     NavigationLink(
-                        destination: MessagesView(),
+                        destination: YellowMessageView(),
                         isActive: $next,
                         label: { EmptyView() }
                     )

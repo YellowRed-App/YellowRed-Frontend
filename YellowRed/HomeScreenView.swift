@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeScreenView: View {
     @State private var greeting: String = ""
+    
     @State private var getStarted: Bool = false
     
     var body: some View {
@@ -57,7 +58,7 @@ struct HomeScreenView: View {
                             getStarted = true
                         }) {
                             HStack {
-                                Text("Next")
+                                Text("Get Started")
                                     .font(.title)
                                     .fontWeight(.semibold)
                                     .foregroundColor(.black)

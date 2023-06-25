@@ -9,9 +9,9 @@ import SwiftUI
 
 struct GetStartedNameView: View {
     @State private var fullName: String = ""
-    @State private var isFullNameValid = true
+    @State private var isFullNameValid: Bool = true
     
-    @State private var next = false
+    @State private var next: Bool = false
     
     var body: some View {
         NavigationView {

@@ -13,9 +13,9 @@ struct EmergencyView: View {
     
     @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 3)
     
-    @State private var valid = true
+    @State private var valid: Bool = true
     
-    @State private var next = false
+    @State private var next: Bool = false
     
     var body: some View {
         ZStack {
@@ -115,7 +115,6 @@ struct EmergencyView: View {
         
         return true
     }
-    
 }
 
 struct EmergencyContactPicker: View {

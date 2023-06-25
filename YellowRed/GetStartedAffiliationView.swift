@@ -11,11 +11,11 @@ struct GetStartedAffiliationView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var affiliation: String = ""
-    @State private var isAffiliationValid = true
+    @State private var isAffiliationValid: Bool = true
     
     @State private var university: String = ""
     
-    @State private var next = false
+    @State private var next: Bool = false
     
     let fullName: String
     var firstName: String {

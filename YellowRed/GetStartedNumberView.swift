@@ -19,6 +19,7 @@ struct GetStartedNumberView: View {
     @State private var isVerificationEnabled: Bool = false
     
     @State private var display: Bool = false
+    
     @State private var next: Bool = false
     
     let fullName: String
@@ -169,7 +170,6 @@ struct GetStartedNumberView: View {
         // Update the verificationCodeSent with the generated code
         verificationCodeSent = randomCode
     }
-    
 }
 
 struct GetStartedNumberView_Previews: PreviewProvider {

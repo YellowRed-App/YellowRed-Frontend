@@ -11,7 +11,7 @@ import UserNotifications
 struct NotificationsView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State private var next = false
+    @State private var next: Bool = false
     
     var body: some View {
         ZStack {

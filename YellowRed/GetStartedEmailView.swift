@@ -11,7 +11,7 @@ struct GetStartedEmailView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var email: String = ""
-    @State private var isEmailValid = true
+    @State private var isEmailValid: Bool = true
     
     @State private var verificationCode: String = ""
     @State private var verificationCodeSent: String = ""
@@ -19,6 +19,7 @@ struct GetStartedEmailView: View {
     @State private var isVerificationEnabled: Bool = false
     
     @State private var display: Bool = false
+    
     @State private var next: Bool = false
     
     let fullName: String
@@ -167,7 +168,6 @@ struct GetStartedEmailView: View {
         // Update the verificationCodeSent with the generated code
         verificationCodeSent = randomCode
     }
-    
 }
 
 struct GetStartedEmailView_Previews: PreviewProvider {

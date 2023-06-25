@@ -13,6 +13,8 @@ struct YellowMessageView: View {
     @State private var selectedTemplate: Int?
     @State private var customMessage: String = ""
     
+    @State private var valid: Bool = true
+    
     @State private var next: Bool = false
     
     let messageTemplates = [
@@ -86,13 +88,23 @@ struct YellowMessageView: View {
                                 .padding(.leading, 15)
                         }
                     }
+                    
+                    if !valid {
+                        Text("Please choose a template or create your own!")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                     }
                 }
                 .padding(.horizontal, 20)
                 
                 Spacer()
                 
                 Button(action: {
-                    next = (selectedTemplate != nil || !customMessage.isEmpty)
+                    valid = validate()
+                    next = valid
                 }) {
                     HStack {
                         Text("Next")
@@ -137,6 +149,10 @@ struct YellowMessageView: View {
                     .foregroundColor(.white)
             }
         }
+    }
+    
+    private func validate() -> Bool {
+        return selectedTemplate != nil || !customMessage.isEmpty
     }
 }
 

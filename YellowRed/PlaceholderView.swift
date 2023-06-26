@@ -1,15 +1,13 @@
 //
-//  MessagesView.swift
+//  PlaceholderView.swift
 //  YellowRed
 //
-//  Created by Krish Mehta on 22/6/23.
+//  Created by Krish Mehta on 25/6/23.
 //
 
 import SwiftUI
 
-struct MessagesView: View {
-    @Environment(\.presentationMode) var presentationMode
-    
+struct PlaceholderView: View {
     var body: some View {
         ZStack {
             LinearGradient(
@@ -18,13 +16,12 @@ struct MessagesView: View {
                 endPoint: .bottomTrailing
             )
             .edgesIgnoringSafeArea(.all)
-            
         }
     }
 }
 
-struct MessagesView_Previews: PreviewProvider {
+struct PlaceholderView_Previews: PreviewProvider {
     static var previews: some View {
-        MessagesView()
+        PlaceholderView()
     }
 }

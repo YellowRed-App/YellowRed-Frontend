@@ -7,21 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		713F803F2A488D7D00A03D29 /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F803E2A488D7D00A03D29 /* PlaceholderView.swift */; };
 		715086372A2E1DC700841F44 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715086362A2E1DC700841F44 /* NotificationsView.swift */; };
 		71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E902A20B92E00A2BB2D /* YellowRedApp.swift */; };
 		71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E922A20B92E00A2BB2D /* HomeScreenView.swift */; };
 		71567E952A20B93300A2BB2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71567E942A20B93300A2BB2D /* Assets.xcassets */; };
 		71567E982A20B93300A2BB2D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71567E972A20B93300A2BB2D /* Preview Assets.xcassets */; };
 		71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */; };
+		715D5CE22A48706C001701AA /* YellowMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715D5CE12A48706C001701AA /* YellowMessageView.swift */; };
+		715D5CE42A4870D3001701AA /* RedMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715D5CE32A4870D3001701AA /* RedMessageView.swift */; };
 		7171C17E2A3DC34200CC8F9B /* EmergencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7171C17D2A3DC34200CC8F9B /* EmergencyView.swift */; };
 		717B156C2A2605A300096580 /* GetStartedAffiliationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B156B2A2605A300096580 /* GetStartedAffiliationView.swift */; };
 		717F74D02A31E7BB00C55AC8 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F74CF2A31E7BB00C55AC8 /* LocationView.swift */; };
 		71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */; };
 		71CF77CB2A25EA81001D81E0 /* GetStartedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */; };
-		71D8A4D82A442EAC00DB7415 /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D8A4D72A442EAC00DB7415 /* MessagesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		713F803E2A488D7D00A03D29 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
 		715086362A2E1DC700841F44 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		71567E8D2A20B92E00A2BB2D /* YellowRed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YellowRed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71567E902A20B92E00A2BB2D /* YellowRedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowRedApp.swift; sourceTree = "<group>"; };
@@ -29,13 +32,14 @@
 		71567E942A20B93300A2BB2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71567E972A20B93300A2BB2D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedNameView.swift; sourceTree = "<group>"; };
+		715D5CE12A48706C001701AA /* YellowMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowMessageView.swift; sourceTree = "<group>"; };
+		715D5CE32A4870D3001701AA /* RedMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedMessageView.swift; sourceTree = "<group>"; };
 		7171C17D2A3DC34200CC8F9B /* EmergencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyView.swift; sourceTree = "<group>"; };
 		7171C17F2A3F26E200CC8F9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		717B156B2A2605A300096580 /* GetStartedAffiliationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedAffiliationView.swift; sourceTree = "<group>"; };
 		717F74CF2A31E7BB00C55AC8 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedNumberView.swift; sourceTree = "<group>"; };
 		71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedEmailView.swift; sourceTree = "<group>"; };
-		71D8A4D72A442EAC00DB7415 /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +82,9 @@
 				715086362A2E1DC700841F44 /* NotificationsView.swift */,
 				717F74CF2A31E7BB00C55AC8 /* LocationView.swift */,
 				7171C17D2A3DC34200CC8F9B /* EmergencyView.swift */,
-				71D8A4D72A442EAC00DB7415 /* MessagesView.swift */,
+				715D5CE12A48706C001701AA /* YellowMessageView.swift */,
+				715D5CE32A4870D3001701AA /* RedMessageView.swift */,
+				713F803E2A488D7D00A03D29 /* PlaceholderView.swift */,
 				71567E942A20B93300A2BB2D /* Assets.xcassets */,
 				71567E962A20B93300A2BB2D /* Preview Content */,
 			);
@@ -167,13 +173,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71D8A4D82A442EAC00DB7415 /* MessagesView.swift in Sources */,
 				717B156C2A2605A300096580 /* GetStartedAffiliationView.swift in Sources */,
 				717F74D02A31E7BB00C55AC8 /* LocationView.swift in Sources */,
+				713F803F2A488D7D00A03D29 /* PlaceholderView.swift in Sources */,
 				71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */,
 				71CF77CB2A25EA81001D81E0 /* GetStartedEmailView.swift in Sources */,
+				715D5CE22A48706C001701AA /* YellowMessageView.swift in Sources */,
 				7171C17E2A3DC34200CC8F9B /* EmergencyView.swift in Sources */,
 				71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */,
+				715D5CE42A4870D3001701AA /* RedMessageView.swift in Sources */,
 				71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */,
 				71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */,
 				715086372A2E1DC700841F44 /* NotificationsView.swift in Sources */,

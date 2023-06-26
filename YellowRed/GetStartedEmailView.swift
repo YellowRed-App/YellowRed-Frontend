@@ -11,7 +11,7 @@ struct GetStartedEmailView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var email: String = ""
-    @State private var isEmailValid = true
+    @State private var isEmailValid: Bool = true
     
     @State private var verificationCode: String = ""
     @State private var verificationCodeSent: String = ""
@@ -19,6 +19,7 @@ struct GetStartedEmailView: View {
     @State private var isVerificationEnabled: Bool = false
     
     @State private var display: Bool = false
+    
     @State private var next: Bool = false
     
     let fullName: String
@@ -35,58 +36,56 @@ struct GetStartedEmailView: View {
             )
             .edgesIgnoringSafeArea(.all)
             
-            VStack {
+            VStack(spacing: 20) {
                 Text("Welcome, \(firstName)...")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-                    .padding(.bottom, 50)
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 Text("Enter Organization Email")
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 TextField("abc5xy@virginia.edu", text: $email)
                     .font(.title3)
-                    .fontWeight(.medium)
                     .foregroundColor(.black)
                     .autocapitalization(.none)
                     .padding()
-                    .frame(width: 300)
-                    .background(.white)
-                    .cornerRadius(10)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: isEmailValid ? 0 : 1)
                     )
+                    .padding(.horizontal, 20)
                     .disabled(isVerificationEnabled)
                 
                 if !isEmailValid {
                     Text("Please enter a valid email address!")
                         .font(.subheadline)
                         .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 }
                 
                 if isVerificationEnabled {
                     TextField("Verification Code", text: $verificationCode)
                         .font(.title3)
-                        .fontWeight(.medium)
                         .foregroundColor(.black)
-                        .autocapitalization(.none)
                         .padding()
-                        .frame(width: 300)
-                        .background(.white)
-                        .cornerRadius(10)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.black, lineWidth: display ? 1 : 0)
                         )
+                        .padding(.horizontal, 20)
                     
                     if display {
                         Text("Invalid verification code. Please try again!")
                             .font(.subheadline)
                             .foregroundColor(.white)
+                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     }
                 }
                 
@@ -104,19 +103,24 @@ struct GetStartedEmailView: View {
                         }
                     }
                 }) {
-                    Text(isVerificationEnabled ? "Next" : "Verify")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .frame(width: 100)
-                        .background(.yellow)
-                        .cornerRadius(10)
+                    HStack {
+                        Text(isVerificationEnabled ? "Next" : "Verify")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                        
+                        Image(systemName: isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
+                            .font(.title)
+                            .foregroundColor(.black)
+                    }
+                    .padding(12.5)
+                    .frame(maxWidth: .infinity)
+                    .background(.white)
+                    .cornerRadius(15)
+                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
                 }
-                .padding()
-                .cornerRadius(20)
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: backButton)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 25)
                 .background(
                     NavigationLink(
                         destination: GetStartedAffiliationView(fullName: fullName),
@@ -127,7 +131,10 @@ struct GetStartedEmailView: View {
                     )
                     .hidden()
                 )
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: backButton)
             }
+            .padding(.horizontal)
         }
     }
     
@@ -137,9 +144,9 @@ struct GetStartedEmailView: View {
         }) {
             HStack {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(.blue)
+                    .foregroundColor(.white)
                 Text("Back")
-                    .foregroundColor(.blue)
+                    .foregroundColor(.white)
             }
         }
     }
@@ -161,7 +168,6 @@ struct GetStartedEmailView: View {
         // Update the verificationCodeSent with the generated code
         verificationCodeSent = randomCode
     }
-    
 }
 
 struct GetStartedEmailView_Previews: PreviewProvider {

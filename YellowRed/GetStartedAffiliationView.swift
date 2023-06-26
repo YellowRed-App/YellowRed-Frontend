@@ -11,11 +11,11 @@ struct GetStartedAffiliationView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var affiliation: String = ""
-    @State private var isAffiliationValid = true
+    @State private var isAffiliationValid: Bool = true
     
     @State private var university: String = ""
     
-    @State private var next = false
+    @State private var next: Bool = false
     
     let fullName: String
     var firstName: String {
@@ -31,17 +31,19 @@ struct GetStartedAffiliationView: View {
             )
             .edgesIgnoringSafeArea(.all)
             
-            VStack {
+            VStack(spacing: 20) {
                 Text("Hello, \(firstName)...")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-                    .padding(.bottom, 50)
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .padding(.top, 20)
                 
                 Text("What Is Your Affiliation With UVA?")
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 VStack(alignment: .leading, spacing: 10) {
                     RadioButton(
@@ -50,49 +52,70 @@ struct GetStartedAffiliationView: View {
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
+                    .padding(.horizontal)
+                    .padding(.top)
+                    
                     RadioButton(
                         id: "other",
                         label: "Other University",
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
+                    .padding(.horizontal)
+                    
                     if affiliation == "other" {
                         TextField("University Name", text: $university)
                             .font(.title3)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .autocapitalization(.none)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                            .padding(.horizontal)
                     }
+                    
                     RadioButton(
                         id: "none",
                         label: "Not Affiliated",
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
+                    .padding(.horizontal)
+                    .padding(.bottom)
                 }
-                
+                .background(.white.opacity(0.2))
+                .cornerRadius(10)
+                .padding()
+            
                 if !isAffiliationValid {
                     Text("Please select an affiliation!")
                         .font(.subheadline)
                         .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 }
                 
                 Button(action: {
                     isAffiliationValid = validateAffiliation(affiliation)
                     next = isAffiliationValid
                 }) {
-                    Text("Next")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .frame(width: 100)
-                        .background(.yellow)
-                        .cornerRadius(10)
-                        .padding(.bottom, 25)
+                    HStack {
+                        Text("Next")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                        
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title)
+                            .foregroundColor(.black)
+                    }
+                    .padding(12.5)
+                    .frame(maxWidth: .infinity)
+                    .background(.white)
+                    .cornerRadius(15)
+                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
                 }
-                .padding(.vertical, 25)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 25)
             }
-            .padding()
+            .padding(.horizontal)
             .cornerRadius(20)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
@@ -115,9 +138,9 @@ struct GetStartedAffiliationView: View {
         }) {
             HStack {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(.blue)
+                    .foregroundColor(.white)
                 Text("Back")
-                    .foregroundColor(.blue)
+                    .foregroundColor(.white)
             }
         }
     }
@@ -150,10 +173,11 @@ struct RadioButton: View {
                     .fontWeight(.medium)
                     .foregroundColor(.black)
             }
+            .padding(12.5)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
             .background(.white)
-            .cornerRadius(10)
+            .cornerRadius(15)
+            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
         }
         .foregroundColor(.black)
     }

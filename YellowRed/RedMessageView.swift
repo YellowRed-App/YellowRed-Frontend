@@ -73,21 +73,11 @@ struct RedMessageView: View {
 
                     }
                     
-                    ZStack(alignment: .leading) {
-                        TextEditor(text: $customMessage)
-                            .foregroundColor(.black)
-                            .frame(height: 50)
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 10).fill(.white))
-                            .cornerRadius(10)
-                            .colorScheme(.light)
-                        
-                        if customMessage.isEmpty {
-                            Text("Custom Red Button Message")
-                                .foregroundColor(.gray)
-                                .padding(.leading, 15)
-                        }
-                    }
+                    TextField("Custom Red Button Message", text: $customMessage)
+                        .foregroundColor(.black)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                        .cornerRadius(10)
                     
                     if !valid {
                         Text("Please choose a template or create your own!")

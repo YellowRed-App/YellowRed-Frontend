@@ -17,10 +17,10 @@ struct RedMessageView: View {
     
     @State private var next: Bool = false
     
-    let messageTemplates = [
-        "Template #1",
-        "Template #2",
-        "Template #3",
+    @State private var messageTemplates: [String] = [
+        "I'm feeling a bit uncomfortable, can we talk?",
+        "Could use some company right now, can we meet up?",
+        "Feeling uneasy at my current location. Can you check on me?",
     ]
     
     var body: some View {
@@ -58,26 +58,42 @@ struct RedMessageView: View {
                 
                 VStack(spacing: 15) {
                     ForEach(0..<messageTemplates.count, id: \.self) { index in
-                        Button(action: { selectedTemplate = index }) {
-                            Text(messageTemplates[index])
-                                .foregroundColor(.black)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
-                                .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 2)
-                                )
-                                .cornerRadius(10)
-                        }
-
-                    }
-                    
-                    TextField("Custom Red Button Message", text: $customMessage)
+                        TextField("Placeholder", text: Binding(
+                            get: { self.messageTemplates[index] },
+                            set: { newValue in
+                                self.messageTemplates[index] = newValue
+                                self.selectedTemplate = nil
+                                self.customMessage = ""
+                            }
+                        ))
                         .foregroundColor(.black)
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                        .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 2)
+                        )
                         .cornerRadius(10)
+                        .onTapGesture {
+                            self.selectedTemplate = index
+                        }
+                    }
+                    
+                    TextField("Custom Red Button Message", text: Binding(
+                        get: { self.customMessage },
+                        set: { newValue in
+                            self.customMessage = newValue
+                            self.selectedTemplate = nil
+                        }
+                    ))
+                    .foregroundColor(.black)
+                    .padding()
+                    .background(!customMessage.isEmpty ? .white.opacity(0.5) : .white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(!customMessage.isEmpty ? .black : .clear, lineWidth: 2)
+                    )
+                    .cornerRadius(10)
                     
                     if !valid {
                         Text("Please choose a template or create your own!")
@@ -86,7 +102,7 @@ struct RedMessageView: View {
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                             .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                     }
+                    }
                 }
                 .padding(.horizontal, 20)
                 

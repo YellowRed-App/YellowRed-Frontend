@@ -10,17 +10,16 @@ import SwiftUI
 struct RedMessageView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State private var selectedTemplate: Int?
-    
-    @State private var valid: Bool = true
-    
-    @State private var next: Bool = false
-    
     @State private var messageTemplates: [String] = [
         "I'm feeling a bit uncomfortable, can we talk?",
         "Could use some company right now, can we meet up?",
         "Feeling uneasy at my current location. Can you check on me?",
     ]
+    @State private var selectedTemplate: Int?
+    
+    @State private var valid: Bool = true
+    
+    @State private var next: Bool = false
     
     var body: some View {
         ZStack {

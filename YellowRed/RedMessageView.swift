@@ -11,7 +11,6 @@ struct RedMessageView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var selectedTemplate: Int?
-    @State private var customMessage: String = ""
     
     @State private var valid: Bool = true
     
@@ -48,7 +47,7 @@ struct RedMessageView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
-                Text("Please choose a message template for the Red Button or create your own custom message!")
+                Text("Please choose a message template for the Red Button. There is no custom message option for the Red Button!")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -63,7 +62,6 @@ struct RedMessageView: View {
                             set: { newValue in
                                 self.messageTemplates[index] = newValue
                                 self.selectedTemplate = nil
-                                self.customMessage = ""
                             }
                         ))
                         .foregroundColor(.black)
@@ -79,24 +77,8 @@ struct RedMessageView: View {
                         }
                     }
                     
-                    TextField("Custom Red Button Message", text: Binding(
-                        get: { self.customMessage },
-                        set: { newValue in
-                            self.customMessage = newValue
-                            self.selectedTemplate = nil
-                        }
-                    ))
-                    .foregroundColor(.black)
-                    .padding()
-                    .background(!customMessage.isEmpty ? .white.opacity(0.5) : .white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(!customMessage.isEmpty ? .black : .clear, lineWidth: 2)
-                    )
-                    .cornerRadius(10)
-                    
                     if !valid {
-                        Text("Please choose a template or create your own!")
+                        Text("Please choose a template!")
                             .font(.subheadline)
                             .fontWeight(.medium)
                             .foregroundColor(.white)
@@ -158,7 +140,7 @@ struct RedMessageView: View {
     }
     
     private func validate() -> Bool {
-        return selectedTemplate != nil || !customMessage.isEmpty
+        return selectedTemplate != nil
     }
 }
 

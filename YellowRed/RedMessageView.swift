@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RedMessageView: View {
     @Environment(\.presentationMode) var presentationMode
+    @FocusState private var isEditing: Bool
     
     @State private var messageTemplates: [String] = [
         "I'm feeling a bit uncomfortable, can we talk?",
@@ -16,6 +17,7 @@ struct RedMessageView: View {
         "Feeling uneasy at my current location. Can you check on me?",
     ]
     @State private var selectedTemplate: Int?
+    @State private var editingTemplate: Int?
     
     @State private var valid: Bool = true
     
@@ -33,12 +35,14 @@ struct RedMessageView: View {
             VStack(spacing: 20) {
                 Spacer()
                 
-                Image(systemName: "message.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 128, height: 128)
-                    .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                if !isEditing {
+                    Image(systemName: "message.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 128, height: 128)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                }
                 
                 Text("Red Message")
                     .font(.largeTitle)
@@ -46,7 +50,7 @@ struct RedMessageView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
-                Text("Please choose a message template for the Red Button. There is no custom message option for the Red Button!")
+                Text("Please choose and edit a message template for the Red Button. There is no custom message option for the Red Button!")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -55,24 +59,76 @@ struct RedMessageView: View {
                     .padding(.horizontal)
                 
                 VStack(spacing: 15) {
-                    ForEach(0..<messageTemplates.count, id: \.self) { index in
-                        TextField("Placeholder", text: Binding(
-                            get: { self.messageTemplates[index] },
-                            set: { newValue in
-                                self.messageTemplates[index] = newValue
-                                self.selectedTemplate = nil
+                    if editingTemplate != nil {
+                        VStack {
+                            if isEditing {
+                                Button(action: { isEditing = false }) {
+                                    Text("Done")
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.blue)
+                                        .padding()
+                                        .background(.white)
+                                        .cornerRadius(10)
+                                        .padding()
+                                }
                             }
-                        ))
-                        .foregroundColor(.black)
-                        .padding()
-                        .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 2)
-                        )
-                        .cornerRadius(10)
-                        .onTapGesture {
-                            self.selectedTemplate = index
+                            TextEditor(text: $messageTemplates[editingTemplate!])
+                                .foregroundColor(.black)
+                                .padding()
+                                .background(.white)
+                                .colorScheme(.light)
+                                .cornerRadius(10)
+                                .frame(height: 150)
+                                .focused($isEditing)
+                        }
+                        
+                        HStack {
+                            Button("Select", action: {
+                                selectedTemplate = editingTemplate
+                                editingTemplate = nil
+                                isEditing = false
+                            })
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.white)
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                            
+                            Button("Cancel", action: {
+                                editingTemplate = nil
+                                isEditing = false
+                            })
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(.white)
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                        }
+                    } else {
+                        ForEach(0..<messageTemplates.count, id: \.self) { index in
+                            TextField("Placeholder", text: Binding(
+                                get: { self.messageTemplates[index] },
+                                set: { newValue in
+                                    self.messageTemplates[index] = newValue
+                                    self.selectedTemplate = nil
+                                }
+                            ))
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 2)
+                            )
+                            .cornerRadius(10)
+                            .onTapGesture {
+                                self.editingTemplate = index
+                                self.isEditing = true
+                            }
                         }
                     }
                     

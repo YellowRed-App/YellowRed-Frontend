@@ -102,3 +102,7 @@ iOSInjectionProject/
 
 # End of https://www.toptal.com/developers/gitignore/api/xcode,swift
 *.xcuserstate
+YellowRed.xcodeproj/project.xcworkspace/xcuserdata/wshaoul.xcuserdatad/UserInterfaceState.xcuserstate
+YellowRed.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+*.xcuserstate
+*.resolved

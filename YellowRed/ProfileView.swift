@@ -13,7 +13,6 @@ struct ProfileView: View {
     let email: String
     let number: String
     
-    
     let emergencyContacts = ["John Doe 123-456", "Jane Smith 444-555", "Sam Johnson 789-101"]
     
     var body: some View {
@@ -122,14 +121,14 @@ struct ProfileView: View {
 
 struct EditProfileView : View {
     var body: some View{
-        let _: String
+        Text("Edit Profile View")
     }
     
 }
 
 struct EditContactsView : View {
     var body: some View{
-        let _: String
+        Text("Edit Contacts View")
     }
     
 }

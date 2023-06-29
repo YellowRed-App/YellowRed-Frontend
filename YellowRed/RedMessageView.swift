@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RedMessageView: View {
     @Environment(\.presentationMode) var presentationMode
-    @FocusState private var isEditing: Bool
+    @FocusState private var isSelecting: Bool
     
     @State private var messageTemplates: [String] = [
         "I'm feeling a bit uncomfortable, can we talk?",
@@ -17,7 +17,7 @@ struct RedMessageView: View {
         "Feeling uneasy at my current location. Can you check on me?",
     ]
     @State private var selectedTemplate: Int?
-    @State private var editingTemplate: Int?
+    @State private var selectingTemplate: Int?
     
     @State private var valid: Bool = true
     
@@ -35,7 +35,7 @@ struct RedMessageView: View {
             VStack(spacing: 20) {
                 Spacer()
                 
-                if !isEditing {
+                if !isSelecting {
                     Image(systemName: "message.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -50,7 +50,7 @@ struct RedMessageView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
-                Text("Please choose and edit a message template for the Red Button. There is no custom message option for the Red Button!")
+                Text("Please choose a message template for the Red Button. There is no custom message option for the Red Button!")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -59,34 +59,23 @@ struct RedMessageView: View {
                     .padding(.horizontal)
                 
                 VStack(spacing: 15) {
-                    if editingTemplate != nil {
+                    if selectingTemplate != nil {
                         VStack {
-                            if isEditing {
-                                Button(action: { isEditing = false }) {
-                                    Text("Done")
-                                        .fontWeight(.bold)
-                                        .foregroundColor(.blue)
-                                        .padding()
-                                        .background(.white)
-                                        .cornerRadius(10)
-                                        .padding()
-                                }
-                            }
-                            TextEditor(text: $messageTemplates[editingTemplate!])
+                            Text( messageTemplates[selectingTemplate!])
                                 .foregroundColor(.black)
-                                .padding()
+                                .frame(width: UIScreen.main.bounds.width - 40, height: 150)
                                 .background(.white)
                                 .colorScheme(.light)
                                 .cornerRadius(10)
-                                .frame(height: 150)
-                                .focused($isEditing)
+                                .focused($isSelecting)
+                                .padding(.vertical)
                         }
                         
                         HStack {
                             Button("Select", action: {
-                                selectedTemplate = editingTemplate
-                                editingTemplate = nil
-                                isEditing = false
+                                selectedTemplate = selectingTemplate
+                                selectingTemplate = nil
+                                isSelecting = false
                             })
                             .font(.title3)
                             .fontWeight(.semibold)
@@ -97,8 +86,8 @@ struct RedMessageView: View {
                             .padding(.horizontal)
                             
                             Button("Cancel", action: {
-                                editingTemplate = nil
-                                isEditing = false
+                                selectingTemplate = nil
+                                isSelecting = false
                             })
                             .font(.title3)
                             .fontWeight(.semibold)
@@ -126,8 +115,8 @@ struct RedMessageView: View {
                             )
                             .cornerRadius(10)
                             .onTapGesture {
-                                self.editingTemplate = index
-                                self.isEditing = true
+                                self.selectingTemplate = index
+                                self.isSelecting = true
                             }
                         }
                     }

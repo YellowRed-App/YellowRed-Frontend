@@ -158,7 +158,7 @@ struct RedMessageView: View {
                 .padding(.bottom, 40)
                 .background(
                     NavigationLink(
-                        destination: PlaceholderView(),
+                        destination: YellowRedView(),
                         isActive: $next,
                         label: { EmptyView() }
                     )

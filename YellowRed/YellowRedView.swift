@@ -148,12 +148,13 @@ struct YellowRedView: View {
                 Text("Yellow Button Activated!")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
-                    .foregroundColor(flash ? flashYellow ? .white : .yellow : .white)
+                    .foregroundColor(flash ? (flashYellow ? .white : .yellow) : .white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                    .animation(.default)
+                    .animation(flash ? .none : .default)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
+                    .opacity(flash ? 1 : (flashYellow ? 0 : 1))
             }
             
         }

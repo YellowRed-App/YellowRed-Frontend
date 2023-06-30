@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreHaptics
 
 struct YellowRedView: View {
     @State private var profile: Bool = false
@@ -20,6 +21,8 @@ struct YellowRedView: View {
     @State private var hintTimer: Timer? = nil
     
     @State private var isPressing: Bool = false
+    
+    @State private var engine: CHHapticEngine?
     
     var body: some View {
         ZStack {
@@ -52,6 +55,7 @@ struct YellowRedView: View {
                                     self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                                         if self.countdown > 0 {
                                             self.countdown -= 1
+                                            triggerHapticFeedback()
                                         } else {
                                             self.timer?.invalidate()
                                             self.timer = nil
@@ -141,6 +145,8 @@ struct YellowRedView: View {
             
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear(perform: startHapticEngine)
+        .onDisappear(perform: stopHapticEngine)
     }
     
     private func yellowButtonAction() {
@@ -149,6 +155,36 @@ struct YellowRedView: View {
     
     private func redButtonAction() {
         // TODO: red button
+    }
+    
+    private func startHapticEngine() {
+        do {
+            self.engine = try CHHapticEngine()
+            try engine?.start()
+        } catch {
+            print("Failed to start haptic engine: \(error.localizedDescription)")
+        }
+    }
+    
+    private func stopHapticEngine() {
+        engine?.stop(completionHandler: nil)
+        engine = nil
+    }
+    
+    private func triggerHapticFeedback() {
+        guard let engine = engine else { return }
+        
+        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0)
+        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1.0)
+        let event = CHHapticEvent(eventType: .hapticContinuous, parameters: [intensity, sharpness], relativeTime: 0, duration: 0.1)
+        
+        do {
+            let pattern = try CHHapticPattern(events: [event], parameters: [])
+            let player = try engine.makePlayer(with: pattern)
+            try player.start(atTime: 0)
+        } catch {
+            print("Failed to play haptic feedback: \(error.localizedDescription)")
+        }
     }
 }
 

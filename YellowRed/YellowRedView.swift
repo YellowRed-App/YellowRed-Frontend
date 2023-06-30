@@ -38,6 +38,7 @@ struct YellowRedView: View {
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .opacity((isPressing || yellowButton) ? 0 : 1)
                 
                 ZStack {
                     Circle()

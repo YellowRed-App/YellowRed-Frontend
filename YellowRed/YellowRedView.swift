@@ -41,7 +41,7 @@ struct YellowRedView: View {
                         .fill(.yellow)
                         .frame(width: 200, height: 200)
                     
-                    if isPressing && countdown <= 5 {
+                    if !yellowButton && isPressing && countdown <= 5 {
                         Text("\(countdown)")
                             .font(.largeTitle)
                             .fontWeight(.bold)

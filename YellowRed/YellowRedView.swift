@@ -12,7 +12,7 @@ struct YellowRedView: View {
     
     @State private var yellowButton: Bool = false
     @State private var redButton: Bool = false
-
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -21,7 +21,7 @@ struct YellowRedView: View {
                 endPoint: .bottomTrailing
             )
             .edgesIgnoringSafeArea(.all)
-
+            
             VStack(spacing: 50) {
                 Spacer()
                 
@@ -30,7 +30,7 @@ struct YellowRedView: View {
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-
+                
                 Button(action: {
                     yellowButton.toggle()
                     yellowButtonAction()
@@ -39,7 +39,7 @@ struct YellowRedView: View {
                         .fill(.yellow)
                         .frame(width: 200, height: 200)
                 }
-
+                
                 Button(action: {
                     redButton.toggle()
                     redButtonAction()
@@ -48,9 +48,9 @@ struct YellowRedView: View {
                         .fill(.red)
                         .frame(width: 200, height: 200)
                 }
-
+                
                 Spacer()
-
+                
                 Button(action: {
                     profile = true
                 }) {
@@ -71,11 +71,11 @@ struct YellowRedView: View {
         }
         .navigationBarBackButtonHidden(true)
     }
-
+    
     private func yellowButtonAction() {
         // TODO: yellow button
     }
-
+    
     private func redButtonAction() {
         // TODO: red button
     }

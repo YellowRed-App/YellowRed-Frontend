@@ -21,7 +21,7 @@ struct YellowRedView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                gradient: Gradient(colors: [.blue, .white]),
+                gradient: yellowButton ? Gradient(colors: [.yellow, .yellow]) : Gradient(colors: [.blue, .white]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )

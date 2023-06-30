@@ -181,6 +181,7 @@ struct YellowRedView: View {
             
             if flashCount >= 20 {
                 flash = false
+                timer.invalidate()
             }
         }
     }

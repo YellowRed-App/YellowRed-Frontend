@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ProfileView: View {
  
-    let fullName: String
-    let email: String
-    let number: String
+    let fullName: String = "John Smith"
+    let email: String = "abc5xy@virginia.edu"
+    let number: String = "(123) 456-7890"
     
     let emergencyContacts = ["John Doe 123-456", "Jane Smith 444-555", "Sam Johnson 789-101"]
     
@@ -136,6 +136,6 @@ struct EditContactsView : View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(fullName: "John Smith", email: "abc@xyz.com", number: "123-456-7890")
+        ProfileView()
     }
 }

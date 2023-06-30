@@ -19,7 +19,7 @@ struct ProfileView: View {
         NavigationView {
             VStack {
                 HStack {
-                    Image(systemName: "person.crop.circle.fill")
+                    Image(systemName: "person.circle.fill")
                         .font(.system(size: 75))
                         .foregroundColor(.white)
                         .background(

@@ -79,6 +79,8 @@ struct YellowRedView: View {
                         .fill(.red)
                         .frame(width: 200, height: 200)
                 }
+                .opacity((isPressing || yellowButton) ? 0 : 1)
+                .disabled(isPressing || yellowButton)
                 
                 Spacer()
                 
@@ -98,6 +100,8 @@ struct YellowRedView: View {
                         label: { EmptyView() }
                     )
                 )
+                .opacity((isPressing || yellowButton) ? 0 : 1)
+                .disabled(isPressing || yellowButton)
             }
         }
         .navigationBarBackButtonHidden(true)

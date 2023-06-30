@@ -13,6 +13,11 @@ struct YellowRedView: View {
     @State private var yellowButton: Bool = false
     @State private var redButton: Bool = false
     
+    @State private var countdown: Int = 5
+    @State private var timer: Timer? = nil
+    
+    @State private var isPressing: Bool = false
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -31,14 +36,37 @@ struct YellowRedView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
-                Button(action: {
-                    yellowButton.toggle()
-                    yellowButtonAction()
-                }) {
+                ZStack {
                     Circle()
                         .fill(.yellow)
                         .frame(width: 200, height: 200)
+                    
+                    if isPressing && countdown <= 5 {
+                        Text("\(countdown)")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                    }
                 }
+                .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                    isPressing = pressing
+                    if pressing {
+                        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                            if self.countdown > 0 {
+                                self.countdown -= 1
+                            } else {
+                                self.timer?.invalidate()
+                                self.timer = nil
+                                self.yellowButton.toggle()
+                                self.yellowButtonAction()
+                            }
+                        }
+                    } else {
+                        self.timer?.invalidate()
+                        self.timer = nil
+                        self.countdown = 5
+                    }
+                }, perform: { })
                 
                 Button(action: {
                     redButton.toggle()

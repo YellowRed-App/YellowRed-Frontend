@@ -21,8 +21,6 @@ struct YellowRedView: View {
                 endPoint: .bottomTrailing
             )
             .edgesIgnoringSafeArea(.all)
-            
-            Spacer()
 
             VStack(spacing: 50) {
                 Spacer()
@@ -71,6 +69,7 @@ struct YellowRedView: View {
                 )
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 
     private func yellowButtonAction() {

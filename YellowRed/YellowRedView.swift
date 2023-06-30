@@ -24,14 +24,23 @@ struct YellowRedView: View {
     
     @State private var engine: CHHapticEngine?
     
+    @State private var flash: Bool = false
+    @State private var flashYellow: Bool = false
+    
     var body: some View {
         ZStack {
-            LinearGradient(
-                gradient: yellowButton ? Gradient(colors: [.yellow, .yellow]) : Gradient(colors: [.blue, .white]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .edgesIgnoringSafeArea(.all)
+            if flash {
+                Color(flashYellow ? .yellow : .white)
+                    .animation(.default)
+                    .edgesIgnoringSafeArea(.all)
+            } else {
+                LinearGradient(
+                    gradient: yellowButton ? Gradient(colors: [.yellow, .yellow]) : Gradient(colors: [.blue, .white]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .edgesIgnoringSafeArea(.all)
+            }
             
             VStack(spacing: 50) {
                 Spacer()
@@ -47,6 +56,7 @@ struct YellowRedView: View {
                     Circle()
                         .fill(.yellow)
                         .frame(width: 200, height: 200)
+                        .opacity(yellowButton ? 0 : 1)
                         .disabled(yellowButton)
                         .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
                             if !yellowButton {
@@ -62,6 +72,7 @@ struct YellowRedView: View {
                                             self.yellowButton.toggle()
                                             self.yellowButtonAction()
                                             triggerHapticFeedback(5)
+                                            flashBackground()
                                         }
                                     }
                                 } else {
@@ -137,8 +148,9 @@ struct YellowRedView: View {
                 Text("Yellow Button Activated!")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
-                    .foregroundColor(.white)
+                    .foregroundColor(flash ? flashYellow ? .white : .yellow : .white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .animation(.default)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
@@ -158,6 +170,20 @@ struct YellowRedView: View {
         // TODO: red button
     }
     
+    private func flashBackground() {
+        flash = true
+        var flashCount = 0
+        
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+            flashYellow.toggle()
+            flashCount += 1
+            
+            if flashCount >= 20 {
+                flash = false
+            }
+        }
+    }
+
     private func startHapticEngine() {
         do {
             self.engine = try CHHapticEngine()

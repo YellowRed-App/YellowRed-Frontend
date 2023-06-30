@@ -40,6 +40,28 @@ struct YellowRedView: View {
                     Circle()
                         .fill(.yellow)
                         .frame(width: 200, height: 200)
+                        .disabled(yellowButton)
+                        .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                            if !yellowButton {
+                                isPressing = pressing
+                                if pressing {
+                                    self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                                        if self.countdown > 0 {
+                                            self.countdown -= 1
+                                        } else {
+                                            self.timer?.invalidate()
+                                            self.timer = nil
+                                            self.yellowButton.toggle()
+                                            self.yellowButtonAction()
+                                        }
+                                    }
+                                } else {
+                                    self.timer?.invalidate()
+                                    self.timer = nil
+                                    self.countdown = 5
+                                }
+                            }
+                        }, perform: { })
                     
                     if !yellowButton && isPressing && countdown <= 5 {
                         Text("\(countdown)")
@@ -48,25 +70,6 @@ struct YellowRedView: View {
                             .foregroundColor(.white)
                     }
                 }
-                .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
-                    isPressing = pressing
-                    if pressing {
-                        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                            if self.countdown > 0 {
-                                self.countdown -= 1
-                            } else {
-                                self.timer?.invalidate()
-                                self.timer = nil
-                                self.yellowButton.toggle()
-                                self.yellowButtonAction()
-                            }
-                        }
-                    } else {
-                        self.timer?.invalidate()
-                        self.timer = nil
-                        self.countdown = 5
-                    }
-                }, perform: { })
                 
                 Button(action: {
                     redButton.toggle()

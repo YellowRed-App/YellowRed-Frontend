@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct YellowRedView: View {
-    @State private var profile = false
+    @State private var profile: Bool = false
     
-    @State private var yellowButton = false
-    @State private var redButton = false
+    @State private var yellowButton: Bool = false
+    @State private var redButton: Bool = false
 
     var body: some View {
         ZStack {

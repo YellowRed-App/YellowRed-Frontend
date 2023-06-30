@@ -16,6 +16,9 @@ struct YellowRedView: View {
     @State private var countdown: Int = 5
     @State private var timer: Timer? = nil
     
+    @State private var hint: Bool = false
+    @State private var hintTimer: Timer? = nil
+    
     @State private var isPressing: Bool = false
     
     var body: some View {
@@ -59,6 +62,13 @@ struct YellowRedView: View {
                                     self.timer?.invalidate()
                                     self.timer = nil
                                     self.countdown = 5
+                                    if self.countdown > 0 {
+                                        self.hint = true
+                                        self.hintTimer?.invalidate()
+                                        self.hintTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { _ in
+                                            self.hint = false
+                                        }
+                                    }
                                 }
                             }
                         }, perform: { })
@@ -103,6 +113,20 @@ struct YellowRedView: View {
                 .opacity((isPressing || yellowButton) ? 0 : 1)
                 .disabled(isPressing || yellowButton)
             }
+            
+            if hint {
+                Text("Please hold the yellow button for five seconds to activate!")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 20)
+                    .offset(y: 250)
+                    .opacity((isPressing || yellowButton) ? 0 : 1)
+            }
+            
         }
         .navigationBarBackButtonHidden(true)
     }

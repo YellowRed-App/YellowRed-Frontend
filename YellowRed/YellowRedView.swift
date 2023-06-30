@@ -128,6 +128,17 @@ struct YellowRedView: View {
                     .opacity((isPressing || yellowButton) ? 0 : 1)
             }
             
+            if yellowButton {
+                Text("Yellow Button Activated!")
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 20)
+            }
+            
         }
         .navigationBarBackButtonHidden(true)
     }

@@ -314,16 +314,20 @@ struct RedButtonView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             GlobalHapticManager.shared.startHapticEngine()
-            redButtonAction()
+            activateRedButton()
         }
     }
     
-    private func redButtonAction() {
+    private func activateRedButton() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
         startFlashing()
-        // TODO: red button
+        // TODO: activate red button
+    }
+    
+    private func deactivateRedButton() {
+        // TODO: deactivate red button
     }
     
     private func startFlashing() {

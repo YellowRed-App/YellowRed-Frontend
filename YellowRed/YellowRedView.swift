@@ -41,7 +41,7 @@ struct YellowRedView: View {
                         .fontWeight(.heavy)
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                        .opacity(isPressingYellowButton ? 0 : 1)
+                        .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
                     
                     ZStack {
                         Circle()
@@ -88,13 +88,53 @@ struct YellowRedView: View {
                                 .foregroundColor(.white)
                         }
                     }
+                    .opacity(isPressingRedButton ? 0 : 1)
+                    .disabled(isPressingRedButton)
                     
-                    Button(action: {
-                        redButton.toggle()
-                    }) {
+                    ZStack {
                         Circle()
                             .fill(.red)
                             .frame(width: 200, height: 200)
+                            .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                                isPressingRedButton = pressing
+                                if pressing {
+                                    self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                                        if self.countdown > 0 {
+                                            self.countdown -= 1
+                                            GlobalHapticManager.shared.triggerHapticFeedback(0.25)
+                                        } else {
+                                            self.countdownTimer?.invalidate()
+                                            self.countdownTimer = nil
+                                            self.redButton.toggle()
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                self.isPressingRedButton = false
+                                            }
+                                            UIView.setAnimationsEnabled(false)
+                                        }
+                                    }
+                                } else {
+                                    self.countdownTimer?.invalidate()
+                                    self.countdownTimer = nil
+                                    self.countdown = 5
+                                    if self.countdown > 0 {
+                                        self.hint = true
+                                        self.hintTimer?.invalidate()
+                                        self.hintTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
+                                            self.hint = false
+                                        }
+                                    }
+                                }
+                            }, perform: { })
+                            .fullScreenCover(isPresented: $redButton) {
+                                RedButtonView(redButton: $redButton)
+                            }
+                        
+                        if isPressingRedButton && countdown <= 5 {
+                            Text("\(countdown)")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                        }
                     }
                     .opacity(isPressingYellowButton ? 0 : 1)
                     .disabled(isPressingYellowButton)
@@ -117,12 +157,12 @@ struct YellowRedView: View {
                             label: { EmptyView() }
                         )
                     )
-                    .opacity(isPressingYellowButton ? 0 : 1)
-                    .disabled(isPressingYellowButton)
+                    .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
+                    .disabled(isPressingYellowButton || isPressingRedButton)
                 }
                 
                 if hint {
-                    Text("Please hold the yellow button for five seconds to activate!")
+                    Text("Please hold the button for five seconds to activate!")
                         .font(.subheadline)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
@@ -131,7 +171,7 @@ struct YellowRedView: View {
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 20)
                         .offset(y: 250)
-                        .opacity(isPressingYellowButton ? 0 : 1)
+                        .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
                 }
                 
             }
@@ -216,12 +256,89 @@ struct YellowButtonView: View {
     }
 }
 
+struct RedButtonView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    @Binding var redButton: Bool
+    @State private var flash: Bool = false
+    
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                gradient: Gradient(colors: [.red, .red]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: 50) {
+                Spacer()
+                
+                Text("Red Button Activated!")
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                    .foregroundColor(flash ? .white : .clear)
+                    .opacity(flash ? 1 : 0)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 20)
+                
+                Spacer()
+                
+                Button(action: {
+                    self.redButton = false
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("Deactivate Red Button")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(25)
+                        .frame(maxWidth: .infinity)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .background(.yellow)
+                        .cornerRadius(10)
+                        .padding(.horizontal, 50)
+                        .padding(.bottom, 50)
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
+            GlobalHapticManager.shared.startHapticEngine()
+            redButtonAction()
+        }
+    }
+    
+    private func redButtonAction() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            GlobalHapticManager.shared.triggerHapticFeedback(5)
+        }
+        startFlashing()
+        // TODO: red button
+    }
+    
+    private func startFlashing() {
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
+            withAnimation {
+                self.flash.toggle()
+            }
+        }
+    }
+}
+
 struct YellowRedView_Previews: PreviewProvider {
     @State static var yellowButton = false
+    @State static var redButton = false
     static var previews: some View {
         YellowRedView()
             .environmentObject(GlobalHapticManager.shared)
         YellowButtonView(yellowButton: $yellowButton)
+            .environmentObject(GlobalHapticManager.shared)
+        RedButtonView(redButton: $redButton)
             .environmentObject(GlobalHapticManager.shared)
     }
 }

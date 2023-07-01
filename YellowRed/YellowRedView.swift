@@ -58,7 +58,7 @@ struct YellowRedView: View {
                                             self.countdownTimer?.invalidate()
                                             self.countdownTimer = nil
                                             self.yellowButton.toggle()
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                 self.isPressingYellowButton = false
                                             }
                                             UIView.setAnimationsEnabled(false)
@@ -106,7 +106,7 @@ struct YellowRedView: View {
                                             self.countdownTimer?.invalidate()
                                             self.countdownTimer = nil
                                             self.redButton.toggle()
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                 self.isPressingRedButton = false
                                             }
                                             UIView.setAnimationsEnabled(false)
@@ -239,7 +239,7 @@ struct YellowButtonView: View {
     
     private func activateYellowButton() {
         GlobalHapticManager.shared.startHapticEngine()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
         startFlashing()
@@ -315,7 +315,7 @@ struct RedButtonView: View {
     
     private func activateRedButton() {
         GlobalHapticManager.shared.startHapticEngine()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
         startFlashing()

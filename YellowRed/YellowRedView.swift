@@ -214,6 +214,7 @@ struct YellowButtonView: View {
                 
                 Button(action: {
                     self.yellowButton = false
+                    deactivateYellowButton()
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Deactivate Yellow Button")
@@ -235,16 +236,20 @@ struct YellowButtonView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             GlobalHapticManager.shared.startHapticEngine()
-            yellowButtonAction()
+            activateYellowButton()
         }
     }
     
-    private func yellowButtonAction() {
+    private func activateYellowButton() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
         startFlashing()
-        // TODO: yellow button
+        // TODO: activate yellow button
+    }
+    
+    private func deactivateYellowButton() {
+        // TODO: deactivate yellow button
     }
     
     private func startFlashing() {

@@ -82,7 +82,7 @@ struct YellowRedView: View {
                                     if self.countdown > 0 {
                                         self.hint = true
                                         self.hintTimer?.invalidate()
-                                        self.hintTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { _ in
+                                        self.hintTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
                                             self.hint = false
                                         }
                                     }

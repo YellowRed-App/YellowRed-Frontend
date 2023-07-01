@@ -58,7 +58,7 @@ struct YellowRedView: View {
                                             self.countdownTimer = nil
                                             self.yellowButton.toggle()
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                self.isPressing.toggle()
+                                                self.isPressing = false
                                             }
                                             UIView.setAnimationsEnabled(false)
                                         }
@@ -77,7 +77,7 @@ struct YellowRedView: View {
                                 }
                             }, perform: { })
                             .fullScreenCover(isPresented: $yellowButton) {
-                                YellowButtonView()
+                                YellowButtonView(yellowButton: $yellowButton)
                             }
                         
                         if isPressing && countdown <= 5 {
@@ -142,7 +142,9 @@ struct YellowRedView: View {
 }
 
 struct YellowButtonView: View {
-    @State private var yellowButton: Bool = true
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    @Binding var yellowButton: Bool
     @State private var flash: Bool = false
     
     var body: some View {
@@ -166,6 +168,25 @@ struct YellowButtonView: View {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
+                
+                Button(action: {
+                    self.yellowButton = false
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("Deactivate Yellow Button")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(25)
+                        .frame(maxWidth: .infinity)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .background(.red)
+                        .cornerRadius(10)
+                        .padding(.horizontal, 50)
+                        .padding(.top, 250)
+                }
                 
                 Spacer()
             }
@@ -195,10 +216,11 @@ struct YellowButtonView: View {
 }
 
 struct YellowRedView_Previews: PreviewProvider {
+    @State static var yellowButton = false
     static var previews: some View {
         YellowRedView()
             .environmentObject(GlobalHapticManager.shared)
-        YellowButtonView()
+        YellowButtonView(yellowButton: $yellowButton)
             .environmentObject(GlobalHapticManager.shared)
     }
 }
@@ -206,15 +228,15 @@ struct YellowRedView_Previews: PreviewProvider {
 class GlobalHapticManager: ObservableObject {
     static let shared = GlobalHapticManager()
     @Published var engine: CHHapticEngine?
-
+    
     private init() {
         startHapticEngine()
     }
-
+    
     deinit {
         stopHapticEngine()
     }
-
+    
     public func startHapticEngine() {
         do {
             self.engine = try CHHapticEngine()
@@ -223,12 +245,12 @@ class GlobalHapticManager: ObservableObject {
             print("Failed to start haptic engine: \(error.localizedDescription)")
         }
     }
-
+    
     public func stopHapticEngine() {
         engine?.stop(completionHandler: nil)
         engine = nil
     }
-
+    
     public func triggerHapticFeedback(_ duration: Double) {
         guard let engine = engine else { return }
         

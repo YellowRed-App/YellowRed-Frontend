@@ -20,7 +20,8 @@ struct YellowRedView: View {
     @State private var hint: Bool = false
     @State private var hintTimer: Timer? = nil
     
-    @State private var isPressing: Bool = false
+    @State private var isPressingYellowButton: Bool = false
+    @State private var isPressingRedButton: Bool = false
     
     var body: some View {
         NavigationView {
@@ -40,14 +41,14 @@ struct YellowRedView: View {
                         .fontWeight(.heavy)
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                        .opacity(isPressing ? 0 : 1)
+                        .opacity(isPressingYellowButton ? 0 : 1)
                     
                     ZStack {
                         Circle()
                             .fill(.yellow)
                             .frame(width: 200, height: 200)
                             .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
-                                isPressing = pressing
+                                isPressingYellowButton = pressing
                                 if pressing {
                                     self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                                         if self.countdown > 0 {
@@ -58,7 +59,7 @@ struct YellowRedView: View {
                                             self.countdownTimer = nil
                                             self.yellowButton.toggle()
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                self.isPressing = false
+                                                self.isPressingYellowButton = false
                                             }
                                             UIView.setAnimationsEnabled(false)
                                         }
@@ -80,7 +81,7 @@ struct YellowRedView: View {
                                 YellowButtonView(yellowButton: $yellowButton)
                             }
                         
-                        if isPressing && countdown <= 5 {
+                        if isPressingYellowButton && countdown <= 5 {
                             Text("\(countdown)")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
@@ -95,8 +96,8 @@ struct YellowRedView: View {
                             .fill(.red)
                             .frame(width: 200, height: 200)
                     }
-                    .opacity(isPressing ? 0 : 1)
-                    .disabled(isPressing)
+                    .opacity(isPressingYellowButton ? 0 : 1)
+                    .disabled(isPressingYellowButton)
                     
                     Spacer()
                     
@@ -116,8 +117,8 @@ struct YellowRedView: View {
                             label: { EmptyView() }
                         )
                     )
-                    .opacity(isPressing ? 0 : 1)
-                    .disabled(isPressing)
+                    .opacity(isPressingYellowButton ? 0 : 1)
+                    .disabled(isPressingYellowButton)
                 }
                 
                 if hint {
@@ -130,7 +131,7 @@ struct YellowRedView: View {
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 20)
                         .offset(y: 250)
-                        .opacity(isPressing ? 0 : 1)
+                        .opacity(isPressingYellowButton ? 0 : 1)
                 }
                 
             }

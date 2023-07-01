@@ -15,7 +15,7 @@ struct YellowRedView: View {
     @State private var redButton: Bool = false
     
     @State private var countdown: Int = 5
-    @State private var timer: Timer? = nil
+    @State private var countdownTimer: Timer? = nil
     
     @State private var hint: Bool = false
     @State private var hintTimer: Timer? = nil
@@ -24,23 +24,15 @@ struct YellowRedView: View {
     
     @State private var engine: CHHapticEngine?
     
-    @State private var flash: Bool = false
-    @State private var flashYellow: Bool = false
-    
     var body: some View {
         ZStack {
-            if flash {
-                Color(flashYellow ? .yellow : .white)
-                    .animation(.default)
-                    .edgesIgnoringSafeArea(.all)
-            } else {
-                LinearGradient(
-                    gradient: yellowButton ? Gradient(colors: [.yellow, .yellow]) : Gradient(colors: [.blue, .white]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .edgesIgnoringSafeArea(.all)
-            }
+            LinearGradient(
+                gradient: yellowButton ? Gradient(colors: [.yellow, .yellow]) : Gradient(colors: [.blue, .white]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .edgesIgnoringSafeArea(.all)
+            
             
             VStack(spacing: 50) {
                 Spacer()
@@ -62,22 +54,21 @@ struct YellowRedView: View {
                             if !yellowButton {
                                 isPressing = pressing
                                 if pressing {
-                                    self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                                    self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                                         if self.countdown > 0 {
                                             self.countdown -= 1
                                             triggerHapticFeedback(0.1)
                                         } else {
-                                            self.timer?.invalidate()
-                                            self.timer = nil
+                                            self.countdownTimer?.invalidate()
+                                            self.countdownTimer = nil
                                             self.yellowButton.toggle()
                                             self.yellowButtonAction()
                                             triggerHapticFeedback(5)
-                                            flashBackground()
                                         }
                                     }
                                 } else {
-                                    self.timer?.invalidate()
-                                    self.timer = nil
+                                    self.countdownTimer?.invalidate()
+                                    self.countdownTimer = nil
                                     self.countdown = 5
                                     if self.countdown > 0 {
                                         self.hint = true
@@ -148,13 +139,13 @@ struct YellowRedView: View {
                 Text("Yellow Button Activated!")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
-                    .foregroundColor(flash ? (flashYellow ? .white : .yellow) : .white)
+                    .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                    .animation(flash ? .none : .default)
+//                    .animation(flash ? .none : .default)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
-                    .opacity(flash ? 1 : (flashYellow ? 0 : 1))
+//                    .opacity(flash ? 1 : (flashYellow ? 0 : 1))
             }
             
         }
@@ -171,21 +162,6 @@ struct YellowRedView: View {
         // TODO: red button
     }
     
-    private func flashBackground() {
-        flash = true
-        var flashCount = 0
-        
-        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
-            flashYellow.toggle()
-            flashCount += 1
-            
-            if flashCount >= 20 {
-                flash = false
-                timer.invalidate()
-            }
-        }
-    }
-
     private func startHapticEngine() {
         do {
             self.engine = try CHHapticEngine()

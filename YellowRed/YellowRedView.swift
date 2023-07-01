@@ -22,49 +22,48 @@ struct YellowRedView: View {
     
     @State private var isPressing: Bool = false
     
-    @State private var engine: CHHapticEngine?
-    
     var body: some View {
-        ZStack {
-            LinearGradient(
-                gradient: yellowButton ? Gradient(colors: [.yellow, .yellow]) : Gradient(colors: [.blue, .white]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .edgesIgnoringSafeArea(.all)
-            
-            
-            VStack(spacing: 50) {
-                Spacer()
+        NavigationView {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [.blue, .white]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .edgesIgnoringSafeArea(.all)
                 
-                Text("YellowRed")
-                    .font(.largeTitle)
-                    .fontWeight(.heavy)
-                    .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                    .opacity((isPressing || yellowButton) ? 0 : 1)
+                NavigationLink(
+                    destination: YellowButtonView(),
+                    isActive: $yellowButton,
+                    label: { EmptyView() }
+                )
                 
-                ZStack {
-                    Circle()
-                        .fill(.yellow)
-                        .frame(width: 200, height: 200)
-                        .opacity(yellowButton ? 0 : 1)
-                        .disabled(yellowButton)
-                        .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
-                            if !yellowButton {
+                VStack(spacing: 50) {
+                    Spacer()
+                    
+                    Text("YellowRed")
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                        .opacity(isPressing ? 0 : 1)
+                    
+                    ZStack {
+                        Circle()
+                            .fill(.yellow)
+                            .frame(width: 200, height: 200)
+                            .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
                                 isPressing = pressing
                                 if pressing {
                                     self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                                         if self.countdown > 0 {
                                             self.countdown -= 1
-                                            triggerHapticFeedback(0.1)
+                                            GlobalHapticManager.shared.triggerHapticFeedback(0.25)
                                         } else {
                                             self.isPressing = false
                                             self.countdownTimer?.invalidate()
                                             self.countdownTimer = nil
                                             self.yellowButton.toggle()
-                                            self.yellowButtonAction()
-                                            triggerHapticFeedback(5)
                                         }
                                     }
                                 } else {
@@ -79,91 +78,136 @@ struct YellowRedView: View {
                                         }
                                     }
                                 }
-                            }
-                        }, perform: { })
-                    
-                    if !yellowButton && isPressing && countdown <= 5 {
-                        Text("\(countdown)")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
+                            }, perform: { })
+                        
+                        if isPressing && countdown <= 5 {
+                            Text("\(countdown)")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                        }
                     }
+                    
+                    Button(action: {
+                        redButton.toggle()
+                    }) {
+                        Circle()
+                            .fill(.red)
+                            .frame(width: 200, height: 200)
+                    }
+                    .opacity(isPressing ? 0 : 1)
+                    .disabled(isPressing)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        profile = true
+                    }) {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .frame(width: 64, height: 64)
+                            .foregroundColor(.black)
+                            .padding(.bottom, 20)
+                    }
+                    .background(
+                        NavigationLink(
+                            destination: ProfileView(),
+                            isActive: $profile,
+                            label: { EmptyView() }
+                        )
+                    )
+                    .opacity(isPressing ? 0 : 1)
+                    .disabled(isPressing)
                 }
                 
-                Button(action: {
-                    redButton.toggle()
-                    redButtonAction()
-                }) {
-                    Circle()
-                        .fill(.red)
-                        .frame(width: 200, height: 200)
+                if hint {
+                    Text("Please hold the yellow button for five seconds to activate!")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 20)
+                        .offset(y: 250)
+                        .opacity(isPressing ? 0 : 1)
                 }
-                .opacity((isPressing || yellowButton) ? 0 : 1)
-                .disabled(isPressing || yellowButton)
                 
+            }
+            .navigationBarBackButtonHidden(true)
+            .onAppear(perform: GlobalHapticManager.shared.startHapticEngine)
+        }
+    }
+    
+}
+
+struct YellowButtonView: View {
+    @State private var yellowButton: Bool = true
+    
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                gradient: Gradient(colors: [.yellow, .yellow]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: 50) {
                 Spacer()
                 
-                Button(action: {
-                    profile = true
-                }) {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .frame(width: 64, height: 64)
-                        .foregroundColor(.black)
-                        .padding(.bottom, 20)
-                }
-                .background(
-                    NavigationLink(
-                        destination: ProfileView(),
-                        isActive: $profile,
-                        label: { EmptyView() }
-                    )
-                )
-                .opacity((isPressing || yellowButton) ? 0 : 1)
-                .disabled(isPressing || yellowButton)
-            }
-            
-            if hint {
-                Text("Please hold the yellow button for five seconds to activate!")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 20)
-                    .offset(y: 250)
-                    .opacity((isPressing || yellowButton) ? 0 : 1)
-            }
-            
-            if yellowButton {
                 Text("Yellow Button Activated!")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-//                    .animation(flash ? .none : .default)
+                //                    .animation(flash ? .none : .default)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
-//                    .opacity(flash ? 1 : (flashYellow ? 0 : 1))
+                //                    .opacity(flash ? 1 : (flashYellow ? 0 : 1))
+                
+                Spacer()
             }
-            
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear(perform: startHapticEngine)
-        .onDisappear(perform: stopHapticEngine)
+        .onAppear {
+            GlobalHapticManager.shared.startHapticEngine()
+            yellowButtonAction()
+        }
     }
     
     private func yellowButtonAction() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            GlobalHapticManager.shared.triggerHapticFeedback(5)
+        }
         // TODO: yellow button
     }
     
-    private func redButtonAction() {
-        // TODO: red button
+}
+
+struct YellowRedView_Previews: PreviewProvider {
+    static var previews: some View {
+        YellowRedView()
+            .environmentObject(GlobalHapticManager.shared)
+        YellowButtonView()
+            .environmentObject(GlobalHapticManager.shared)
     }
-    
-    private func startHapticEngine() {
+}
+
+class GlobalHapticManager: ObservableObject {
+    static let shared = GlobalHapticManager()
+    @Published var engine: CHHapticEngine?
+
+    private init() {
+        startHapticEngine()
+    }
+
+    deinit {
+        stopHapticEngine()
+    }
+
+    public func startHapticEngine() {
         do {
             self.engine = try CHHapticEngine()
             try engine?.start()
@@ -171,13 +215,13 @@ struct YellowRedView: View {
             print("Failed to start haptic engine: \(error.localizedDescription)")
         }
     }
-    
-    private func stopHapticEngine() {
+
+    public func stopHapticEngine() {
         engine?.stop(completionHandler: nil)
         engine = nil
     }
-    
-    private func triggerHapticFeedback(_ duration: Double) {
+
+    public func triggerHapticFeedback(_ duration: Double) {
         guard let engine = engine else { return }
         
         let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0)
@@ -191,11 +235,5 @@ struct YellowRedView: View {
         } catch {
             print("Failed to play haptic feedback: \(error.localizedDescription)")
         }
-    }
-}
-
-struct YellowRedView_Previews: PreviewProvider {
-    static var previews: some View {
-        YellowRedView()
     }
 }

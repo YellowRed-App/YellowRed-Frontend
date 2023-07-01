@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct YellowRedApp: App {
+    
     var body: some Scene {
         WindowGroup {
-            HomeScreenView()
+            YellowRedView()
+                .environmentObject(GlobalHapticManager.shared)
         }
     }
 }

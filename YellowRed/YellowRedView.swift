@@ -59,6 +59,7 @@ struct YellowRedView: View {
                                             self.countdown -= 1
                                             triggerHapticFeedback(0.1)
                                         } else {
+                                            self.isPressing = false
                                             self.countdownTimer?.invalidate()
                                             self.countdownTimer = nil
                                             self.yellowButton.toggle()

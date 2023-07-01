@@ -143,6 +143,7 @@ struct YellowRedView: View {
 
 struct YellowButtonView: View {
     @State private var yellowButton: Bool = true
+    @State private var flash: Bool = false
     
     var body: some View {
         ZStack {
@@ -159,13 +160,12 @@ struct YellowButtonView: View {
                 Text("Yellow Button Activated!")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
-                    .foregroundColor(.white)
+                    .foregroundColor(flash ? .white : .clear)
+                    .opacity(flash ? 1 : 0)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                //                    .animation(flash ? .none : .default)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
-                //                    .opacity(flash ? 1 : (flashYellow ? 0 : 1))
                 
                 Spacer()
             }
@@ -181,9 +181,17 @@ struct YellowButtonView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
+        startFlashing()
         // TODO: yellow button
     }
     
+    private func startFlashing() {
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
+            withAnimation {
+                self.flash.toggle()
+            }
+        }
+    }
 }
 
 struct YellowRedView_Previews: PreviewProvider {

@@ -234,13 +234,11 @@ struct YellowButtonView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-            GlobalHapticManager.shared.startHapticEngine()
-            activateYellowButton()
-        }
+        .onAppear(perform: activateYellowButton)
     }
     
     private func activateYellowButton() {
+        GlobalHapticManager.shared.startHapticEngine()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
@@ -312,13 +310,11 @@ struct RedButtonView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-            GlobalHapticManager.shared.startHapticEngine()
-            activateRedButton()
-        }
+        .onAppear(perform: activateRedButton)
     }
     
     private func activateRedButton() {
+        GlobalHapticManager.shared.startHapticEngine()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }

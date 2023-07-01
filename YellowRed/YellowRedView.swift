@@ -32,12 +32,6 @@ struct YellowRedView: View {
                 )
                 .edgesIgnoringSafeArea(.all)
                 
-                NavigationLink(
-                    destination: YellowButtonView(),
-                    isActive: $yellowButton,
-                    label: { EmptyView() }
-                )
-                
                 VStack(spacing: 50) {
                     Spacer()
                     
@@ -60,10 +54,13 @@ struct YellowRedView: View {
                                             self.countdown -= 1
                                             GlobalHapticManager.shared.triggerHapticFeedback(0.25)
                                         } else {
-                                            self.isPressing = false
                                             self.countdownTimer?.invalidate()
                                             self.countdownTimer = nil
                                             self.yellowButton.toggle()
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                self.isPressing.toggle()
+                                            }
+                                            UIView.setAnimationsEnabled(false)
                                         }
                                     }
                                 } else {
@@ -79,6 +76,9 @@ struct YellowRedView: View {
                                     }
                                 }
                             }, perform: { })
+                            .fullScreenCover(isPresented: $yellowButton) {
+                                YellowButtonView()
+                            }
                         
                         if isPressing && countdown <= 5 {
                             Text("\(countdown)")

@@ -169,6 +169,8 @@ struct YellowButtonView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
                 
+                Spacer()
+                
                 Button(action: {
                     self.yellowButton = false
                     presentationMode.wrappedValue.dismiss()
@@ -185,10 +187,8 @@ struct YellowButtonView: View {
                         .background(.red)
                         .cornerRadius(10)
                         .padding(.horizontal, 50)
-                        .padding(.top, 250)
+                        .padding(.bottom, 50)
                 }
-                
-                Spacer()
             }
         }
         .navigationBarBackButtonHidden(true)

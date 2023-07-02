@@ -23,26 +23,25 @@ struct HomeScreenView: View {
                 .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing: 20) {
-                    
                     Spacer()
                     
                     Image("AppLogoTransparent")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 150, height: 150)
-                        .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 0)
                     
                     Text("YellowRed")
                         .font(.largeTitle)
                         .fontWeight(.heavy)
                         .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     
                     Text("Your Peace of Mind Companion")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     
                     Spacer()
                     
@@ -51,7 +50,7 @@ struct HomeScreenView: View {
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
-                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
                             .padding()
                         
                         Button(action: {
@@ -65,13 +64,14 @@ struct HomeScreenView: View {
                                 
                                 Image(systemName: "arrow.right.circle.fill")
                                     .font(.title)
+                                    .fontWeight(.semibold)
                                     .foregroundColor(.black)
                             }
                             .padding(12.5)
                             .frame(maxWidth: .infinity)
                             .background(.white)
                             .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
                         .fullScreenCover(isPresented: $getStarted) {
                             GetStartedNameView()

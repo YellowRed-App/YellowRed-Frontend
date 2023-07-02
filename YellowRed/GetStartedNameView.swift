@@ -36,17 +36,27 @@ struct GetStartedNameView: View {
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     
-                    TextField("John Smith", text: $fullName)
-                        .font(.title3)
-                        .foregroundColor(.black)
-                        .autocapitalization(.words)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: isFullNameValid ? 0 : 1)
-                        )
-                        .padding(.horizontal, 20)
+                    ZStack(alignment: .leading) {
+                        TextField("John Smith", text: $fullName)
+                            .font(.title3)
+                            .foregroundColor(.black)
+                            .autocapitalization(.words)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.black, lineWidth: isFullNameValid ? 0 : 1)
+                            )
+                            .padding(.horizontal, 20)
+                        
+                        if fullName.isEmpty {
+                            Text("John Smith")
+                                .font(.title3)
+                                .foregroundColor(.black)
+                                .padding(.leading, 37)
+                                .opacity(0.5)
+                        }
+                    }
                     
                     if !isFullNameValid {
                         Text("Please enter a valid name!")

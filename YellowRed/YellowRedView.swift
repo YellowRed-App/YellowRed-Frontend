@@ -152,7 +152,7 @@ struct YellowRedView: View {
                     }
                     .background(
                         NavigationLink(
-                            destination: ProfileView(),
+                            destination: ProfileViewNew(),
                             isActive: $profile,
                             label: { EmptyView() }
                         )

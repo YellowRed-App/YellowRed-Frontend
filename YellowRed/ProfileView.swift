@@ -119,19 +119,7 @@ struct ProfileView: View {
 
 
 
-struct EditProfileView : View {
-    var body: some View{
-        Text("Edit Profile View")
-    }
-    
-}
 
-struct EditContactsView : View {
-    var body: some View{
-        Text("Edit Contacts View")
-    }
-    
-}
 
 
 struct ProfileView_Previews: PreviewProvider {

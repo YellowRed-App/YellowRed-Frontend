@@ -63,12 +63,19 @@ struct GetStartedAffiliationView: View {
                     .padding(.horizontal)
                     
                     if affiliation == "other" {
-                        TextField("University Name", text: $university)
-                            .font(.title3)
-                            .foregroundColor(.black)
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 10).fill(.white))
-                            .padding(.horizontal)
+                        ZStack(alignment: .leading) {
+                            TextField("University Name", text: $university)
+                            
+                            if university.isEmpty {
+                                Text("University Name")
+                                    .opacity(0.5)
+                            }
+                        }
+                        .font(.title3)
+                        .foregroundColor(.black)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                        .padding(.horizontal)
                     }
                     
                     RadioButton(

@@ -102,15 +102,11 @@ struct GetStartedAffiliationView: View {
                 }) {
                     HStack {
                         Text("Next")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                        
                         Image(systemName: "arrow.right.circle.fill")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
                     }
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
                     .padding(12.5)
                     .frame(maxWidth: .infinity)
                     .background(.white)

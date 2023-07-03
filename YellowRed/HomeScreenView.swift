@@ -57,16 +57,12 @@ struct HomeScreenView: View {
                             getStarted = true
                         }) {
                             HStack {
-                                Text("Get Started")
-                                    .font(.title)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.black)
-                                
+                                Text("Get Started")                                
                                 Image(systemName: "arrow.right.circle.fill")
-                                    .font(.title)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.black)
                             }
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
                             .padding(12.5)
                             .frame(maxWidth: .infinity)
                             .background(.white)

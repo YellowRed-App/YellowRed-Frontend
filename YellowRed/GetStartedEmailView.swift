@@ -119,15 +119,11 @@ struct GetStartedEmailView: View {
                 }) {
                     HStack {
                         Text(isVerificationEnabled ? "Next" : "Verify")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                        
                         Image(systemName: isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
                     }
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
                     .padding(12.5)
                     .frame(maxWidth: .infinity)
                     .background(.white)

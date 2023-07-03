@@ -45,7 +45,7 @@ struct LocationView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 20)
                 
                 Text("In order to receive alerts based on your geographic location, you must have your location sharing permissions set to \"Always\" with \"Precise Location\" enabled.")
                     .font(.subheadline)
@@ -53,7 +53,7 @@ struct LocationView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 20)
                 
                 Spacer()
                 
@@ -88,6 +88,7 @@ struct LocationView: View {
                 }
                 .padding(.horizontal, 20)
             }
+            .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
         }
         .background(

@@ -51,8 +51,8 @@ struct GetStartedAffiliationView: View {
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
-                    .padding(.horizontal)
-                    .padding(.top)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 20)
                     
                     RadioButton(
                         id: "other",
@@ -60,7 +60,7 @@ struct GetStartedAffiliationView: View {
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
-                    .padding(.horizontal)
+                    .padding(.horizontal, 20)
                     
                     if affiliation == "other" {
                         ZStack(alignment: .leading) {
@@ -73,9 +73,9 @@ struct GetStartedAffiliationView: View {
                         }
                         .font(.title3)
                         .foregroundColor(.black)
-                        .padding()
+                        .padding(12.5)
                         .background(RoundedRectangle(cornerRadius: 10).fill(.white))
-                        .padding(.horizontal)
+                        .padding(.horizontal, 20)
                     }
                     
                     RadioButton(
@@ -84,11 +84,12 @@ struct GetStartedAffiliationView: View {
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
-                    .padding(.horizontal)
-                    .padding(.bottom)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 20)
                 }
                 .background(.white.opacity(0.25))
                 .cornerRadius(10)
+                .padding(.horizontal, 20)
                 
                 if !isAffiliationValid {
                     Text("Please select an affiliation!")
@@ -124,7 +125,7 @@ struct GetStartedAffiliationView: View {
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(leading: backButton)
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 20)
         }
     }
     

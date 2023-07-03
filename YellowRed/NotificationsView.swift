@@ -44,7 +44,7 @@ struct NotificationsView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 20)
                 
                 Spacer()
                 
@@ -79,6 +79,7 @@ struct NotificationsView: View {
                 }
                 .padding(.horizontal, 20)
             }
+            .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
         }
         .background(

@@ -76,7 +76,7 @@ struct HomeScreenView: View {
                     .padding(.horizontal, 20)
                     .padding(.bottom, 40)
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
             }
             .onAppear {
                 setGreeting()

@@ -161,9 +161,9 @@ struct YellowRedView: View {
                     .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
                     .disabled(isPressingYellowButton || isPressingRedButton)
                     .shadow(color: .white.opacity(0.5), radius: 10, x: 0, y: 0)
-                    
-                    Spacer()
+                    .padding(.bottom, 40)
                 }
+                .padding(.horizontal, 20)
                 
                 if hint {
                     Text("Please hold the button for five seconds to activate!")
@@ -229,9 +229,10 @@ struct YellowButtonView: View {
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 50)
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 100)
                 }
             }
+            .padding(.horizontal, 20)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateYellowButton)
@@ -305,9 +306,10 @@ struct RedButtonView: View {
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 50)
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 100)
                 }
             }
+            .padding(.horizontal, 20)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateRedButton)

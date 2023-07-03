@@ -48,7 +48,7 @@ struct GetStartedNameView: View {
                     }
                     .font(.title3)
                     .foregroundColor(.black)
-                    .padding()
+                    .padding(12.5)
                     .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
@@ -88,7 +88,7 @@ struct GetStartedNameView: View {
                         )
                     )
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
             }
         }
     }

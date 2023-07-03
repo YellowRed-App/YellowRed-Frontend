@@ -62,7 +62,7 @@ struct GetStartedNumberView: View {
                 }
                 .font(.title3)
                 .foregroundColor(.black)
-                .padding()
+                .padding(12.5)
                 .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
@@ -89,7 +89,7 @@ struct GetStartedNumberView: View {
                     }
                     .font(.title3)
                     .foregroundColor(.black)
-                    .padding()
+                    .padding(12.5)
                     .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
@@ -142,7 +142,7 @@ struct GetStartedNumberView: View {
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(leading: backButton)
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 20)
         }
     }
     

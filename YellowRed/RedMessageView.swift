@@ -54,7 +54,7 @@ struct RedMessageView: View {
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal)
+                        .padding(.horizontal, 20)
                 }
                 
                 VStack(spacing: 15) {
@@ -64,7 +64,7 @@ struct RedMessageView: View {
                                 .font(.body)
                                 .fontWeight(.regular)
                                 .foregroundColor(.black)
-                                .padding()
+                                .padding(12.5)
                                 .background(.white)
                                 .colorScheme(.light)
                                 .cornerRadius(10)
@@ -83,10 +83,10 @@ struct RedMessageView: View {
                             .font(.title3)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)
-                            .padding()
+                            .padding(12.5)
                             .background(.white)
                             .cornerRadius(10)
-                            .padding(.horizontal)
+                            .padding(.horizontal, 20)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             
                             Button("Cancel", action: {
@@ -96,10 +96,10 @@ struct RedMessageView: View {
                             .font(.title3)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)
-                            .padding()
+                            .padding(12.5)
                             .background(.white)
                             .cornerRadius(10)
-                            .padding(.horizontal)
+                            .padding(.horizontal, 20)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
                     } else {
@@ -114,7 +114,7 @@ struct RedMessageView: View {
                             .font(.body)
                             .fontWeight(.regular)
                             .foregroundColor(.black)
-                            .padding()
+                            .padding(12.5)
                             .frame(maxWidth: .infinity)
                             .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
                             .cornerRadius(15)
@@ -159,6 +159,7 @@ struct RedMessageView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
+                .padding(.bottom, 40)
                 .background(
                     NavigationLink(
                         destination: YellowRedView(),
@@ -167,6 +168,7 @@ struct RedMessageView: View {
                     )
                 )
             }
+            .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
         }

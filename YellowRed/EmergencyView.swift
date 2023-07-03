@@ -48,7 +48,7 @@ struct EmergencyView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 20)
                 
                 VStack(spacing: 15) {
                     ForEach(0..<3, id: \.self) { index in
@@ -90,7 +90,9 @@ struct EmergencyView: View {
                         label: { EmptyView() }
                     )
                 )
+                .padding(.bottom, 40)
             }
+            .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
         }
     }
@@ -125,7 +127,7 @@ struct EmergencyContactPicker: View {
                     .foregroundColor(.blue)
                     .frame(maxWidth: 300, alignment: .leading)
             }
-            .padding()
+            .padding(12.5)
             .background(.white)
             .cornerRadius(10)
             .sheet(isPresented: $isContactPickerPresented) {

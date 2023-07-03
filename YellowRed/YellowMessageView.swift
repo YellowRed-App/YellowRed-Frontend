@@ -9,8 +9,8 @@ import SwiftUI
 
 struct YellowMessageView: View {
     @Environment(\.presentationMode) var presentationMode
-    @FocusState private var isEditing: Bool
     
+    @FocusState private var isEditing: Bool
     @State private var messageTemplates: [String] = [
         "I'm feeling a bit uncomfortable, can we talk?",
         "Could use some company right now, can we meet up?",
@@ -36,35 +36,38 @@ struct YellowMessageView: View {
             VStack(spacing: 20) {
                 Spacer()
                 
-                if !isEditing {
-                    Image(systemName: "message.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 128, height: 128)
-                        .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                }
+                Image(systemName: "message.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 128, height: 128)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 Text("Yellow Message")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
-                
-                Text("Please choose and edit a message template for the Yellow Button or create your own custom message!")
-                    .font(.title3)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+                
+                if !isEditing {
+                    Text("Please choose and edit a message template or create your own custom message!")
+                        .font(.title3)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
                 
                 VStack(spacing: 15) {
                     if editingTemplate != nil {
                         VStack {
                             if isEditing {
-                                Button(action: { isEditing = false }) {
+                                Button(action: {
+                                    isEditing = false
+                                }) {
                                     Text("Done")
+                                        .font(.title3)
                                         .fontWeight(.bold)
                                         .foregroundColor(.blue)
                                         .padding()
@@ -74,13 +77,17 @@ struct YellowMessageView: View {
                                 }
                             }
                             TextEditor(text: $messageTemplates[editingTemplate!])
+                                .font(.body)
+                                .fontWeight(.regular)
                                 .foregroundColor(.black)
                                 .padding()
                                 .background(.white)
                                 .colorScheme(.light)
                                 .cornerRadius(10)
                                 .frame(height: 150)
+                                .frame(maxWidth: .infinity)
                                 .focused($isEditing)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
                         
                         HStack {
@@ -96,6 +103,7 @@ struct YellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .padding(.horizontal)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             
                             Button("Cancel", action: {
                                 editingTemplate = nil
@@ -108,6 +116,7 @@ struct YellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .padding(.horizontal)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
                     } else {
                         ForEach(0..<messageTemplates.count, id: \.self) { index in
@@ -119,41 +128,55 @@ struct YellowMessageView: View {
                                     self.customMessage = ""
                                 }
                             ))
+                            .font(.body)
+                            .fontWeight(.regular)
                             .foregroundColor(.black)
                             .padding()
+                            .frame(maxWidth: .infinity)
                             .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
+                            .cornerRadius(15)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 2)
+                                    .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 1)
                             )
-                            .cornerRadius(10)
                             .onTapGesture {
                                 self.editingTemplate = index
                                 self.isEditing = true
                             }
                         }
                         
-                        TextField("Custom Yellow Button Message", text: Binding(
-                            get: { self.customMessage },
-                            set: { newValue in
-                                self.customMessage = newValue
-                                self.selectedTemplate = nil
+                        ZStack(alignment: .leading) {
+                            if customMessage.isEmpty {
+                                Text("Custom Yellow Button Message")
+                                    .opacity(0.5)
                             }
-                        ))
+                            
+                            TextField("Custom Yellow Button Message", text: Binding(
+                                get: { self.customMessage },
+                                set: { newValue in
+                                    self.customMessage = newValue
+                                    self.selectedTemplate = nil
+                                }
+                            ))
+                        }
+                        .font(.body)
+                        .fontWeight(.regular)
                         .foregroundColor(.black)
                         .padding()
-                        .background(!customMessage.isEmpty ? .white.opacity(0.5) : .white)
+                        .frame(maxWidth: .infinity)
+                        .background(.white)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(!customMessage.isEmpty ? .black : .clear, lineWidth: 2)
+                                .stroke(!customMessage.isEmpty ? .black : .clear, lineWidth: 1)
                         )
-                        .cornerRadius(10)
                     }
                     
                     if !valid {
                         Text("Please choose a template or create your own!")
                             .font(.subheadline)
-                            .fontWeight(.medium)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                     }
@@ -163,19 +186,16 @@ struct YellowMessageView: View {
                 Spacer()
                 
                 Button(action: {
-                    valid = validate()
+                    valid = selectedTemplate != nil || !customMessage.isEmpty
                     next = valid
                 }) {
                     HStack {
                         Text("Next")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                        
                         Image(systemName: "arrow.right.circle.fill")
-                            .font(.title)
-                            .foregroundColor(.black)
                     }
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
                     .padding(12.5)
                     .frame(maxWidth: .infinity)
                     .background(.white)
@@ -183,7 +203,6 @@ struct YellowMessageView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 40)
                 .background(
                     NavigationLink(
                         destination: RedMessageView(),
@@ -194,7 +213,6 @@ struct YellowMessageView: View {
             }
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
-            .ignoresSafeArea(.all)
         }
     }
     
@@ -209,10 +227,6 @@ struct YellowMessageView: View {
                     .foregroundColor(.white)
             }
         }
-    }
-    
-    private func validate() -> Bool {
-        return selectedTemplate != nil || !customMessage.isEmpty
     }
 }
 

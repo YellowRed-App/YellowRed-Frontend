@@ -30,19 +30,19 @@ struct NotificationsView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 128, height: 128)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 Text("Get Instant Updates")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 Text("YellowRed will keep you posted with push notifications.")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
                 
@@ -60,7 +60,7 @@ struct NotificationsView: View {
                             .frame(maxWidth: .infinity)
                             .background(.white)
                             .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
                     
                     Button(action: {
@@ -74,7 +74,7 @@ struct NotificationsView: View {
                             .frame(maxWidth: .infinity)
                             .background(.white)
                             .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -114,4 +114,3 @@ struct NotificationsView_Previews: PreviewProvider {
         NotificationsView()
     }
 }
-

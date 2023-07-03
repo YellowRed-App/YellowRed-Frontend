@@ -34,19 +34,19 @@ struct EmergencyView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 128, height: 128)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 Text("Emergency Contacts")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 Text("Please get started by selecting three emergency contacts. You will be able to change this later.")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
                 
@@ -62,7 +62,6 @@ struct EmergencyView: View {
                         .font(.subheadline)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 }
                 
                 Spacer()
@@ -85,7 +84,7 @@ struct EmergencyView: View {
                     .frame(maxWidth: .infinity)
                     .background(.white)
                     .cornerRadius(15)
-                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 40)

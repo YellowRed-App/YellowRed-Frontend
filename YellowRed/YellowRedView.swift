@@ -40,13 +40,14 @@ struct YellowRedView: View {
                         .font(.largeTitle)
                         .fontWeight(.heavy)
                         .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
                     
                     ZStack {
                         Circle()
                             .fill(.yellow)
                             .frame(width: 200, height: 200)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
                                 isPressingYellowButton = pressing
                                 if pressing {
@@ -95,6 +96,7 @@ struct YellowRedView: View {
                         Circle()
                             .fill(.red)
                             .frame(width: 200, height: 200)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
                                 isPressingRedButton = pressing
                                 if pressing {
@@ -148,7 +150,6 @@ struct YellowRedView: View {
                             .resizable()
                             .frame(width: 64, height: 64)
                             .foregroundColor(.black)
-                            .padding(.bottom, 20)
                     }
                     .background(
                         NavigationLink(
@@ -159,27 +160,26 @@ struct YellowRedView: View {
                     )
                     .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
                     .disabled(isPressingYellowButton || isPressingRedButton)
+                    .shadow(color: .white.opacity(0.5), radius: 10, x: 0, y: 0)
+                    
+                    Spacer()
                 }
                 
                 if hint {
                     Text("Please hold the button for five seconds to activate!")
                         .font(.subheadline)
-                        .fontWeight(.medium)
                         .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 20)
                         .offset(y: 250)
                         .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
                 }
-                
             }
             .navigationBarBackButtonHidden(true)
             .onAppear(perform: GlobalHapticManager.shared.startHapticEngine)
         }
     }
-    
 }
 
 struct YellowButtonView: View {
@@ -205,7 +205,7 @@ struct YellowButtonView: View {
                     .fontWeight(.heavy)
                     .foregroundColor(flash ? .white : .clear)
                     .opacity(flash ? 1 : 0)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
@@ -223,11 +223,11 @@ struct YellowButtonView: View {
                         .foregroundColor(.white)
                         .padding(25)
                         .frame(maxWidth: .infinity)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
                         .background(.red)
                         .cornerRadius(10)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 50)
                         .padding(.bottom, 50)
                 }
@@ -282,7 +282,7 @@ struct RedButtonView: View {
                     .fontWeight(.heavy)
                     .foregroundColor(flash ? .white : .clear)
                     .opacity(flash ? 1 : 0)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
@@ -299,11 +299,11 @@ struct RedButtonView: View {
                         .foregroundColor(.white)
                         .padding(25)
                         .frame(maxWidth: .infinity)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
                         .background(.yellow)
                         .cornerRadius(10)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 50)
                         .padding(.bottom, 50)
                 }

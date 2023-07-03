@@ -89,8 +89,7 @@ struct GetStartedAffiliationView: View {
                 }
                 .background(.white.opacity(0.25))
                 .cornerRadius(10)
-                .padding()
-            
+                
                 if !isAffiliationValid {
                     Text("Please select an affiliation!")
                         .font(.subheadline)
@@ -119,18 +118,17 @@ struct GetStartedAffiliationView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
+                .background(
+                    NavigationLink(
+                        destination: NotificationsView(),
+                        isActive: $next,
+                        label: { EmptyView() }
+                    )
+                )
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: backButton)
             }
             .padding(.horizontal)
-            .cornerRadius(20)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: backButton)
-            .background(
-                NavigationLink(
-                    destination: NotificationsView(),
-                    isActive: $next,
-                    label: { EmptyView() }
-                )
-            )
         }
     }
     

@@ -163,14 +163,11 @@ struct RadioButton: View {
         }) {
             HStack(alignment: .top) {
                 Image(systemName: isSelected == id ? "largecircle.fill.circle" : "circle")
-                    .font(.title3)
-                    .fontWeight(.medium)
-                    .foregroundColor(.black)
                 Text(label)
-                    .font(.title3)
-                    .fontWeight(.medium)
-                    .foregroundColor(.black)
             }
+            .font(.title3)
+            .fontWeight(.medium)
+            .foregroundColor(.black)
             .padding(12.5)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(.white)

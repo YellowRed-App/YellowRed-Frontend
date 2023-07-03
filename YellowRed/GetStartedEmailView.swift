@@ -40,13 +40,13 @@ struct GetStartedEmailView: View {
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 Text("Enter Organization Email")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 TextField("abc5xy@virginia.edu", text: $email)
                     .font(.title3)
@@ -65,7 +65,6 @@ struct GetStartedEmailView: View {
                     Text("Please enter a valid email address!")
                         .font(.subheadline)
                         .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 }
                 
                 if isVerificationEnabled {
@@ -84,7 +83,6 @@ struct GetStartedEmailView: View {
                         Text("Invalid verification code. Please try again!")
                             .font(.subheadline)
                             .foregroundColor(.white)
-                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     }
                 }
                 
@@ -110,25 +108,22 @@ struct GetStartedEmailView: View {
                         
                         Image(systemName: isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
                             .font(.title)
+                            .fontWeight(.semibold)
                             .foregroundColor(.black)
                     }
                     .padding(12.5)
                     .frame(maxWidth: .infinity)
                     .background(.white)
                     .cornerRadius(15)
-                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 25)
                 .background(
                     NavigationLink(
                         destination: GetStartedAffiliationView(fullName: fullName),
                         isActive: $next,
-                        label: {
-                            EmptyView()
-                        }
+                        label: { EmptyView() }
                     )
-                    .hidden()
                 )
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(leading: backButton)

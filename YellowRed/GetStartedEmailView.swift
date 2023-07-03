@@ -54,6 +54,7 @@ struct GetStartedEmailView: View {
                     
                     if email.isEmpty {
                         Text("abc5xy@virginia.edu")
+                            .accentColor(.black)
                             .opacity(0.5)
                     }
                 }

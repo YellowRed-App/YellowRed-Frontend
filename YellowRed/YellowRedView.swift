@@ -176,9 +176,9 @@ struct YellowRedView: View {
                         .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
                 }
             }
-            .navigationBarBackButtonHidden(true)
             .onAppear(perform: GlobalHapticManager.shared.startHapticEngine)
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

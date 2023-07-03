@@ -48,18 +48,25 @@ struct GetStartedEmailView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
-                TextField("abc5xy@virginia.edu", text: $email)
-                    .font(.title3)
-                    .foregroundColor(.black)
-                    .autocapitalization(.none)
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 10).fill(.white))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: isEmailValid ? 0 : 1)
-                    )
-                    .padding(.horizontal, 20)
-                    .disabled(isVerificationEnabled)
+                ZStack(alignment: .leading) {
+                    TextField("abc5xy@virginia.edu", text: $email)
+                        .autocapitalization(.none)
+                    
+                    if email.isEmpty {
+                        Text("abc5xy@virginia.edu")
+                            .opacity(0.5)
+                    }
+                }
+                .font(.title3)
+                .foregroundColor(.black)
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.black, lineWidth: isEmailValid ? 0 : 1)
+                )
+                .padding(.horizontal, 20)
+                .disabled(isVerificationEnabled)
                 
                 if !isEmailValid {
                     Text("Please enter a valid email address!")

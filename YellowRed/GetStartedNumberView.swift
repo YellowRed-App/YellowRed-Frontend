@@ -17,8 +17,7 @@ struct GetStartedNumberView: View {
     @State private var verificationCodeSent: String = ""
     
     @State private var isVerificationEnabled: Bool = false
-    
-    @State private var display: Bool = false
+    @State private var isVerificationValid: Bool = true
     
     @State private var next: Bool = false
     
@@ -79,11 +78,11 @@ struct GetStartedNumberView: View {
                         .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: display ? 1 : 0)
+                                .stroke(.black, lineWidth: isVerificationValid ? 0 : 1)
                         )
                         .padding(.horizontal, 20)
                     
-                    if display {
+                    if !isVerificationValid {
                         Text("Invalid verification code. Please try again!")
                             .font(.subheadline)
                             .foregroundColor(.white)
@@ -95,10 +94,10 @@ struct GetStartedNumberView: View {
                     isPhoneNumberValid = validatePhoneNumber(phoneNumber)
                     if isPhoneNumberValid {
                         if isVerificationEnabled && verificationCode == verificationCodeSent {
-                            display = false
+                            isVerificationValid = true
                             next = true
                         } else if isVerificationEnabled {
-                            display = true
+                            isVerificationValid = false
                         } else {
                             isVerificationEnabled = true
                             sendVerificationCode()

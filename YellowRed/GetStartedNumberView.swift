@@ -52,6 +52,7 @@ struct GetStartedNumberView: View {
                     Text("+1")
                     ZStack(alignment: .leading) {
                         TextField("(123) 456-7890", text: $phoneNumber)
+                            .keyboardType(.numberPad)
                         
                         if phoneNumber.isEmpty {
                             Text("(123) 456-7890")

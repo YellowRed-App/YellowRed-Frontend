@@ -60,7 +60,6 @@ struct EmergencyView: View {
                 if !valid {
                     Text("Please select three unique emergency contacts!")
                         .font(.subheadline)
-                        .fontWeight(.medium)
                         .foregroundColor(.white)
                 }
                 
@@ -72,14 +71,11 @@ struct EmergencyView: View {
                 }) {
                     HStack {
                         Text("Next")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                        
                         Image(systemName: "arrow.right.circle.fill")
-                            .font(.title)
-                            .foregroundColor(.black)
                     }
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
                     .padding(12.5)
                     .frame(maxWidth: .infinity)
                     .background(.white)
@@ -87,7 +83,6 @@ struct EmergencyView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 40)
                 .background(
                     NavigationLink(
                         destination: YellowMessageView(),
@@ -97,7 +92,6 @@ struct EmergencyView: View {
                 )
             }
             .navigationBarBackButtonHidden(true)
-            .ignoresSafeArea(.all)
         }
     }
     
@@ -191,10 +185,6 @@ struct ContactPickerView: UIViewControllerRepresentable {
                 parent.phoneNumbers = phoneNumbers.map { $0.value }
                 parent.showPhoneNumberSelection = true
             }
-        }
-        
-        func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
-            // Handle cancel action if needed
         }
     }
 }

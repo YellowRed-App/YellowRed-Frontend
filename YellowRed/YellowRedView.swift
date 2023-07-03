@@ -168,7 +168,7 @@ struct YellowRedView: View {
                 if hint {
                     Text("Please hold the button for five seconds to activate!")
                         .font(.subheadline)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 20)

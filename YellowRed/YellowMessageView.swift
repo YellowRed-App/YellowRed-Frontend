@@ -80,12 +80,12 @@ struct YellowMessageView: View {
                                 .font(.body)
                                 .fontWeight(.regular)
                                 .foregroundColor(.black)
+                                .frame(height: 150)
+                                .frame(maxWidth: .infinity)
                                 .padding(12.5)
                                 .background(.white)
                                 .colorScheme(.light)
                                 .cornerRadius(10)
-                                .frame(height: 150)
-                                .frame(maxWidth: .infinity)
                                 .focused($isEditing)
                                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
@@ -214,22 +214,9 @@ struct YellowMessageView: View {
             }
             .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: backButton)
         }
     }
     
-    private var backButton: some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }) {
-            HStack {
-                Image(systemName: "chevron.left")
-                    .foregroundColor(.white)
-                Text("Back")
-                    .foregroundColor(.white)
-            }
-        }
-    }
 }
 
 struct YellowMessageView_Previews: PreviewProvider {

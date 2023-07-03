@@ -9,8 +9,8 @@ import SwiftUI
 
 struct RedMessageView: View {
     @Environment(\.presentationMode) var presentationMode
-    @FocusState private var isSelecting: Bool
     
+    @FocusState private var isSelecting: Bool
     @State private var messageTemplates: [String] = [
         "I'm feeling a bit uncomfortable, can we talk?",
         "Could use some company right now, can we meet up?",
@@ -35,40 +35,43 @@ struct RedMessageView: View {
             VStack(spacing: 20) {
                 Spacer()
                 
-                if !isSelecting {
-                    Image(systemName: "message.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 128, height: 128)
-                        .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                }
+                Image(systemName: "message.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 128, height: 128)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 Text("Red Message")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                
-                Text("Please choose a message template for the Red Button. There is no custom message option for the Red Button!")
-                    .font(.title3)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                if !isSelecting {
+                    Text("Please choose a message template. There is no custom message option for the Red Button!")
+                        .font(.title3)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
                 
                 VStack(spacing: 15) {
                     if selectingTemplate != nil {
                         VStack {
-                            Text( messageTemplates[selectingTemplate!])
+                            Text(messageTemplates[selectingTemplate!])
+                                .font(.body)
+                                .fontWeight(.regular)
                                 .foregroundColor(.black)
-                                .frame(width: UIScreen.main.bounds.width - 40, height: 150)
+                                .padding()
                                 .background(.white)
                                 .colorScheme(.light)
                                 .cornerRadius(10)
+                                .frame(height: 150)
+                                .frame(maxWidth: .infinity)
                                 .focused($isSelecting)
-                                .padding(.vertical)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
                         
                         HStack {
@@ -84,6 +87,7 @@ struct RedMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .padding(.horizontal)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             
                             Button("Cancel", action: {
                                 selectingTemplate = nil
@@ -96,6 +100,7 @@ struct RedMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .padding(.horizontal)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
                     } else {
                         ForEach(0..<messageTemplates.count, id: \.self) { index in
@@ -106,14 +111,18 @@ struct RedMessageView: View {
                                     self.selectedTemplate = nil
                                 }
                             ))
+                            .font(.body)
+                            .fontWeight(.regular)
                             .foregroundColor(.black)
                             .padding()
+                            .frame(maxWidth: .infinity)
                             .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
+                            .cornerRadius(15)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 2)
+                                    .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 1)
                             )
-                            .cornerRadius(10)
                             .onTapGesture {
                                 self.selectingTemplate = index
                                 self.isSelecting = true
@@ -124,10 +133,8 @@ struct RedMessageView: View {
                     if !valid {
                         Text("Please choose a template!")
                             .font(.subheadline)
-                            .fontWeight(.medium)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
-                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -135,27 +142,23 @@ struct RedMessageView: View {
                 Spacer()
                 
                 Button(action: {
-                    valid = validate()
+                    valid = selectedTemplate != nil
                     next = valid
                 }) {
                     HStack {
                         Text("Next")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                        
                         Image(systemName: "arrow.right.circle.fill")
-                            .font(.title)
-                            .foregroundColor(.black)
                     }
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
                     .padding(12.5)
                     .frame(maxWidth: .infinity)
                     .background(.white)
                     .cornerRadius(15)
-                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 40)
                 .background(
                     NavigationLink(
                         destination: YellowRedView(),
@@ -166,7 +169,6 @@ struct RedMessageView: View {
             }
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
-            .ignoresSafeArea(.all)
         }
     }
     
@@ -181,10 +183,6 @@ struct RedMessageView: View {
                     .foregroundColor(.white)
             }
         }
-    }
-    
-    private func validate() -> Bool {
-        return selectedTemplate != nil
     }
 }
 

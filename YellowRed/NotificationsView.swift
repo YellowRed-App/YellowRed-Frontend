@@ -78,10 +78,8 @@ struct NotificationsView: View {
                     }
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 40)
             }
             .navigationBarBackButtonHidden(true)
-            .ignoresSafeArea(.all)
         }
         .background(
             NavigationLink(

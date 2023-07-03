@@ -84,7 +84,10 @@ struct YellowRedView: View {
                         
                         if isPressingYellowButton && countdown <= 5 {
                             Text("\(countdown)")
-                                .font(.largeTitle)
+                                .font(.system(size: 125))
+                                .minimumScaleFactor(0.01)
+                                .lineLimit(1)
+                                .scaledToFit()
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                         }
@@ -133,7 +136,10 @@ struct YellowRedView: View {
                         
                         if isPressingRedButton && countdown <= 5 {
                             Text("\(countdown)")
-                                .font(.largeTitle)
+                                .font(.system(size: 125))
+                                .minimumScaleFactor(0.01)
+                                .lineLimit(1)
+                                .scaledToFit()
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                         }

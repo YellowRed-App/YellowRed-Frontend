@@ -36,14 +36,13 @@ struct GetStartedAffiliationView: View {
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                    .padding(.top, 20)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 Text("What Is Your Affiliation With UVA?")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 VStack(alignment: .leading, spacing: 10) {
                     RadioButton(
@@ -81,7 +80,7 @@ struct GetStartedAffiliationView: View {
                     .padding(.horizontal)
                     .padding(.bottom)
                 }
-                .background(.white.opacity(0.2))
+                .background(.white.opacity(0.25))
                 .cornerRadius(10)
                 .padding()
             
@@ -89,7 +88,6 @@ struct GetStartedAffiliationView: View {
                     Text("Please select an affiliation!")
                         .font(.subheadline)
                         .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
                 }
                 
                 Button(action: {
@@ -104,16 +102,16 @@ struct GetStartedAffiliationView: View {
                         
                         Image(systemName: "arrow.right.circle.fill")
                             .font(.title)
+                            .fontWeight(.semibold)
                             .foregroundColor(.black)
                     }
                     .padding(12.5)
                     .frame(maxWidth: .infinity)
                     .background(.white)
                     .cornerRadius(15)
-                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 25)
             }
             .padding(.horizontal)
             .cornerRadius(20)
@@ -123,11 +121,8 @@ struct GetStartedAffiliationView: View {
                 NavigationLink(
                     destination: NotificationsView(),
                     isActive: $next,
-                    label: {
-                        EmptyView()
-                    }
+                    label: { EmptyView() }
                 )
-                .hidden()
             )
         }
     }
@@ -167,6 +162,8 @@ struct RadioButton: View {
         }) {
             HStack(alignment: .top) {
                 Image(systemName: isSelected == id ? "largecircle.fill.circle" : "circle")
+                    .font(.title3)
+                    .fontWeight(.medium)
                     .foregroundColor(.black)
                 Text(label)
                     .font(.title3)
@@ -179,7 +176,6 @@ struct RadioButton: View {
             .cornerRadius(15)
             .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
         }
-        .foregroundColor(.black)
     }
 }
 

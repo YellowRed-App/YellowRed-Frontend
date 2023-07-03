@@ -51,6 +51,7 @@ struct GetStartedEmailView: View {
                 ZStack(alignment: .leading) {
                     TextField("abc5xy@virginia.edu", text: $email)
                         .autocapitalization(.none)
+                        .keyboardType(.emailAddress)
                     
                     if email.isEmpty {
                         Text("abc5xy@virginia.edu")

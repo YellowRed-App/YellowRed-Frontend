@@ -50,7 +50,14 @@ struct GetStartedNumberView: View {
                 
                 HStack(spacing: 10) {
                     Text("+1")
-                    TextField("(123) 456-7890", text: $phoneNumber)
+                    ZStack(alignment: .leading) {
+                        TextField("(123) 456-7890", text: $phoneNumber)
+                        
+                        if phoneNumber.isEmpty {
+                            Text("(123) 456-7890")
+                                .opacity(0.5)
+                        }
+                    }
                 }
                 .font(.title3)
                 .foregroundColor(.black)

@@ -65,15 +65,17 @@ struct RedMessageView: View {
                                 .font(.body)
                                 .fontWeight(.regular)
                                 .foregroundColor(.black)
+                                .frame(maxWidth: .infinity)
                                 .padding(12.5)
                                 .background(.white)
                                 .colorScheme(.light)
                                 .cornerRadius(10)
-                                .frame(height: 150)
-                                .frame(maxWidth: .infinity)
                                 .focused($isSelecting)
                                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            
+                            Spacer()
                         }
+                        .frame(height: 150)
                         
                         HStack {
                             Button("Select", action: {

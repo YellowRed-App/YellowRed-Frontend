@@ -78,16 +78,24 @@ struct GetStartedNumberView: View {
                 }
                 
                 if isVerificationEnabled {
-                    TextField("Verification Code", text: $verificationCode)
-                        .font(.title3)
-                        .foregroundColor(.black)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: isVerificationValid ? 0 : 1)
-                        )
-                        .padding(.horizontal, 20)
+                    ZStack(alignment: .leading) {
+                        TextField("Verification Code", text: $verificationCode)
+                            .keyboardType(.numberPad)
+                        
+                        if verificationCode.isEmpty {
+                            Text("Verification Code")
+                                .opacity(0.5)
+                        }
+                    }
+                    .font(.title3)
+                    .foregroundColor(.black)
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.black, lineWidth: isVerificationValid ? 0 : 1)
+                    )
+                    .padding(.horizontal, 20)
                     
                     if !isVerificationValid {
                         Text("Invalid verification code. Please try again!")

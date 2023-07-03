@@ -32,7 +32,7 @@ struct GetStartedAffiliationView: View {
             .edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 20) {
-                Text("Hello, \(firstName)...")
+                Text("Welcome, \(firstName)...")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)

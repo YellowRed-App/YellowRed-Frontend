@@ -47,7 +47,8 @@ struct RedMessageView: View {
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                if !isSelecting {
+                
+                if selectingTemplate == nil {
                     Text("Please choose a message template. There is no custom message option for the Red Button!")
                         .font(.title3)
                         .fontWeight(.medium)

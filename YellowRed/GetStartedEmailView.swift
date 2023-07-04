@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct GetStartedEmailView: View {
-    @Environment(\.presentationMode) var presentationMode
-    
     @State private var email: String = ""
     @State private var isEmailValid: Bool = true
     

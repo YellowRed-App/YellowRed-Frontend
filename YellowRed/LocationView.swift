@@ -9,8 +9,6 @@ import SwiftUI
 import CoreLocation
 
 struct LocationView: View {
-    @Environment(\.presentationMode) var presentationMode
-    
     @State private var next: Bool = false
     
     var body: some View {

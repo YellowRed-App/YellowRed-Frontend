@@ -9,8 +9,6 @@ import SwiftUI
 import ContactsUI
 
 struct EmergencyView: View {
-    @Environment(\.presentationMode) var presentationMode
-    
     @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 3)
     
     @State private var valid: Bool = true

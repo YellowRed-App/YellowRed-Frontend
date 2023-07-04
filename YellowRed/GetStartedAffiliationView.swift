@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct GetStartedAffiliationView: View {
-    @Environment(\.presentationMode) var presentationMode
-    
     @State private var affiliation: String = ""
     @State private var isAffiliationValid: Bool = true
     

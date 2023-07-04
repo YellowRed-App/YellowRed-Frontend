@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct GetStartedNumberView: View {
-    @Environment(\.presentationMode) var presentationMode
-    
     @State private var phoneNumber: String = ""
     @State private var isPhoneNumberValid: Bool = true
     

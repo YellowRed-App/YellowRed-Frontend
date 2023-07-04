@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct RedMessageView: View {
-    @Environment(\.presentationMode) var presentationMode
-    
     @FocusState private var isSelecting: Bool
     @State private var messageTemplates: [String] = [
         "I'm feeling a bit uncomfortable, can we talk?",

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		42697F372A511019003F2C8D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697F362A511019003F2C8D /* ProfileView.swift */; };
+		71255CED2A53FD2B00C70A5B /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CEC2A53FD2B00C70A5B /* BackButton.swift */; };
 		713F803F2A488D7D00A03D29 /* YellowRedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F803E2A488D7D00A03D29 /* YellowRedView.swift */; };
 		715086372A2E1DC700841F44 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715086362A2E1DC700841F44 /* NotificationsView.swift */; };
 		71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E902A20B92E00A2BB2D /* YellowRedApp.swift */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		42697F362A511019003F2C8D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		71255CEC2A53FD2B00C70A5B /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		713F803E2A488D7D00A03D29 /* YellowRedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowRedView.swift; sourceTree = "<group>"; };
 		715086362A2E1DC700841F44 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		71567E8D2A20B92E00A2BB2D /* YellowRed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YellowRed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +92,7 @@
 				42697F362A511019003F2C8D /* ProfileView.swift */,
 				71567E942A20B93300A2BB2D /* Assets.xcassets */,
 				71567E962A20B93300A2BB2D /* Preview Content */,
+				71255CEC2A53FD2B00C70A5B /* BackButton.swift */,
 			);
 			path = YellowRed;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 				715D5CE42A4870D3001701AA /* RedMessageView.swift in Sources */,
 				71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */,
 				71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */,
+				71255CED2A53FD2B00C70A5B /* BackButton.swift in Sources */,
 				715086372A2E1DC700841F44 /* NotificationsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

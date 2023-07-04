@@ -139,25 +139,12 @@ struct GetStartedEmailView: View {
                     )
                 )
                 .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: backButton)
+                .navigationBarItems(leading: BackButton())
             }
             .padding(.horizontal, 20)
         }
     }
-    
-    private var backButton: some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }) {
-            HStack {
-                Image(systemName: "chevron.left")
-                    .foregroundColor(.white)
-                Text("Back")
-                    .foregroundColor(.white)
-            }
-        }
-    }
-    
+
     private func validateEmail(_ email: String) -> Bool {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)

@@ -173,22 +173,10 @@ struct RedMessageView: View {
             }
             .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: backButton)
+            .navigationBarItems(leading: BackButton())
         }
     }
     
-    private var backButton: some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }) {
-            HStack {
-                Image(systemName: "chevron.left")
-                    .foregroundColor(.white)
-                Text("Back")
-                    .foregroundColor(.white)
-            }
-        }
-    }
 }
 
 struct RedMessageView_Previews: PreviewProvider {

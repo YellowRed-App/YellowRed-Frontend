@@ -140,22 +140,9 @@ struct GetStartedNumberView: View {
                     )
                 )
                 .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: backButton)
+                .navigationBarItems(leading: BackButton())
             }
             .padding(.horizontal, 20)
-        }
-    }
-    
-    private var backButton: some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }) {
-            HStack {
-                Image(systemName: "chevron.left")
-                    .foregroundColor(.white)
-                Text("Back")
-                    .foregroundColor(.white)
-            }
         }
     }
     

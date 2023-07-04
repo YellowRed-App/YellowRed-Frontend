@@ -51,21 +51,21 @@ struct ProfileView: View {
                     )
                     
                     VStack {
-                        SectionView(title: "Personal Info", destinationView: AnyView(EditPersonalView())) {
+                        SectionView(title: "Personal Info", content:  {
                             InfoView(title: "Phone Number", value: phoneNumber)
                             InfoView(title: "Email Address", value: emailAddress)
-                        }
+                        }, destinationView: AnyView(EditPersonalView()))
                         
-                        SectionView(title: "Emergency Contacts", destinationView: AnyView(EditEmergencyContactView())) {
+                        SectionView(title: "Emergency Contacts", content:  {
                             ForEach(emergencyContacts.indices, id: \.self) { index in
                                 InfoView(title: "Contact \(index + 1)", value: "\(emergencyContacts[index].displayName) (\(emergencyContacts[index].phoneNumber))")
                             }
-                        }
+                        }, destinationView: AnyView(EditEmergencyContactView()))
                         
-                        SectionView(title: "Custom Messages", destinationView: AnyView(EditCustomMessageView())) {
+                        SectionView(title: "Custom Messages", content:  {
                             InfoView(title: "Yellow\nButton", value: yellowMessage)
                             InfoView(title: "Red\nButton", value: redMessage)
-                        }
+                        }, destinationView: AnyView(EditCustomMessageView()))
                         
                         Spacer()
                     }

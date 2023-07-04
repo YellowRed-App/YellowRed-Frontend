@@ -85,12 +85,12 @@ struct InfoView: View {
         HStack {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.primary)
+                .foregroundColor(.black)
                 .multilineTextAlignment(.leading)
             Spacer()
             Text(value)
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundColor(.gray)
                 .multilineTextAlignment(.trailing)
         }
     }

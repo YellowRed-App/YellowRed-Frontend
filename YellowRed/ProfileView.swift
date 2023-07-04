@@ -51,18 +51,18 @@ struct ProfileView: View {
                     )
                     
                     VStack {
-                        SectionView(title: "Personal Info") {
+                        SectionView(title: "Personal Info", destinationView: AnyView(EditPersonalView())) {
                             InfoView(title: "Phone Number", value: phoneNumber)
                             InfoView(title: "Email Address", value: emailAddress)
                         }
                         
-                        SectionView(title: "Emergency Contacts") {
+                        SectionView(title: "Emergency Contacts", destinationView: AnyView(EditEmergencyContactView())) {
                             ForEach(emergencyContacts.indices, id: \.self) { index in
                                 InfoView(title: "Contact \(index + 1)", value: "\(emergencyContacts[index].displayName) (\(emergencyContacts[index].phoneNumber))")
                             }
                         }
                         
-                        SectionView(title: "Custom Messages") {
+                        SectionView(title: "Custom Messages", destinationView: AnyView(EditCustomMessageView())) {
                             InfoView(title: "Yellow\nButton", value: yellowMessage)
                             InfoView(title: "Red\nButton", value: redMessage)
                         }
@@ -99,20 +99,34 @@ struct InfoView: View {
 struct SectionView<Content: View>: View {
     var title: String
     var content: Content
+    var destinationView: AnyView?
     
-    init(title: String, @ViewBuilder content: () -> Content) {
+    init(title: String, @ViewBuilder content: () -> Content, destinationView: AnyView? = nil) {
         self.title = title
         self.content = content()
+        self.destinationView = destinationView
     }
     
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 10) {
-                Text(title)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.black)
-                    .padding(.bottom, 10)
+                HStack {
+                    Text(title)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.black)
+                    
+                    Spacer()
+                    
+                    if let destinationView = destinationView {
+                        NavigationLink(destination: destinationView) {
+                            Label("Edit", systemImage: "square.and.pencil")
+                                .font(.headline)
+                                .foregroundColor(.blue)
+                        }
+                    }
+                }
+                .padding(.bottom, 10)
                 content
             }
             .padding()
@@ -132,6 +146,24 @@ struct SectionView<Content: View>: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
         }
+    }
+}
+
+struct EditPersonalView: View {
+    var body: some View {
+        Text("Edit Personal View")
+    }
+}
+
+struct EditEmergencyContactView: View {
+    var body: some View {
+        Text("Edit Emergency Contact View")
+    }
+}
+
+struct EditCustomMessageView: View {
+    var body: some View {
+        Text("Edit Custom Message View")
     }
 }
 

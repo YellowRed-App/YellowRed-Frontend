@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InputVerifier {
-    static func sendVerificationCodeViaSMS(to phoneNumber: String) -> String {
+    public static func sendVerificationCodeViaSMS(to phoneNumber: String) -> String {
         // Generate a random six-digit code
         let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
         
@@ -19,7 +19,7 @@ struct InputVerifier {
         return randomCode
     }
     
-    static func sendVerificationCodeViaEmail(to email: String) -> String {
+    public static func sendVerificationCodeViaEmail(to email: String) -> String {
         // Generate a random six-digit code
         let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
         

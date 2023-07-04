@@ -115,7 +115,7 @@ struct GetStartedAffiliationView: View {
                 .padding(.horizontal, 20)
                 .background(
                     NavigationLink(
-                        destination: NotificationsView(),
+                        destination: NotificationView(),
                         isActive: $next,
                         label: { EmptyView() }
                     )

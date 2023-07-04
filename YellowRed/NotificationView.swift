@@ -1,14 +1,14 @@
 //
-//  LocationView.swift
+//  NotificationView.swift
 //  YellowRed
 //
-//  Created by Krish Mehta on 8/6/23.
+//  Created by Krish Mehta on 5/6/23.
 //
 
 import SwiftUI
-import CoreLocation
+import UserNotifications
 
-struct LocationView: View {
+struct NotificationView: View {
     @State private var next: Bool = false
     
     var body: some View {
@@ -23,30 +23,21 @@ struct LocationView: View {
             VStack(spacing: 20) {
                 Spacer()
                 
-                Image(systemName: "location.fill")
+                Image(systemName: "bell.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 128, height: 128)
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
-                Text("Enable Location Services")
+                Text("Get Instant Updates")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
-                Text("YellowRed will keep you posted with location-based services.")
+                Text("YellowRed will keep you posted with push notifications.")
                     .font(.title3)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
-                
-                Text("In order to receive alerts based on your geographic location, you must have your location sharing permissions set to \"Always\" with \"Precise Location\" enabled.")
-                    .font(.subheadline)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
@@ -91,7 +82,7 @@ struct LocationView: View {
         }
         .background(
             NavigationLink(
-                destination: EmergencyContactView(),
+                destination: LocationView(),
                 isActive: $next,
                 label: { EmptyView() }
             )
@@ -99,14 +90,13 @@ struct LocationView: View {
     }
     
     private func handleYesButtonTap() {
-        let status = CLLocationManager.authorizationStatus()
-        if status == .authorizedAlways || status == .authorizedWhenInUse {
-            next = true
-        } else {
-            let locationManager = CLLocationManager()
-            locationManager.requestAlwaysAuthorization()
-            DispatchQueue.main.async {
-                 next = true
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+            if granted {
+                DispatchQueue.main.async {
+                    next = true
+                }
+            } else {
+                next = true
             }
         }
     }
@@ -116,8 +106,8 @@ struct LocationView: View {
     }
 }
 
-struct LocationView_Previews: PreviewProvider {
+struct NotificationView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationView()
+        NotificationView()
     }
 }

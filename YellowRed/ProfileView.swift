@@ -3,177 +3,135 @@
 //  YellowRed
 //
 //  Created by William Shaoul on 7/1/23.
+//  Edited by Krish Mehta on 4/7/23.
 //
 
 import SwiftUI
 
 struct ProfileView: View {
+    @State private var fullName: String = "John Smith"
+    @State private var phoneNumber: String = "(123) 456-7890"
+    @State private var emailAddress: String = "abc5xy@virginia.edu"
+    @State private var emergencyContacts: [EmergencyContact] = [
+        EmergencyContact(isSelected: false, displayName: "Contact 1", phoneNumber: "+1 (123) 456-7891"),
+        EmergencyContact(isSelected: false, displayName: "Contact 2", phoneNumber: "+1 (123) 456-7892"),
+        EmergencyContact(isSelected: false, displayName: "Contact 3", phoneNumber: "+1 (123) 456-7893")
+    ]
     
-    var selectedYellow: String = "Example Yellow"
-    var selectedRed: String = "Example Red"
-    
-    let fullName: String = "John Smith"
-    let email: String = "abc5xy@virginia.edu"
-    let number: String = "(123) 456-7890"
-    
-    let emergencyContacts = ["John Doe 123-456", "Jane Smith 444-555", "Sam Johnson 789-101"]
-    
-    let gradient = Gradient(colors: [.yellow, .red])
+    @State private var yellowMessage: String = "I'm feeling a bit uncomfortable, can we talk"
+    @State private var redMessage: String = "I'm feeling a bit unsafe, can you check on me"
     
     var body: some View {
-            NavigationStack{
-                VStack{
-                    HStack{
+        NavigationView {
+            ZStack {
+                VStack(spacing: 20) {
+                    VStack(spacing: 20) {
                         Image(systemName: "person.circle.fill")
-                            .font(.system(size: 83.5))
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 128, height: 128)
                             .foregroundColor(.white)
-                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                            .padding(.trailing, 120)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         
                         Text(fullName)
-                            .multilineTextAlignment(.trailing)
-                            .font(.system(size: 45))
+                            .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.white)
-                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
-                    .frame(maxWidth: .infinity, minHeight: 200)
+                    .frame(maxWidth: .infinity, minHeight: 250)
                     .background(
-                        LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(
+                            gradient: Gradient(colors: [.yellow, .red]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        .cornerRadius(25)
+                        .edgesIgnoringSafeArea(.all)
                     )
                     
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(Color.white)
-                            .frame(width: 350, height: 145)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(
-                                        LinearGradient(
-                                            colors: [.yellow, .red],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        ),
-                                        lineWidth: 5
-                                    )
-                            )
+                    VStack {
+                        SectionView(title: "Personal Info") {
+                            InfoView(title: "Phone Number", value: phoneNumber)
+                            InfoView(title: "Email Address", value: emailAddress)
+                        }
                         
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Personal Info")
-                                .font(.title)
-                                .fontWeight(.semibold)
-                            
-                            Text("Email: \(email)")
-                                .multilineTextAlignment(.leading)
-                            Text("Phone: \(number)")
-                                .multilineTextAlignment(.leading)
-                            
-                            NavigationLink(destination: EditProfileView()) {
-                                Label("Edit Profile", systemImage: "square.and.pencil")
-                                    .foregroundColor(.blue)
+                        SectionView(title: "Emergency Contacts") {
+                            ForEach(emergencyContacts.indices, id: \.self) { index in
+                                InfoView(title: "Contact \(index + 1)", value: "\(emergencyContacts[index].displayName) (\(emergencyContacts[index].phoneNumber))")
                             }
                         }
-                        .frame(width: 300, alignment: .leading)
-                    }
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(Color.white)
-                            .frame(width: 350, height: 170)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(
-                                        LinearGradient(
-                                            colors: [.yellow, .red],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        ),
-                                        lineWidth: 5
-                                    )
-                            )
                         
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Emergency Contacts")
-                                .font(.title)
-                                .fontWeight(.semibold)
-                            //                            .italic()
-                            ForEach(emergencyContacts, id: \.self) { contact in
-                                Text(contact)
-                            }
-                            
-                            NavigationLink(destination: EditContactsView()) {
-                                Label("Edit Emergency Contacts", systemImage: "square.and.pencil")
-                                    .foregroundColor(.blue)
-                            }
+                        SectionView(title: "Custom Messages") {
+                            InfoView(title: "Yellow\nButton", value: yellowMessage)
+                            InfoView(title: "Red\nButton", value: redMessage)
                         }
-                        .frame(width: 300, alignment: .leading)
-                    }
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(Color.white)
-                            .frame(width: 350, height: 200)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(
-                                        LinearGradient(
-                                            colors: [.yellow, .red],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        ),
-                                        lineWidth: 5
-                                    )
-                            )
-                        VStack(alignment: .leading) {
-                            Text("Messages")
-                                .font(.title)
-                                .fontWeight(.semibold)
-                                .padding(.bottom, 1)
-                            
-                            Text("Yellow")
-                                .font(.system(size: 23))
-                                .fontWeight(.semibold)
-                            Text(selectedYellow)
-                                .padding(.bottom, 1)
-                                
-                            Text("Red")
-                                .font(.system(size: 23))
-                                .fontWeight(.semibold)
-                            Text(selectedRed)
-                                .padding(.bottom, 1)
-                            
-                            NavigationLink(destination: EditContactsView()) {
-                                Label("Edit Messages", systemImage: "square.and.pencil")
-                                    .foregroundColor(.blue)
-                            }
-                        }
-                        .frame(width: 300, alignment: .leading)
                         
+                        Spacer()
                     }
+                    .padding(.horizontal, 20)
                 }
-                .frame(maxHeight: .infinity,alignment: .top)
             }
+            .background(.white)
         }
     }
-
-struct EditProfileView : View {
-    var body: some View{
-        Text("Edit Profile View")
-    }
-    
 }
 
-struct EditContactsView : View {
-    var body: some View{
-        Text("Edit Contacts View")
-    }
+struct InfoView: View {
+    var title: String
+    var value: String
     
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.leading)
+            Spacer()
+            Text(value)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.trailing)
+        }
+    }
 }
 
-struct EditMessagesView : View {
-    var body : some View{
-        Text("Edit Messages")
+struct SectionView<Content: View>: View {
+    var title: String
+    var content: Content
+    
+    init(title: String, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+    }
+    
+    var body: some View {
+        ZStack {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(title)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
+                    .padding(.bottom, 10)
+                content
+            }
+            .padding()
+            .background(.white)
+            .cornerRadius(10)
+            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(
+                        LinearGradient(
+                            colors: [.yellow, .red],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ), lineWidth: 5
+                    )
+            )
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+        }
     }
 }
 

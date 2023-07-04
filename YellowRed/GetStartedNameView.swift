@@ -63,7 +63,7 @@ struct GetStartedNameView: View {
                     }
                     
                     Button(action: {
-                        isFullNameValid = validateFullName(fullName)
+                        isFullNameValid = InputValidator.validateFullName(fullName)
                         next = isFullNameValid
                     }) {
                         HStack {
@@ -91,12 +91,6 @@ struct GetStartedNameView: View {
                 .padding(.horizontal, 20)
             }
         }
-    }
-    
-    private func validateFullName(_ name: String) -> Bool {
-        let nameRegex = "^[a-zA-Z\\.\\'\\-]{2,50}(?: [a-zA-Z\\.\\'\\-]{2,50})+$"
-        let namePredicate = NSPredicate(format: "SELF MATCHES %@", nameRegex)
-        return namePredicate.evaluate(with: name)
     }
 }
 

@@ -98,7 +98,7 @@ struct GetStartedAffiliationView: View {
                 }
                 
                 Button(action: {
-                    isAffiliationValid = validateAffiliation(affiliation)
+                    isAffiliationValid = InputValidator.validateAffiliation(affiliation, university)
                     next = isAffiliationValid
                 }) {
                     HStack {
@@ -126,14 +126,6 @@ struct GetStartedAffiliationView: View {
                 .navigationBarItems(leading: BackButton())
             }
             .padding(.horizontal, 20)
-        }
-    }
-    
-    private func validateAffiliation(_ affiliation: String) -> Bool {
-        if affiliation == "other" {
-            return !university.isEmpty
-        } else {
-            return !affiliation.isEmpty
         }
     }
 }

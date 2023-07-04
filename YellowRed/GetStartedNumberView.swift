@@ -105,7 +105,7 @@ struct GetStartedNumberView: View {
                 }
                 
                 Button(action: {
-                    isPhoneNumberValid = validatePhoneNumber(phoneNumber)
+                    isPhoneNumberValid = InputValidator.validatePhoneNumber(phoneNumber)
                     if isPhoneNumberValid {
                         if isVerificationEnabled && verificationCode == verificationCodeSent {
                             isVerificationValid = true
@@ -144,12 +144,6 @@ struct GetStartedNumberView: View {
             }
             .padding(.horizontal, 20)
         }
-    }
-    
-    private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
-        let phoneRegex = "^[2-9]\\d{9}$"
-        let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
-        return phonePredicate.evaluate(with: phoneNumber)
     }
     
     private func sendVerificationCode() {

@@ -66,7 +66,7 @@ struct EmergencyView: View {
                 Spacer()
                 
                 Button(action: {
-                    valid = validate(emergencyContacts: emergencyContacts)
+                    valid = InputValidator.validateEmergencyContacts(emergencyContacts)
                     next = valid
                 }) {
                     HStack {
@@ -95,20 +95,6 @@ struct EmergencyView: View {
             .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
         }
-    }
-    
-    private func validate(emergencyContacts: [EmergencyContact]) -> Bool {
-        guard emergencyContacts.allSatisfy({ $0.isSelected }) else {
-            return false
-        }
-        
-        let phoneNumbers = emergencyContacts.map({ $0.phoneNumber })
-        let uniquePhoneNumbers = Set(phoneNumbers)
-        guard phoneNumbers.count == uniquePhoneNumbers.count else {
-            return false
-        }
-        
-        return true
     }
 }
 

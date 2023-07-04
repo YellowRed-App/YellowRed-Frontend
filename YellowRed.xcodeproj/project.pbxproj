@@ -11,6 +11,7 @@
 		71255CED2A53FD2B00C70A5B /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CEC2A53FD2B00C70A5B /* BackButton.swift */; };
 		71255CEF2A54012D00C70A5B /* InputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CEE2A54012D00C70A5B /* InputValidator.swift */; };
 		71255CF12A540AC200C70A5B /* InputVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CF02A540AC200C70A5B /* InputVerifier.swift */; };
+		71255CF32A540EC600C70A5B /* EmergencyContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CF22A540EC600C70A5B /* EmergencyContact.swift */; };
 		713F803F2A488D7D00A03D29 /* YellowRedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F803E2A488D7D00A03D29 /* YellowRedView.swift */; };
 		715086372A2E1DC700841F44 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715086362A2E1DC700841F44 /* NotificationsView.swift */; };
 		71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E902A20B92E00A2BB2D /* YellowRedApp.swift */; };
@@ -32,6 +33,7 @@
 		71255CEC2A53FD2B00C70A5B /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		71255CEE2A54012D00C70A5B /* InputValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidator.swift; sourceTree = "<group>"; };
 		71255CF02A540AC200C70A5B /* InputVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputVerifier.swift; sourceTree = "<group>"; };
+		71255CF22A540EC600C70A5B /* EmergencyContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyContact.swift; sourceTree = "<group>"; };
 		713F803E2A488D7D00A03D29 /* YellowRedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowRedView.swift; sourceTree = "<group>"; };
 		715086362A2E1DC700841F44 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		71567E8D2A20B92E00A2BB2D /* YellowRed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YellowRed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +101,7 @@
 				71255CEC2A53FD2B00C70A5B /* BackButton.swift */,
 				71255CEE2A54012D00C70A5B /* InputValidator.swift */,
 				71255CF02A540AC200C70A5B /* InputVerifier.swift */,
+				71255CF22A540EC600C70A5B /* EmergencyContact.swift */,
 			);
 			path = YellowRed;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 				717B156C2A2605A300096580 /* GetStartedAffiliationView.swift in Sources */,
 				717F74D02A31E7BB00C55AC8 /* LocationView.swift in Sources */,
 				42697F372A511019003F2C8D /* ProfileView.swift in Sources */,
+				71255CF32A540EC600C70A5B /* EmergencyContact.swift in Sources */,
 				713F803F2A488D7D00A03D29 /* YellowRedView.swift in Sources */,
 				71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */,
 				71CF77CB2A25EA81001D81E0 /* GetStartedEmailView.swift in Sources */,

@@ -34,7 +34,7 @@ struct ProfileView: View {
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         
                         Text(fullName)
-                            .font(.title)
+                            .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.white)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)

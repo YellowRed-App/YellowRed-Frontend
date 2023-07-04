@@ -111,7 +111,7 @@ struct GetStartedEmailView: View {
                             isVerificationValid = false
                         } else {
                             isVerificationEnabled = true
-                            sendVerificationCode()
+                            verificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: email)
                         }
                     }
                 }) {
@@ -141,18 +141,6 @@ struct GetStartedEmailView: View {
             }
             .padding(.horizontal, 20)
         }
-    }
-    
-    private func sendVerificationCode() {
-        // Generate a random six-digit code
-        let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
-        
-        // TODO: Implement code to send the verification code via SMS to the phoneNumber
-        // For demonstration purposes, we'll print the code to the console
-        print("Verification Code: \(randomCode)")
-        
-        // Update the verificationCodeSent with the generated code
-        verificationCodeSent = randomCode
     }
 }
 

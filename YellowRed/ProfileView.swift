@@ -29,17 +29,17 @@ struct ProfileView: View {
                         Image(systemName: "person.circle.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 128, height: 128)
+                            .frame(width: 96, height: 96)
                             .foregroundColor(.white)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         
                         Text(fullName)
-                            .font(.largeTitle)
+                            .font(.title)
                             .fontWeight(.heavy)
                             .foregroundColor(.white)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
-                    .frame(maxWidth: .infinity, minHeight: 250)
+                    .frame(maxWidth: .infinity, minHeight: 200)
                     .background(
                         LinearGradient(
                             gradient: Gradient(colors: [.yellow, .red]),

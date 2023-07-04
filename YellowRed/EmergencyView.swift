@@ -10,8 +10,7 @@ import ContactsUI
 
 struct EmergencyView: View {
     @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 3)
-    
-    @State private var valid: Bool = true
+    @State private var areEmergencyContactsValid: Bool = true
     
     @State private var next: Bool = false
     
@@ -55,7 +54,7 @@ struct EmergencyView: View {
                 }
                 .padding(.horizontal, 20)
                 
-                if !valid {
+                if !areEmergencyContactsValid {
                     Text("Please select three unique emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.white)
@@ -64,8 +63,8 @@ struct EmergencyView: View {
                 Spacer()
                 
                 Button(action: {
-                    valid = InputValidator.validateEmergencyContacts(emergencyContacts)
-                    next = valid
+                    areEmergencyContactsValid = InputValidator.validateEmergencyContacts(emergencyContacts)
+                    next = areEmergencyContactsValid
                 }) {
                     HStack {
                         Text("Next")

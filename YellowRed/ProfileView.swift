@@ -74,6 +74,8 @@ struct ProfileView: View {
             }
             .background(.white)
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: BackButton())
     }
 }
 

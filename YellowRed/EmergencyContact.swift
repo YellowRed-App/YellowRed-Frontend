@@ -8,7 +8,7 @@
 import SwiftUI
 import ContactsUI
 
-struct EmergencyContact {
+struct EmergencyContact: Hashable {
     var isSelected = false
     var displayName = ""
     var phoneNumber = ""

@@ -39,6 +39,7 @@ struct EmergencyContactPicker: View {
             .padding(12.5)
             .background(.white)
             .cornerRadius(10)
+            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
             .sheet(isPresented: $isContactPickerPresented) {
                 NavigationView {
                     EmergencyContactPickerView(showPhoneNumberSelection: $showPhoneNumberSelection, phoneNumbers: $phoneNumbers, contact: $contact)

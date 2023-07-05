@@ -38,7 +38,7 @@ struct EmergencyContactView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
-                Text("Please get started by selecting three emergency contacts. You will be able to change this later.")
+                Text("Please get started by choosing three emergency contacts. You will be able to change this later.")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -54,7 +54,7 @@ struct EmergencyContactView: View {
                 .padding(.horizontal, 20)
                 
                 if !areEmergencyContactsValid {
-                    Text("Please select three unique emergency contacts!")
+                    Text("Please choose three unique emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.white)
                 }

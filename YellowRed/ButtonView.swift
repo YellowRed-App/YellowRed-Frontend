@@ -46,7 +46,7 @@ struct RadioButton: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(.white)
             .cornerRadius(15)
-            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
+            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
         }
     }
 }

@@ -61,6 +61,7 @@ struct GetStartedEmailView: View {
                 .foregroundColor(.black)
                 .padding(12.5)
                 .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.black, lineWidth: isEmailValid ? 0 : 1)
@@ -88,6 +89,7 @@ struct GetStartedEmailView: View {
                     .foregroundColor(.black)
                     .padding(12.5)
                     .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: isVerificationValid ? 0 : 1)

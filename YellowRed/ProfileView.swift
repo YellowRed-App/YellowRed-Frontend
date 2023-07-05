@@ -129,7 +129,6 @@ struct EditPersonalView: View {
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
-                    .cornerRadius(25)
                     .edgesIgnoringSafeArea(.all)
                 )
                 
@@ -149,7 +148,7 @@ struct EditPersonalView: View {
                                 
                                 if newPhoneNumber.isEmpty {
                                     Text(phoneNumber)
-                                        .opacity(0.5)
+                                        .opacity(0.75)
                                 }
                             }
                         }
@@ -178,7 +177,7 @@ struct EditPersonalView: View {
                                 
                                 if smsVerificationCode.isEmpty {
                                     Text("Verification Code")
-                                        .opacity(0.5)
+                                        .opacity(0.75)
                                 }
                             }
                             .font(.title3)
@@ -249,7 +248,7 @@ struct EditPersonalView: View {
                             
                             if newEmailAddress.isEmpty {
                                 Text(emailAddress)
-                                    .opacity(0.5)
+                                    .opacity(0.75)
                             }
                         }
                         .font(.title3)
@@ -277,7 +276,7 @@ struct EditPersonalView: View {
                                 
                                 if emailVerificationCode.isEmpty {
                                     Text("Verification Code")
-                                        .opacity(0.5)
+                                        .opacity(0.75)
                                 }
                             }
                             .font(.title3)
@@ -349,7 +348,7 @@ struct EditPersonalView: View {
                             newPhoneNumber = ""
                         } else {
                             alert = true
-                            alertMessage = "You have not validated your new phone number!"
+                            alertMessage = "You have not verified your new phone number!"
                             return
                         }
                         if emailVerificationEnabled && emailVerificationCode == emailVerificationCodeSent {
@@ -360,7 +359,7 @@ struct EditPersonalView: View {
                             newEmailAddress = ""
                         } else {
                             alert = true
-                            alertMessage = "You have not validated your new email address!"
+                            alertMessage = "You have not verified your new email address!"
                             return
                         }
                     }
@@ -428,7 +427,6 @@ struct EditEmergencyContactView: View {
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
-                    .cornerRadius(25)
                     .edgesIgnoringSafeArea(.all)
                 )
                 
@@ -463,7 +461,7 @@ struct EditEmergencyContactView: View {
                 .padding(.horizontal, 20)
                 
                 if !areEmergencyContactsValid {
-                    Text("Please select three unique emergency contacts!")
+                    Text("Please choose three unique emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.red)
                 }

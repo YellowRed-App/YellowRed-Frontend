@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		71255CED2A53FD2B00C70A5B /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CEC2A53FD2B00C70A5B /* BackButton.swift */; };
+		71255CED2A53FD2B00C70A5B /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CEC2A53FD2B00C70A5B /* ButtonView.swift */; };
 		71255CEF2A54012D00C70A5B /* InputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CEE2A54012D00C70A5B /* InputValidator.swift */; };
 		71255CF12A540AC200C70A5B /* InputVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CF02A540AC200C70A5B /* InputVerifier.swift */; };
 		71255CF32A540EC600C70A5B /* EmergencyContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CF22A540EC600C70A5B /* EmergencyContact.swift */; };
@@ -30,7 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		71255CEC2A53FD2B00C70A5B /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		71255CEC2A53FD2B00C70A5B /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		71255CEE2A54012D00C70A5B /* InputValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidator.swift; sourceTree = "<group>"; };
 		71255CF02A540AC200C70A5B /* InputVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputVerifier.swift; sourceTree = "<group>"; };
 		71255CF22A540EC600C70A5B /* EmergencyContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyContact.swift; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 				71255CF62A5415B600C70A5B /* ProfileView.swift */,
 				71567E942A20B93300A2BB2D /* Assets.xcassets */,
 				71567E962A20B93300A2BB2D /* Preview Content */,
-				71255CEC2A53FD2B00C70A5B /* BackButton.swift */,
+				71255CEC2A53FD2B00C70A5B /* ButtonView.swift */,
 				71255CEE2A54012D00C70A5B /* InputValidator.swift */,
 				71255CF02A540AC200C70A5B /* InputVerifier.swift */,
 				71255CF22A540EC600C70A5B /* EmergencyContact.swift */,
@@ -207,7 +207,7 @@
 				71255CEF2A54012D00C70A5B /* InputValidator.swift in Sources */,
 				71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */,
 				71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */,
-				71255CED2A53FD2B00C70A5B /* BackButton.swift in Sources */,
+				71255CED2A53FD2B00C70A5B /* ButtonView.swift in Sources */,
 				715086372A2E1DC700841F44 /* NotificationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

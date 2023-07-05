@@ -128,33 +128,6 @@ struct GetStartedAffiliationView: View {
     }
 }
 
-struct RadioButton: View {
-    let id: String
-    let label: String
-    @Binding var isSelected: String
-    @Binding var isAffiliationValid: Bool
-    
-    var body: some View {
-        Button(action: {
-            isSelected = id
-            isAffiliationValid = true
-        }) {
-            HStack(alignment: .top) {
-                Image(systemName: isSelected == id ? "largecircle.fill.circle" : "circle")
-                Text(label)
-            }
-            .font(.title3)
-            .fontWeight(.medium)
-            .foregroundColor(.black)
-            .padding(12.5)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.white)
-            .cornerRadius(15)
-            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 10)
-        }
-    }
-}
-
 struct GetStartedAffiliationView_Previews: PreviewProvider {
     static var previews: some View {
         GetStartedAffiliationView(fullName: "John Smith")

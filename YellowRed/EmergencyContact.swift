@@ -12,6 +12,12 @@ struct EmergencyContact: Hashable {
     var isSelected = false
     var displayName = ""
     var phoneNumber = ""
+
+    init(isSelected: Bool = false, displayName: String = "", phoneNumber: String = "") {
+        self.isSelected = isSelected
+        self.displayName = displayName
+        self.phoneNumber = phoneNumber
+    }
 }
 
 struct EmergencyContactPicker: View {
@@ -28,6 +34,7 @@ struct EmergencyContactPicker: View {
                 Text(contact.isSelected ? "\(contact.displayName) (\(contact.phoneNumber))" : "Select Contact")
                     .foregroundColor(.blue)
                     .frame(maxWidth: 300, alignment: .leading)
+                    .multilineTextAlignment(.leading)
             }
             .padding(12.5)
             .background(.white)

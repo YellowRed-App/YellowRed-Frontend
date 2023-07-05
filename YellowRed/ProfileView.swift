@@ -13,9 +13,9 @@ struct ProfileView: View {
     @State private var phoneNumber: String = "(123) 456-7890"
     @State private var emailAddress: String = "abc5xy@virginia.edu"
     @State private var emergencyContacts: [EmergencyContact] = [
-        EmergencyContact(isSelected: false, displayName: "Contact 1", phoneNumber: "+1 (123) 456-7891"),
-        EmergencyContact(isSelected: false, displayName: "Contact 2", phoneNumber: "+1 (123) 456-7892"),
-        EmergencyContact(isSelected: false, displayName: "Contact 3", phoneNumber: "+1 (123) 456-7893")
+        EmergencyContact(isSelected: true, displayName: "John Doe", phoneNumber: "+1 (234) 567-8901"),
+        EmergencyContact(isSelected: true, displayName: "Jane Doe", phoneNumber: "+1 (234) 567-8902"),
+        EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
     ]
     
     @State private var yellowMessage: String = "I'm feeling a bit uncomfortable, can we talk"
@@ -60,7 +60,7 @@ struct ProfileView: View {
                             ForEach(emergencyContacts.indices, id: \.self) { index in
                                 InfoView(title: "Contact \(index + 1)", value: "\(emergencyContacts[index].displayName) (\(emergencyContacts[index].phoneNumber))")
                             }
-                        }, destinationView: AnyView(EditEmergencyContactView()))
+                        }, destinationView: AnyView(EditEmergencyContactView(emergencyContacts: $emergencyContacts)))
                         
                         SectionView(title: "Custom Messages", content:  {
                             InfoView(title: "Yellow\nButton", value: yellowMessage)
@@ -109,7 +109,7 @@ struct EditPersonalView: View {
         ZStack {
             VStack(spacing: 20) {
                 VStack(spacing: 20) {
-                    Image(systemName: "person.circle.fill")
+                    Image(systemName: "person.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 96, height: 96)
@@ -145,8 +145,8 @@ struct EditPersonalView: View {
                             Text("+1")
                             ZStack(alignment: .leading) {
                                 TextField("", text: $newPhoneNumber)
-//                                    .keyboardType(.numberPad)
-                            
+                                //                                    .keyboardType(.numberPad)
+                                
                                 if newPhoneNumber.isEmpty {
                                     Text(phoneNumber)
                                         .opacity(0.5)
@@ -157,6 +157,7 @@ struct EditPersonalView: View {
                         .foregroundColor(.white)
                         .padding(12.5)
                         .background(RoundedRectangle(cornerRadius: 10).fill(.yellow))
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.black, lineWidth: isPhoneNumberValid ? 0 : 1)
@@ -173,7 +174,7 @@ struct EditPersonalView: View {
                         if smsVerificationEnabled {
                             ZStack(alignment: .leading) {
                                 TextField("Verification Code", text: $smsVerificationCode)
-//                                    .keyboardType(.numberPad)
+                                //                                    .keyboardType(.numberPad)
                                 
                                 if smsVerificationCode.isEmpty {
                                     Text("Verification Code")
@@ -184,6 +185,7 @@ struct EditPersonalView: View {
                             .foregroundColor(.white)
                             .padding(12.5)
                             .background(RoundedRectangle(cornerRadius: 10).fill(.yellow))
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(.black, lineWidth: smsVerificationValid ? 0 : 1)
@@ -243,7 +245,7 @@ struct EditPersonalView: View {
                         ZStack(alignment: .leading) {
                             TextField("", text: $newEmailAddress)
                                 .autocapitalization(.none)
-//                                .keyboardType(.emailAddress)
+                            //                                .keyboardType(.emailAddress)
                             
                             if newEmailAddress.isEmpty {
                                 Text(emailAddress)
@@ -254,6 +256,7 @@ struct EditPersonalView: View {
                         .foregroundColor(.white)
                         .padding(12.5)
                         .background(RoundedRectangle(cornerRadius: 10).fill(.yellow))
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.black, lineWidth: isEmailAddressValid ? 0 : 1)
@@ -270,7 +273,7 @@ struct EditPersonalView: View {
                         if emailVerificationEnabled {
                             ZStack(alignment: .leading) {
                                 TextField("Verification Code", text: $emailVerificationCode)
-//                                    .keyboardType(.numberPad)
+                                //                                    .keyboardType(.numberPad)
                                 
                                 if emailVerificationCode.isEmpty {
                                     Text("Verification Code")
@@ -281,6 +284,7 @@ struct EditPersonalView: View {
                             .foregroundColor(.white)
                             .padding(12.5)
                             .background(RoundedRectangle(cornerRadius: 10).fill(.yellow))
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(.black, lineWidth: emailVerificationValid ? 0 : 1)
@@ -357,6 +361,7 @@ struct EditPersonalView: View {
                         } else {
                             alert = true
                             alertMessage = "You have not validated your new email address!"
+                            return
                         }
                     }
                     presentationMode.wrappedValue.dismiss()
@@ -384,8 +389,117 @@ struct EditPersonalView: View {
 }
 
 struct EditEmergencyContactView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    @Binding var emergencyContacts: [EmergencyContact]
+    
+    @State private var newEmergencyContacts: [EmergencyContact]
+    init(emergencyContacts: Binding<[EmergencyContact]>) {
+        _emergencyContacts = emergencyContacts
+        _newEmergencyContacts = State(initialValue: emergencyContacts.wrappedValue)
+    }
+
+    @State private var areEmergencyContactsValid: Bool = true
+    
+    @State private var alert: Bool = false
+    @State private var alertMessage: String = ""
+    
     var body: some View {
-        Text("Edit Emergency Contact View")
+        ZStack {
+            VStack(spacing: 20) {
+                VStack(spacing: 20) {
+                    Image(systemName: "phone.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 96, height: 96)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    
+                    Text("Emergency Contacts")
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                }
+                .frame(maxWidth: .infinity, minHeight: 200)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [.yellow, .red]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .cornerRadius(25)
+                    .edgesIgnoringSafeArea(.all)
+                )
+                
+                Spacer()
+                
+                Text("Choose New Emergency Contacts")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                
+                VStack(spacing: 15) {
+                    ForEach(0..<3, id: \.self) { index in
+                        EmergencyContactPicker(contact: $newEmergencyContacts[index])
+                            .font(.title3)
+                            .background(.white)
+                            .cornerRadius(10)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(
+                                        LinearGradient(
+                                            colors: [.yellow, .red],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ), lineWidth: 2.5
+                                    )
+                            )
+                            .padding(.vertical, 5)
+                    }
+                }
+                .padding(.horizontal, 20)
+                
+                if !areEmergencyContactsValid {
+                    Text("Please select three unique emergency contacts!")
+                        .font(.subheadline)
+                        .foregroundColor(.red)
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    areEmergencyContactsValid = InputValidator.validateEmergencyContacts(newEmergencyContacts)
+                    if areEmergencyContactsValid {
+                        emergencyContacts = newEmergencyContacts
+                        presentationMode.wrappedValue.dismiss()
+                    } else {
+                        areEmergencyContactsValid = false
+                        alert = true
+                        alertMessage = "You have not chosen three unique emergency contacts!"
+                    }
+                }) {
+                    Text("Save and Exit")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.blue)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                }
+                .padding(.horizontal, 40)
+                .padding(.bottom, 40)
+                .alert(isPresented: $alert) {
+                    Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                }
+            }
+            .background(.white)
+        }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -399,10 +513,16 @@ struct ProfileView_Previews: PreviewProvider {
     @State static var fullName: String = "John Smith"
     @State static var phoneNumber: String = "(123) 456-7890"
     @State static var emailAddress: String = "abc5xy@virginia.edu"
+    @State static var emergencyContacts: [EmergencyContact] = [
+        EmergencyContact(isSelected: true, displayName: "John Doe", phoneNumber: "+1 (234) 567-8901"),
+        EmergencyContact(isSelected: true, displayName: "Jane Doe", phoneNumber: "+1 (234) 567-8902"),
+        EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
+    ]
+    
     static var previews: some View {
         ProfileView()
         EditPersonalView(fullName: $fullName, phoneNumber: $phoneNumber, emailAddress: $emailAddress)
-        EditEmergencyContactView()
+        EditEmergencyContactView(emergencyContacts: $emergencyContacts)
         EditCustomMessageView()
     }
 }

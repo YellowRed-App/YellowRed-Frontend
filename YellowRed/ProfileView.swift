@@ -180,6 +180,9 @@ struct EditPersonalView: View {
     @State private var emailVerificationEnabled: Bool = false
     @State private var emailVerificationValid: Bool = true
     
+    @State private var alert: Bool = false
+    @State private var alertMessage: String = ""
+    
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
@@ -411,6 +414,29 @@ struct EditPersonalView: View {
                 Spacer()
                 
                 Button(action: {
+                    if !(newPhoneNumber.isEmpty && newEmailAddress.isEmpty) {
+                        if smsVerificationEnabled && smsVerificationCode == smsVerificationCodeSent {
+                            smsVerificationEnabled = false
+                            smsVerificationValid = true
+                            smsVerificationCode = ""
+                            phoneNumber = newPhoneNumber
+                            newPhoneNumber = ""
+                        } else {
+                            alert = true
+                            alertMessage = "You have not validated your new phone number!"
+                            return
+                        }
+                        if emailVerificationEnabled && emailVerificationCode == emailVerificationCodeSent {
+                            emailVerificationEnabled = false
+                            emailVerificationValid = true
+                            emailVerificationCode = ""
+                            emailAddress = newEmailAddress
+                            newEmailAddress = ""
+                        } else {
+                            alert = true
+                            alertMessage = "You have not validated your new email address!"
+                        }
+                    }
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Save and Exit")
@@ -425,6 +451,9 @@ struct EditPersonalView: View {
                 }
                 .padding(.horizontal, 40)
                 .padding(.bottom, 40)
+                .alert(isPresented: $alert) {
+                    Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                }
             }
             .background(.white)
         }

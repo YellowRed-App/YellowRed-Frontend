@@ -50,7 +50,7 @@ struct GetStartedNumberView: View {
                     Text("+1")
                     ZStack(alignment: .leading) {
                         TextField("(123) 456-7890", text: $phoneNumber)
-                            .keyboardType(.numberPad)
+//                            .keyboardType(.numberPad)
                         
                         if phoneNumber.isEmpty {
                             Text("(123) 456-7890")
@@ -78,7 +78,7 @@ struct GetStartedNumberView: View {
                 if isVerificationEnabled {
                     ZStack(alignment: .leading) {
                         TextField("Verification Code", text: $verificationCode)
-                            .keyboardType(.numberPad)
+//                            .keyboardType(.numberPad)
                         
                         if verificationCode.isEmpty {
                             Text("Verification Code")

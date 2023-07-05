@@ -39,7 +39,7 @@ struct GetStartedNameView: View {
                     ZStack(alignment: .leading) {
                         TextField("John Smith", text: $fullName)
                             .autocapitalization(.words)
-                            .keyboardType(.alphabet)
+//                            .keyboardType(.alphabet)
                         
                         if fullName.isEmpty {
                             Text("John Smith")

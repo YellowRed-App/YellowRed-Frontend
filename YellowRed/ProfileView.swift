@@ -220,7 +220,7 @@ struct EditPersonalView: View {
                             Text("+1")
                             ZStack(alignment: .leading) {
                                 TextField("", text: $newPhoneNumber)
-                                    .keyboardType(.numberPad)
+//                                    .keyboardType(.numberPad)
                             
                                 if newPhoneNumber.isEmpty {
                                     Text(phoneNumber)
@@ -248,7 +248,7 @@ struct EditPersonalView: View {
                         if smsVerificationEnabled {
                             ZStack(alignment: .leading) {
                                 TextField("Verification Code", text: $smsVerificationCode)
-                                    .keyboardType(.numberPad)
+//                                    .keyboardType(.numberPad)
                                 
                                 if smsVerificationCode.isEmpty {
                                     Text("Verification Code")
@@ -318,7 +318,7 @@ struct EditPersonalView: View {
                         ZStack(alignment: .leading) {
                             TextField("", text: $newEmailAddress)
                                 .autocapitalization(.none)
-                                .keyboardType(.emailAddress)
+//                                .keyboardType(.emailAddress)
                             
                             if newEmailAddress.isEmpty {
                                 Text(emailAddress)
@@ -345,7 +345,7 @@ struct EditPersonalView: View {
                         if emailVerificationEnabled {
                             ZStack(alignment: .leading) {
                                 TextField("Verification Code", text: $emailVerificationCode)
-                                    .keyboardType(.numberPad)
+//                                    .keyboardType(.numberPad)
                                 
                                 if emailVerificationCode.isEmpty {
                                     Text("Verification Code")

@@ -123,7 +123,7 @@ struct RedMessageView: View {
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 1)
+                                    .stroke(selectedTemplate == index ? .black : .clear, lineWidth: 2.5)
                             )
                             .onTapGesture {
                                 self.selectingTemplate = index

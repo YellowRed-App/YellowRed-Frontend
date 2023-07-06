@@ -65,7 +65,7 @@ struct GetStartedNumberView: View {
                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(.black, lineWidth: isPhoneNumberValid ? 0 : 1)
+                        .stroke(.black, lineWidth: isPhoneNumberValid ? 0 : 2.5)
                 )
                 .padding(.horizontal, 20)
                 .disabled(isVerificationEnabled)
@@ -93,7 +93,7 @@ struct GetStartedNumberView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: isVerificationValid ? 0 : 1)
+                            .stroke(.black, lineWidth: isVerificationValid ? 0 : 2.5)
                     )
                     .padding(.horizontal, 20)
                     

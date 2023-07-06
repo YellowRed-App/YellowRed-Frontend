@@ -10,6 +10,8 @@ import SwiftUI
 struct GetStartedAffiliationView: View {
     @State private var affiliation: String = ""
     @State private var isAffiliationValid: Bool = true
+    @State private var isUniversityValid: Bool = true
+    @State private var isValid: Bool = true
     
     @State private var university: String = ""
     
@@ -73,6 +75,10 @@ struct GetStartedAffiliationView: View {
                         .foregroundColor(.black)
                         .padding(12.5)
                         .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.black, lineWidth: isUniversityValid ? 0 : 2.5)
+                        )
                         .padding(.horizontal, 20)
                     }
                     
@@ -87,6 +93,10 @@ struct GetStartedAffiliationView: View {
                 }
                 .background(.white.opacity(0.25))
                 .cornerRadius(10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.black, lineWidth: isAffiliationValid ? 0 : 2.5)
+                )
                 .padding(.horizontal, 20)
                 
                 if !isAffiliationValid {
@@ -95,9 +105,22 @@ struct GetStartedAffiliationView: View {
                         .foregroundColor(.white)
                 }
                 
+                if !isUniversityValid {
+                    Text("Please enter a university!")
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                }
+                
                 Button(action: {
-                    isAffiliationValid = InputValidator.validateAffiliation(affiliation, university)
-                    if isAffiliationValid {
+                    if affiliation == "other" {
+                        isValid = !university.isEmpty
+                        isUniversityValid = !university.isEmpty
+                    } else {
+                        isValid = !affiliation.isEmpty
+                        isAffiliationValid = !affiliation.isEmpty
+                    }
+                    
+                    if isValid {
                         next = true
                     }
                 }) {

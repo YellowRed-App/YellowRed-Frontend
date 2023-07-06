@@ -26,14 +26,6 @@ struct InputValidator {
         return emailPredicate.evaluate(with: email)
     }
     
-    static func validateAffiliation(_ affiliation: String, _ university: String) -> Bool {
-        if affiliation == "other" {
-            return !university.isEmpty
-        } else {
-            return !affiliation.isEmpty
-        }
-    }
-    
     static func validateEmergencyContacts(_ emergencyContacts: [EmergencyContact]) -> Bool {
         guard emergencyContacts.allSatisfy({ $0.isSelected }) else {
             return false

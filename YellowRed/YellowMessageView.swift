@@ -185,7 +185,7 @@ struct YellowMessageView: View {
                 Spacer()
                 
                 Button(action: {
-                    valid = selectedTemplate != nil || !customMessage.isEmpty
+                    valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
                     if valid {
                         yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
                         next = true

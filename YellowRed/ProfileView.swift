@@ -3,7 +3,7 @@
 //  YellowRed
 //
 //  Created by William Shaoul on 7/1/23.
-//  Edited by Krish Mehta on 4/7/23.
+//  Revamped by Krish Mehta on 4/7/23.
 //
 
 import SwiftUI
@@ -169,7 +169,7 @@ struct EditPersonalView: View {
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(.red, lineWidth: isPhoneNumberValid ? 0 : 1)
+                                .stroke(.red, lineWidth: isPhoneNumberValid ? 0 : 2.5)
                         )
                         .padding(.horizontal, 20)
                         .disabled(smsVerificationEnabled)
@@ -207,7 +207,7 @@ struct EditPersonalView: View {
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.black, lineWidth: smsVerificationValid ? 0 : 1)
+                                    .stroke(.red, lineWidth: smsVerificationValid ? 0 : 2.5)
                             )
                             .padding(.horizontal, 20)
                             
@@ -288,7 +288,7 @@ struct EditPersonalView: View {
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: isEmailAddressValid ? 0 : 1)
+                                .stroke(.red, lineWidth: isEmailAddressValid ? 0 : 2.5)
                         )
                         .padding(.horizontal, 20)
                         .disabled(emailVerificationEnabled)
@@ -326,7 +326,7 @@ struct EditPersonalView: View {
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.black, lineWidth: emailVerificationValid ? 0 : 1)
+                                    .stroke(.red, lineWidth: emailVerificationValid ? 0 : 2.5)
                             )
                             .padding(.horizontal, 20)
                             

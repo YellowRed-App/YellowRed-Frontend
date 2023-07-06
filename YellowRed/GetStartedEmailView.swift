@@ -49,7 +49,7 @@ struct GetStartedEmailView: View {
                 ZStack(alignment: .leading) {
                     TextField("abc5xy@virginia.edu", text: $email)
                         .autocapitalization(.none)
-//                        .keyboardType(.emailAddress)
+                    //                        .keyboardType(.emailAddress)
                     
                     if email.isEmpty {
                         Text("abc5xy@virginia.edu")
@@ -78,7 +78,7 @@ struct GetStartedEmailView: View {
                 if isVerificationEnabled {
                     ZStack(alignment: .leading) {
                         TextField("Verification Code", text: $verificationCode)
-//                            .keyboardType(.numberPad)
+                        //                            .keyboardType(.numberPad)
                         
                         if verificationCode.isEmpty {
                             Text("Verification Code")

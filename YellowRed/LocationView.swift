@@ -106,7 +106,7 @@ struct LocationView: View {
             let locationManager = CLLocationManager()
             locationManager.requestAlwaysAuthorization()
             DispatchQueue.main.async {
-                 next = true
+                next = true
             }
         }
     }

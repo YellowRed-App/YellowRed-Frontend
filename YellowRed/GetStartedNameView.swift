@@ -65,7 +65,9 @@ struct GetStartedNameView: View {
                     
                     Button(action: {
                         isFullNameValid = InputValidator.validateFullName(fullName)
-                        next = isFullNameValid
+                        if isFullNameValid {
+                            next = true
+                        }
                     }) {
                         HStack {
                             Text("Next")

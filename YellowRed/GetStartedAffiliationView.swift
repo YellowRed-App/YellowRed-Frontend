@@ -97,7 +97,9 @@ struct GetStartedAffiliationView: View {
                 
                 Button(action: {
                     isAffiliationValid = InputValidator.validateAffiliation(affiliation, university)
-                    next = isAffiliationValid
+                    if isAffiliationValid {
+                        next = true
+                    }
                 }) {
                     HStack {
                         Text("Next")

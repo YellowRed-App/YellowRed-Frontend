@@ -17,6 +17,7 @@ struct YellowMessageView: View {
     @State private var selectedTemplate: Int?
     @State private var editingTemplate: Int?
     @State private var customMessage: String = ""
+    @State private var yellowMessage: String = ""
     
     @State private var valid: Bool = true
     
@@ -185,7 +186,10 @@ struct YellowMessageView: View {
                 
                 Button(action: {
                     valid = selectedTemplate != nil || !customMessage.isEmpty
-                    next = valid
+                    if valid {
+                        yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
+                        next = true
+                    }
                 }) {
                     HStack {
                         Text("Next")

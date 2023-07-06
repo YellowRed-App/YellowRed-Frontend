@@ -62,10 +62,10 @@ struct ProfileView: View {
                             }
                         }, destinationView: AnyView(EditEmergencyContactView(emergencyContacts: $emergencyContacts)))
                         
-                        SectionView(title: "Custom Messages", content:  {
+                        SectionView(title: "Button Messages", content:  {
                             InfoView(title: "Yellow\nButton", value: yellowMessage)
                             InfoView(title: "Red\nButton", value: redMessage)
-                        }, destinationView: AnyView(EditCustomMessageView()))
+                        }, destinationView: AnyView(EditButtonMessageView(yellowMessage: $yellowMessage, redMessage: $redMessage)))
                         
                         Spacer()
                     }
@@ -148,18 +148,28 @@ struct EditPersonalView: View {
                                 
                                 if newPhoneNumber.isEmpty {
                                     Text(phoneNumber)
-                                        .opacity(0.75)
+                                        .opacity(0.5)
                                 }
                             }
                         }
                         .font(.title3)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .padding(12.5)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.yellow))
+                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: isPhoneNumberValid ? 0 : 1)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [.yellow, .red],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ), lineWidth: isPhoneNumberValid ? 2.5 : 0
+                                )
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.red, lineWidth: isPhoneNumberValid ? 0 : 1)
                         )
                         .padding(.horizontal, 20)
                         .disabled(smsVerificationEnabled)
@@ -177,14 +187,24 @@ struct EditPersonalView: View {
                                 
                                 if smsVerificationCode.isEmpty {
                                     Text("Verification Code")
-                                        .opacity(0.75)
+                                        .opacity(0.5)
                                 }
                             }
                             .font(.title3)
-                            .foregroundColor(.white)
+                            .foregroundColor(.black)
                             .padding(12.5)
-                            .background(RoundedRectangle(cornerRadius: 10).fill(.yellow))
+                            .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(
+                                        LinearGradient(
+                                            colors: [.yellow, .red],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ), lineWidth: smsVerificationValid ? 2.5 : 0
+                                    )
+                            )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(.black, lineWidth: smsVerificationValid ? 0 : 1)
@@ -248,14 +268,24 @@ struct EditPersonalView: View {
                             
                             if newEmailAddress.isEmpty {
                                 Text(emailAddress)
-                                    .opacity(0.75)
+                                    .opacity(0.5)
                             }
                         }
                         .font(.title3)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .padding(12.5)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.yellow))
+                        .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [.yellow, .red],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ), lineWidth: isEmailAddressValid ? 2.5 : 0
+                                )
+                        )
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.black, lineWidth: isEmailAddressValid ? 0 : 1)
@@ -276,14 +306,24 @@ struct EditPersonalView: View {
                                 
                                 if emailVerificationCode.isEmpty {
                                     Text("Verification Code")
-                                        .opacity(0.75)
+                                        .opacity(0.5)
                                 }
                             }
                             .font(.title3)
-                            .foregroundColor(.white)
+                            .foregroundColor(.black)
                             .padding(12.5)
-                            .background(RoundedRectangle(cornerRadius: 10).fill(.yellow))
+                            .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(
+                                        LinearGradient(
+                                            colors: [.yellow, .red],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ), lineWidth: emailVerificationValid ? 2.5 : 0
+                                    )
+                            )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(.black, lineWidth: emailVerificationValid ? 0 : 1)
@@ -474,7 +514,6 @@ struct EditEmergencyContactView: View {
                         emergencyContacts = newEmergencyContacts
                         presentationMode.wrappedValue.dismiss()
                     } else {
-                        areEmergencyContactsValid = false
                         alert = true
                         alertMessage = "You have not chosen three unique emergency contacts!"
                     }
@@ -501,9 +540,577 @@ struct EditEmergencyContactView: View {
     }
 }
 
-struct EditCustomMessageView: View {
+struct EditButtonMessageView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    @Binding var yellowMessage: String
+    @Binding var redMessage: String
+    
+    @State private var editYellowMessage: Bool = false
+    @State private var editRedMessage: Bool = false
+    
+    @State private var alert: Bool = false
+    @State private var alertMessage: String = ""
+    
     var body: some View {
-        Text("Edit Custom Message View")
+        ZStack {
+            VStack(spacing: 20) {
+                VStack(spacing: 20) {
+                    Image(systemName: "message.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 96, height: 96)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    
+                    Text("Button Messages")
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                }
+                .frame(maxWidth: .infinity, minHeight: 200)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [.yellow, .red]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .edgesIgnoringSafeArea(.all)
+                )
+                
+                Spacer()
+                
+                Text("Edit Yellow Button Message")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                
+                Button(action: {
+                    editYellowMessage = true
+                }) {
+                    Text(yellowMessage)
+                        .font(.body)
+                        .fontWeight(.regular)
+                        .foregroundColor(.black)
+                        .multilineTextAlignment(.leading)
+                        .frame(height: 100)
+                        .frame(maxWidth: .infinity)
+                        .padding(12.5)
+                        .background(.white)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [.yellow, .red],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ), lineWidth: 2.5
+                                )
+                        )
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .padding(.horizontal, 20)
+                }
+                .padding(.horizontal, 20)
+                .sheet(isPresented: $editYellowMessage) {
+                    EditYellowMessageView(yellowMessage: $yellowMessage, editYellowMessage: $editYellowMessage)
+                }
+                
+                Text("Edit Red Button Message")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                
+                Button(action: {
+                    editRedMessage = true
+                }) {
+                    Text(redMessage)
+                        .font(.body)
+                        .fontWeight(.regular)
+                        .foregroundColor(.black)
+                        .multilineTextAlignment(.leading)
+                        .frame(height: 100)
+                        .frame(maxWidth: .infinity)
+                        .padding(12.5)
+                        .background(.white)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [.yellow, .red],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ), lineWidth: 2.5
+                                )
+                        )
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .padding(.horizontal, 20)
+                }
+                .padding(.horizontal, 20)
+                .sheet(isPresented: $editRedMessage) {
+                    EditRedMessageView(redMessage: $redMessage, editRedMessage: $editRedMessage)
+                }
+                
+                Spacer()
+                Spacer()
+                
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("Save and Exit")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.blue)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                }
+                .padding(.horizontal, 40)
+                .padding(.bottom, 40)
+                .alert(isPresented: $alert) {
+                    Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                }
+            }
+            .background(.white)
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+struct EditYellowMessageView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    @Binding var yellowMessage: String
+    @Binding var editYellowMessage: Bool
+    
+    @FocusState private var isEditing: Bool
+    @State private var messageTemplates: [String] = [
+        "I'm feeling a bit uncomfortable, can we talk?",
+        "Could use some company right now, can we meet up?",
+        "Feeling uneasy at my current location. Can you check on me?",
+    ]
+    @State private var selectedTemplate: Int?
+    @State private var editingTemplate: Int?
+    @State private var customMessage: String = ""
+    
+    @State private var valid: Bool = true
+    
+    @State private var alert: Bool = false
+    @State private var alertMessage: String = ""
+    
+    @State private var viewLoaded: Bool = false
+    
+    var body: some View {
+        ZStack {
+            VStack(spacing: 20) {
+                VStack(spacing: 20) {
+                    Image(systemName: "message.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 96, height: 96)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    
+                    Text("Yellow Message")
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                }
+                .frame(maxWidth: .infinity, minHeight: 200)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [.yellow, .red]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .edgesIgnoringSafeArea(.all)
+                )
+                
+                Spacer()
+                
+                Text("Edit Yellow Button Message")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                
+                VStack(spacing: 15) {
+                    if editingTemplate != nil {
+                        VStack {
+                            TextEditor(text: $messageTemplates[editingTemplate!])
+                                .font(.body)
+                                .fontWeight(.regular)
+                                .foregroundColor(.black)
+                                .frame(height: 150)
+                                .frame(maxWidth: .infinity)
+                                .padding(12.5)
+                                .background(.white)
+                                .colorScheme(.light)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(
+                                            LinearGradient(
+                                                colors: [.yellow, .red],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            ), lineWidth: 2.5
+                                        )
+                                )
+                                .focused($isEditing)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        }
+                        
+                        HStack {
+                            Button("Select", action: {
+                                selectedTemplate = editingTemplate
+                                editingTemplate = nil
+                                isEditing = false
+                            })
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                            .padding(12.5)
+                            .background(.white)
+                            .cornerRadius(10)
+                            .padding(.horizontal, 20)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            
+                            Button("Cancel", action: {
+                                editingTemplate = nil
+                                isEditing = false
+                            })
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                            .padding(12.5)
+                            .background(.white)
+                            .cornerRadius(10)
+                            .padding(.horizontal, 20)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        }
+                    } else {
+                        ForEach(0..<messageTemplates.count, id: \.self) { index in
+                            TextField("Placeholder", text: Binding(
+                                get: { self.messageTemplates[index] },
+                                set: { newValue in
+                                    self.messageTemplates[index] = newValue
+                                    self.selectedTemplate = nil
+                                    self.customMessage = ""
+                                }
+                            ))
+                            .font(.body)
+                            .fontWeight(.regular)
+                            .foregroundColor(.black)
+                            .padding(12.5)
+                            .frame(maxWidth: .infinity)
+                            .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
+                            .cornerRadius(15)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(
+                                        LinearGradient(
+                                            colors: [.yellow, .red],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ), lineWidth: selectedTemplate == index ? 2.5 : 0
+                                    )
+                            )
+                            .onTapGesture {
+                                self.editingTemplate = index
+                                self.isEditing = true
+                            }
+                        }
+                        
+                        ZStack(alignment: .leading) {
+                            if customMessage.isEmpty {
+                                Text(yellowMessage)
+                                    .lineLimit(1)
+                                    .opacity(0.5)
+                            }
+                            
+                            TextField("", text: Binding(
+                                get: { self.customMessage },
+                                set: { newValue in
+                                    self.customMessage = newValue
+                                    self.selectedTemplate = nil
+                                }
+                            ))
+                            .onAppear() {
+                                if !viewLoaded {
+                                    customMessage = yellowMessage
+                                    viewLoaded = true
+                                }
+                            }
+                        }
+                        .font(.body)
+                        .fontWeight(.regular)
+                        .foregroundColor(.black)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(!customMessage.isEmpty ? .white.opacity(0.5) : .white)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [.yellow, .red],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ), lineWidth: !customMessage.isEmpty ? 2.5 : 0
+                                )
+                        )
+                    }
+                    
+                    if !valid {
+                        Text("Please choose a template or create your own!")
+                            .font(.subheadline)
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.center)
+                    }
+                }
+                .padding(.horizontal, 40)
+                
+                Spacer()
+                
+                Button(action: {
+                    valid = selectedTemplate != nil || !customMessage.isEmpty
+                    if valid {
+                        yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
+                        editYellowMessage = false
+                        viewLoaded = false
+                        presentationMode.wrappedValue.dismiss()
+                    } else {
+                        alert = true
+                        alertMessage = "You have not chosen and optionally editted a message template or edited your own custom message!"
+                    }
+                }) {
+                    HStack {
+                        Text("Save")
+                        Image(systemName: "arrow.right.circle.fill")
+                    }
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .padding(12.5)
+                    .frame(maxWidth: .infinity)
+                    .background(.blue)
+                    .cornerRadius(15)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    .padding(.horizontal, 20)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 40)
+                .alert(isPresented: $alert) {
+                    Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                }
+            }
+            .background(.white)
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+struct EditRedMessageView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    @Binding var redMessage: String
+    @Binding var editRedMessage: Bool
+    
+    @FocusState private var isSelecting: Bool
+    @State private var messageTemplates: [String] = [
+        "I'm feeling a bit uncomfortable, can we talk?",
+        "Could use some company right now, can we meet up?",
+        "Feeling uneasy at my current location. Can you check on me?",
+    ]
+    @State private var selectedTemplate: Int?
+    @State private var selectingTemplate: Int?
+    
+    @State private var valid: Bool = true
+    
+    @State private var alert: Bool = false
+    @State private var alertMessage: String = ""
+    
+    var body: some View {
+        ZStack {
+            VStack(spacing: 20) {
+                VStack(spacing: 20) {
+                    Image(systemName: "message.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 96, height: 96)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    
+                    Text("Red Message")
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                }
+                .frame(maxWidth: .infinity, minHeight: 200)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [.yellow, .red]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .edgesIgnoringSafeArea(.all)
+                )
+                
+                Spacer()
+                
+                Text("Edit Red Button Message")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                
+                VStack(spacing: 15) {
+                    if selectingTemplate != nil {
+                        VStack {
+                            Text(messageTemplates[selectingTemplate!])
+                                .font(.body)
+                                .fontWeight(.regular)
+                                .foregroundColor(.black)
+                                .frame(maxWidth: .infinity)
+                                .padding(12.5)
+                                .background(.white)
+                                .colorScheme(.light)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(
+                                            LinearGradient(
+                                                colors: [.yellow, .red],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            ), lineWidth: 2.5
+                                        )
+                                )
+                                .focused($isSelecting)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            
+                            Spacer()
+                        }
+                        .frame(height: 150)
+                        
+                        HStack {
+                            Button("Select", action: {
+                                selectedTemplate = selectingTemplate
+                                selectingTemplate = nil
+                                isSelecting = false
+                            })
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                            .padding(12.5)
+                            .background(.white)
+                            .cornerRadius(10)
+                            .padding(.horizontal, 20)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            
+                            Button("Cancel", action: {
+                                selectingTemplate = nil
+                                isSelecting = false
+                            })
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                            .padding(12.5)
+                            .background(.white)
+                            .cornerRadius(10)
+                            .padding(.horizontal, 20)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        }
+                    } else {
+                        ForEach(0..<messageTemplates.count, id: \.self) { index in
+                            TextField("Placeholder", text: Binding(
+                                get: { self.messageTemplates[index] },
+                                set: { newValue in
+                                    self.messageTemplates[index] = newValue
+                                    self.selectedTemplate = nil
+                                }
+                            ))
+                            .font(.body)
+                            .fontWeight(.regular)
+                            .foregroundColor(.black)
+                            .padding(12.5)
+                            .frame(maxWidth: .infinity)
+                            .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
+                            .cornerRadius(15)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(
+                                        LinearGradient(
+                                            colors: [.yellow, .red],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ), lineWidth: selectedTemplate == index ? 2.5 : 0
+                                    )
+                            )
+                            .onTapGesture {
+                                self.selectingTemplate = index
+                                self.isSelecting = true
+                            }
+                        }
+                    }
+                    
+                    if !valid {
+                        Text("Please choose a template")
+                            .font(.subheadline)
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.center)
+                    }
+                }
+                .padding(.horizontal, 40)
+                
+                Spacer()
+                
+                Button(action: {
+                    valid = selectedTemplate != nil
+                    if valid {
+                        redMessage = messageTemplates[selectedTemplate!]
+                        editRedMessage = false
+                        presentationMode.wrappedValue.dismiss()
+                    } else {
+                        alert = true
+                        alertMessage = "You have not chosen a message template!"
+                    }
+                }) {
+                    HStack {
+                        Text("Save")
+                        Image(systemName: "arrow.right.circle.fill")
+                    }
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .padding(12.5)
+                    .frame(maxWidth: .infinity)
+                    .background(.blue)
+                    .cornerRadius(15)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    .padding(.horizontal, 20)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 40)
+                .alert(isPresented: $alert) {
+                    Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                }
+            }
+            .background(.white)
+        }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -516,11 +1123,18 @@ struct ProfileView_Previews: PreviewProvider {
         EmergencyContact(isSelected: true, displayName: "Jane Doe", phoneNumber: "+1 (234) 567-8902"),
         EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
     ]
+    @State static var yellowMessage: String = "I'm feeling a bit uncomfortable, can we talk"
+    @State static var redMessage: String = "I'm feeling a bit unsafe, can you check on me"
+    
+    @State static var editYellowMessage: Bool = true
+    @State static var editRedMessage: Bool = false
     
     static var previews: some View {
         ProfileView()
         EditPersonalView(fullName: $fullName, phoneNumber: $phoneNumber, emailAddress: $emailAddress)
         EditEmergencyContactView(emergencyContacts: $emergencyContacts)
-        EditCustomMessageView()
+        EditButtonMessageView(yellowMessage: $yellowMessage, redMessage: $redMessage)
+        EditYellowMessageView(yellowMessage: $yellowMessage, editYellowMessage: $editYellowMessage)
+        EditRedMessageView(redMessage: $redMessage, editRedMessage: $editRedMessage)
     }
 }

@@ -63,7 +63,9 @@ struct EmergencyContactView: View {
                 
                 Button(action: {
                     areEmergencyContactsValid = InputValidator.validateEmergencyContacts(emergencyContacts)
-                    next = areEmergencyContactsValid
+                    if areEmergencyContactsValid {
+                        next = true
+                    }
                 }) {
                     HStack {
                         Text("Next")

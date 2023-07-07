@@ -206,6 +206,7 @@ struct YellowButtonView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @Binding var yellowButton: Bool
+    
     @State private var flash: Bool = false
     
     var body: some View {
@@ -284,7 +285,9 @@ struct RedButtonView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @Binding var redButton: Bool
+    
     @State private var flash: Bool = false
+    @State private var alert: Bool = false
     
     var body: some View {
         ZStack {
@@ -311,8 +314,7 @@ struct RedButtonView: View {
                 Spacer()
                 
                 Button(action: {
-                    self.redButton = false
-                    presentationMode.wrappedValue.dismiss()
+                    alert = true
                 }) {
                     Text("Deactivate Red Button")
                         .font(.title2)
@@ -333,6 +335,16 @@ struct RedButtonView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateRedButton)
+        .alert(isPresented: $alert) {
+            Alert(
+                title: Text("Are you sure you are ok and want to deactivate the red button?"),
+                primaryButton: .destructive(Text("Yes, I'm ok")) {
+                    self.redButton = false
+                    presentationMode.wrappedValue.dismiss()
+                },
+                secondaryButton: .cancel(Text("No, I'm not ok"))
+            )
+        }
     }
     
     private func activateRedButton() {

@@ -348,8 +348,8 @@
 				INFOPLIST_FILE = YellowRed/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YellowRed;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "YellowRed will use your location to provide you with personalized services and alerts based on your geographic location.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "YellowRed will use your location to provide you with personalized services and alerts based on your geographic location.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "YellowRed will need access to your location to ensure your safety. If you're feeling uncomfortable or unsafe, pressing the Yellow Button or Red Button will notify your emergency contacts with your current location. We understand the importance of privacy and confidentiality. Your location data will be used solely for the purpose of safety and will not be shared with any third parties. Your safety and privacy are our topmost priorities.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "YellowRed will need access to your location to ensure your safety. If you're feeling uncomfortable or unsafe, pressing the Yellow Button or Red Button will notify your emergency contacts with your current location. We understand the importance of privacy and confidentiality. Your location data will be used solely for the purpose of safety and will not be shared with any third parties. Your safety and privacy are our topmost priorities.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -385,8 +385,8 @@
 				INFOPLIST_FILE = YellowRed/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YellowRed;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "YellowRed will use your location to provide you with personalized services and alerts based on your geographic location.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "YellowRed will use your location to provide you with personalized services and alerts based on your geographic location.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "YellowRed will need access to your location to ensure your safety. If you're feeling uncomfortable or unsafe, pressing the Yellow Button or Red Button will notify your emergency contacts with your current location. We understand the importance of privacy and confidentiality. Your location data will be used solely for the purpose of safety and will not be shared with any third parties. Your safety and privacy are our topmost priorities.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "YellowRed will need access to your location to ensure your safety. If you're feeling uncomfortable or unsafe, pressing the Yellow Button or Red Button will notify your emergency contacts with your current location. We understand the importance of privacy and confidentiality. Your location data will be used solely for the purpose of safety and will not be shared with any third parties. Your safety and privacy are our topmost priorities.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

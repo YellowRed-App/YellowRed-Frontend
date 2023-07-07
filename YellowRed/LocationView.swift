@@ -9,7 +9,7 @@ import SwiftUI
 import CoreLocation
 
 struct LocationView: View {
-    @State private var next: Bool = false
+    @StateObject private var locationManager = LocationManager()
     
     var body: some View {
         ZStack {
@@ -57,23 +57,9 @@ struct LocationView: View {
                 
                 VStack(spacing: 20) {
                     Button(action: {
-                        handleYesButtonTap()
+                        locationManager.requestLocationPermission()
                     }) {
-                        Text("Yes")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                            .padding(12.5)
-                            .frame(maxWidth: .infinity)
-                            .background(.white)
-                            .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                    }
-                    
-                    Button(action: {
-                        handleNoButtonTap()
-                    }) {
-                        Text("No")
+                        Text("Enable Location")
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)
@@ -85,6 +71,7 @@ struct LocationView: View {
                     }
                 }
                 .padding(.horizontal, 20)
+                .padding(.vertical, 40)
             }
             .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
@@ -92,27 +79,17 @@ struct LocationView: View {
         .background(
             NavigationLink(
                 destination: EmergencyContactView(),
-                isActive: $next,
+                isActive: $locationManager.next,
                 label: { EmptyView() }
             )
         )
-    }
-    
-    private func handleYesButtonTap() {
-        let status = CLLocationManager.authorizationStatus()
-        if status == .authorizedAlways || status == .authorizedWhenInUse {
-            next = true
-        } else {
-            let locationManager = CLLocationManager()
-            locationManager.requestAlwaysAuthorization()
-            DispatchQueue.main.async {
-                next = true
-            }
+        .alert(isPresented: $locationManager.alert) {
+            Alert(
+                title: Text("Location Services Disabled"),
+                message: Text("Please enable Location Services in Settings."),
+                dismissButton: .default(Text("OK"))
+            )
         }
-    }
-    
-    private func handleNoButtonTap() {
-        next = true
     }
 }
 

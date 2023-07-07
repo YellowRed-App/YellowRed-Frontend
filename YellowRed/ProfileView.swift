@@ -18,8 +18,8 @@ struct ProfileView: View {
         EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
     ]
     
-    @State private var yellowMessage: String = "I'm feeling a bit uncomfortable, can we talk"
-    @State private var redMessage: String = "I'm feeling a bit unsafe, can you check on me"
+    @State private var yellowMessage: String = "I'm out and about, and I could use a virtual buddy to keep an eye on my location. You've been sent my live location, and I would appreciate it if you could check in on me from time to time."
+    @State private var redMessage: String = "IMMEDIATE HELP NEEDED: I am in a threatening situation and unable to dial 911. Your immediate action is required. Please alert the authorities and come help, if possible. My current location is shared with you."
     
     var body: some View {
         NavigationView {
@@ -58,13 +58,13 @@ struct ProfileView: View {
                         
                         SectionView(title: "Emergency Contacts", content:  {
                             ForEach(emergencyContacts.indices, id: \.self) { index in
-                                InfoView(title: "Contact \(index + 1)", value: "\(emergencyContacts[index].displayName) (\(emergencyContacts[index].phoneNumber))")
+                                InfoView(title: "Contact \(index + 1)", value: "\(emergencyContacts[index].displayName)")
                             }
                         }, destinationView: AnyView(EditEmergencyContactView(emergencyContacts: $emergencyContacts)))
                         
                         SectionView(title: "Button Messages", content:  {
-                            InfoView(title: "Yellow\nButton", value: yellowMessage)
-                            InfoView(title: "Red\nButton", value: redMessage)
+                            InfoView(title: "Yellow\t", value: yellowMessage)
+                            InfoView(title: "Red\t", value: redMessage)
                         }, destinationView: AnyView(EditButtonMessageView(yellowMessage: $yellowMessage, redMessage: $redMessage)))
                         
                         Spacer()
@@ -1002,7 +1002,7 @@ struct EditRedMessageView: View {
                             
                             Spacer()
                         }
-                        .frame(height: 150)
+                        .frame(height: 200)
                         
                         HStack {
                             Button("Select", action: {

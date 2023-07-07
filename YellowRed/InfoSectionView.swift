@@ -22,6 +22,7 @@ struct InfoView: View {
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.trailing)
+                .lineLimit(1)
         }
     }
 }

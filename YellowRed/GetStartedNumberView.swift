@@ -50,6 +50,12 @@ struct GetStartedNumberView: View {
                     Text("+1")
                     ZStack(alignment: .leading) {
                         TextField("(123) 456-7890", text: $phoneNumber)
+                            .onReceive(phoneNumber.publisher.collect()) {
+                                let number = String($0)
+                                if let formattedNumber = PhoneNumberFormatter.format(phone: number) {
+                                    self.phoneNumber = formattedNumber
+                                }
+                            }
                         //                            .keyboardType(.numberPad)
                         
                         if phoneNumber.isEmpty {

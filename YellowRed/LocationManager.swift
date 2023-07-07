@@ -21,7 +21,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func requestLocationPermission() {
         let status = CLLocationManager.authorizationStatus()
         switch status {
-        case .authorizedAlways, .authorizedWhenInUse, .notDetermined:
+        case .authorizedAlways, .authorizedWhenInUse:
+            next = true
+        case .notDetermined:
             locationManager.requestAlwaysAuthorization()
         case .denied, .restricted:
             alert = true

@@ -13,10 +13,12 @@ struct YellowRedView: View {
     @State private var yellowButton: Bool = false
     @State private var redButton: Bool = false
     
-    @State private var countdown: Int = 5
+    @State private var yellowCountdown: Int = 3
+    @State private var redCountdown: Int = 5
     @State private var countdownTimer: Timer? = nil
     
-    @State private var hint: Bool = false
+    @State private var yellowHint: Bool = false
+    @State private var redHint: Bool = false
     @State private var hintTimer: Timer? = nil
     
     @State private var isPressingYellowButton: Bool = false
@@ -51,8 +53,8 @@ struct YellowRedView: View {
                                 isPressingYellowButton = pressing
                                 if pressing {
                                     self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                                        if self.countdown > 0 {
-                                            self.countdown -= 1
+                                        if self.yellowCountdown > 0 {
+                                            self.yellowCountdown -= 1
                                             GlobalHapticManager.shared.triggerHapticFeedback(0.25)
                                         } else {
                                             self.countdownTimer?.invalidate()
@@ -67,12 +69,13 @@ struct YellowRedView: View {
                                 } else {
                                     self.countdownTimer?.invalidate()
                                     self.countdownTimer = nil
-                                    self.countdown = 5
-                                    if self.countdown > 0 {
-                                        self.hint = true
+                                    self.yellowCountdown = 3
+                                    if self.yellowCountdown > 0 {
+                                        self.yellowHint = true
+                                        self.redHint = false
                                         self.hintTimer?.invalidate()
                                         self.hintTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-                                            self.hint = false
+                                            self.yellowHint = false
                                         }
                                     }
                                 }
@@ -81,8 +84,8 @@ struct YellowRedView: View {
                                 YellowButtonView(yellowButton: $yellowButton)
                             }
                         
-                        if isPressingYellowButton && countdown <= 5 {
-                            Text("\(countdown)")
+                        if isPressingYellowButton && yellowCountdown <= 3 {
+                            Text("\(yellowCountdown)")
                                 .font(.system(size: 125))
                                 .minimumScaleFactor(0.01)
                                 .lineLimit(1)
@@ -103,8 +106,8 @@ struct YellowRedView: View {
                                 isPressingRedButton = pressing
                                 if pressing {
                                     self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                                        if self.countdown > 0 {
-                                            self.countdown -= 1
+                                        if self.redCountdown > 0 {
+                                            self.redCountdown -= 1
                                             GlobalHapticManager.shared.triggerHapticFeedback(0.25)
                                         } else {
                                             self.countdownTimer?.invalidate()
@@ -119,12 +122,13 @@ struct YellowRedView: View {
                                 } else {
                                     self.countdownTimer?.invalidate()
                                     self.countdownTimer = nil
-                                    self.countdown = 5
-                                    if self.countdown > 0 {
-                                        self.hint = true
+                                    self.redCountdown = 5
+                                    if self.redCountdown > 0 {
+                                        self.redHint = true
+                                        self.yellowHint = false
                                         self.hintTimer?.invalidate()
                                         self.hintTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-                                            self.hint = false
+                                            self.redHint = false
                                         }
                                     }
                                 }
@@ -133,8 +137,8 @@ struct YellowRedView: View {
                                 RedButtonView(redButton: $redButton)
                             }
                         
-                        if isPressingRedButton && countdown <= 5 {
-                            Text("\(countdown)")
+                        if isPressingRedButton && redCountdown <= 5 {
+                            Text("\(redCountdown)")
                                 .font(.system(size: 125))
                                 .minimumScaleFactor(0.01)
                                 .lineLimit(1)
@@ -170,8 +174,19 @@ struct YellowRedView: View {
                 }
                 .padding(.horizontal, 20)
                 
-                if hint {
-                    Text("Please hold the button for five seconds to activate!")
+                if yellowHint {
+                    Text("Please hold the yellow button for three seconds to activate!")
+                        .font(.subheadline)
+                        .foregroundColor(.black)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 20)
+                        .offset(y: 250)
+                        .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
+                }
+                
+                if redHint {
+                    Text("Please hold the red button for five seconds to activate!")
                         .font(.subheadline)
                         .foregroundColor(.black)
                         .multilineTextAlignment(.center)

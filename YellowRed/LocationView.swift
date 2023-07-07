@@ -71,7 +71,7 @@ struct LocationView: View {
                     }
                 }
                 .padding(.horizontal, 20)
-                .padding(.vertical, 40)
+                .padding(.bottom, 40)
             }
             .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)

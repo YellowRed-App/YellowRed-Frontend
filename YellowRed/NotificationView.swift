@@ -48,23 +48,9 @@ struct NotificationView: View {
                 
                 VStack(spacing: 20) {
                     Button(action: {
-                        handleYesButtonTap()
+                        handleButtonTap()
                     }) {
-                        Text("Yes")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                            .padding(12.5)
-                            .frame(maxWidth: .infinity)
-                            .background(.white)
-                            .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                    }
-                    
-                    Button(action: {
-                        handleNoButtonTap()
-                    }) {
-                        Text("No")
+                        Text("Enable Notifications")
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)
@@ -76,6 +62,7 @@ struct NotificationView: View {
                     }
                 }
                 .padding(.horizontal, 20)
+                .padding(.bottom, 40)
             }
             .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
@@ -89,7 +76,7 @@ struct NotificationView: View {
         )
     }
     
-    private func handleYesButtonTap() {
+    private func handleButtonTap() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             if granted {
                 DispatchQueue.main.async {
@@ -99,10 +86,6 @@ struct NotificationView: View {
                 next = true
             }
         }
-    }
-    
-    private func handleNoButtonTap() {
-        next = true
     }
 }
 

@@ -15,7 +15,7 @@ struct InputValidator {
     }
     
     public static func validatePhoneNumber(_ phoneNumber: String) -> Bool {
-        let phoneRegex = "^[2-9]\\d{9}$"
+        let phoneRegex = "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
         let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
         return phonePredicate.evaluate(with: phoneNumber)
     }

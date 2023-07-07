@@ -928,9 +928,9 @@ struct EditRedMessageView: View {
     
     @FocusState private var isSelecting: Bool
     @State private var messageTemplates: [String] = [
-        "I'm feeling a bit uncomfortable, can we talk?",
-        "Could use some company right now, can we meet up?",
-        "Feeling uneasy at my current location. Can you check on me?",
+        "URGENT: I am in an immediate crisis and need your assistance. Please contact authorities or come help me. My live location has been sent to you.",
+        "EMERGENCY ALERT: I am in serious danger and unable to call 911. Please, notify local authorities immediately. Check my live location for my whereabouts.",
+        "CRISIS ALERT: I am in a high-risk situation and unable to reach out to the police. I need immediate assistance. Please, contact the authorities and come help. My live location is shared with you.",
     ]
     @State private var selectedTemplate: Int?
     @State private var selectingTemplate: Int?

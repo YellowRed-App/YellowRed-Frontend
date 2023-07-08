@@ -143,6 +143,7 @@ struct GetStartedEmailView: View {
             }
             .padding(.horizontal, 20)
         }
+        .endEditingOnTap()
     }
 }
 

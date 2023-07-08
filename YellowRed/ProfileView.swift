@@ -424,6 +424,7 @@ struct EditPersonalView: View {
             .background(.white)
         }
         .navigationBarBackButtonHidden(true)
+        .endEditingOnTap()
     }
 }
 
@@ -917,6 +918,7 @@ struct EditYellowMessageView: View {
             .background(.white)
         }
         .navigationBarBackButtonHidden(true)
+        .endEditingOnTap()
     }
 }
 

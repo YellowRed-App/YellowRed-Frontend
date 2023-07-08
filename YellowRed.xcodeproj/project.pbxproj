@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		710C70492A5809DC00118F32 /* PhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710C70482A5809DC00118F32 /* PhoneNumberFormatter.swift */; };
+		710C704B2A58116300118F32 /* EditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710C704A2A58116300118F32 /* EditingView.swift */; };
 		710EE5272A57ECA30022DD97 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710EE5262A57ECA30022DD97 /* LocationManager.swift */; };
 		71255CED2A53FD2B00C70A5B /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CEC2A53FD2B00C70A5B /* ButtonView.swift */; };
 		71255CEF2A54012D00C70A5B /* InputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CEE2A54012D00C70A5B /* InputValidator.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		710C70482A5809DC00118F32 /* PhoneNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberFormatter.swift; sourceTree = "<group>"; };
+		710C704A2A58116300118F32 /* EditingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingView.swift; sourceTree = "<group>"; };
 		710EE5262A57ECA30022DD97 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		71255CEC2A53FD2B00C70A5B /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		71255CEE2A54012D00C70A5B /* InputValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidator.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				71255CF22A540EC600C70A5B /* EmergencyContactManager.swift */,
 				710EE5262A57ECA30022DD97 /* LocationManager.swift */,
 				71255CF42A54102500C70A5B /* GlobalHapticManager.swift */,
+				710C704A2A58116300118F32 /* EditingView.swift */,
 			);
 			path = YellowRed;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				715D5CE22A48706C001701AA /* YellowMessageView.swift in Sources */,
 				7171C17E2A3DC34200CC8F9B /* EmergencyContactView.swift in Sources */,
 				71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */,
+				710C704B2A58116300118F32 /* EditingView.swift in Sources */,
 				710EE5272A57ECA30022DD97 /* LocationManager.swift in Sources */,
 				715D5CE42A4870D3001701AA /* RedMessageView.swift in Sources */,
 				71255CF12A540AC200C70A5B /* InputVerifier.swift in Sources */,

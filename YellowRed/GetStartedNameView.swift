@@ -93,6 +93,7 @@ struct GetStartedNameView: View {
                 }
                 .padding(.horizontal, 20)
             }
+            .endEditingOnTap()
         }
     }
 }

@@ -150,6 +150,7 @@ struct GetStartedAffiliationView: View {
             }
             .padding(.horizontal, 20)
         }
+        .endEditingOnTap()
     }
 }
 

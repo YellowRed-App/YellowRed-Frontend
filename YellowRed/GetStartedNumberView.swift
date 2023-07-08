@@ -150,6 +150,7 @@ struct GetStartedNumberView: View {
             }
             .padding(.horizontal, 20)
         }
+        .endEditingOnTap()
     }
 }
 

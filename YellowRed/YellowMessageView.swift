@@ -61,20 +61,6 @@ struct YellowMessageView: View {
                 VStack(spacing: 15) {
                     if editingTemplate != nil {
                         VStack {
-                            if isEditing {
-                                Button(action: {
-                                    isEditing = false
-                                }) {
-                                    Text("Done")
-                                        .font(.title3)
-                                        .fontWeight(.bold)
-                                        .foregroundColor(.blue)
-                                        .padding(12.5)
-                                        .background(.white)
-                                        .cornerRadius(10)
-                                        .padding(.vertical, 20)
-                                }
-                            }
                             TextEditor(text: $messageTemplates[editingTemplate!])
                                 .font(.body)
                                 .fontWeight(.regular)
@@ -217,6 +203,7 @@ struct YellowMessageView: View {
             .padding(.horizontal, 20)
             .navigationBarBackButtonHidden(true)
         }
+        .endEditingOnTap()
     }
     
 }

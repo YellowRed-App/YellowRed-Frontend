@@ -22,7 +22,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         let status = CLLocationManager.authorizationStatus()
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            next = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.next = true
+            }
         case .notDetermined:
             locationManager.requestAlwaysAuthorization()
         case .denied, .restricted:

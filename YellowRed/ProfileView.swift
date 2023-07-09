@@ -904,6 +904,7 @@ struct EditYellowMessageView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.red)
                                 .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }
@@ -1102,6 +1103,7 @@ struct EditRedMessageView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.red)
                                 .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }

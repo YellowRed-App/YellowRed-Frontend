@@ -9,7 +9,6 @@ import SwiftUI
 
 struct HomeScreenView: View {
     @State private var greeting: String = ""
-    
     @State private var getStarted: Bool = false
     
     var body: some View {
@@ -45,44 +44,40 @@ struct HomeScreenView: View {
                     
                     Spacer()
                     
-                    VStack {
-                        Text(greeting)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
-                            .padding()
-                        
-                        Button(action: {
-                            getStarted = true
-                        }) {
-                            HStack {
-                                Text("Get Started")                                
-                                Image(systemName: "arrow.right.circle.fill")
-                            }
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                            .padding(12.5)
-                            .frame(maxWidth: .infinity)
-                            .background(.white)
-                            .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    Text(greeting)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
+                    
+                    Button(action: {
+                        getStarted = true
+                    }) {
+                        HStack {
+                            Text("Get Started")
+                            Image(systemName: "arrow.right.circle.fill")
                         }
-                        .fullScreenCover(isPresented: $getStarted) {
-                            GetStartedNameView()
-                        }
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.black)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.white)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 40)
+                    .fullScreenCover(isPresented: $getStarted) {
+                        GetStartedNameView()
+                    }
                 }
-                .padding(.horizontal, 20)
-            }
-            .onAppear {
-                setGreeting()
+                .padding(.horizontal, 40)
+                .padding(.bottom, 40)
             }
         }
         .navigationBarHidden(true)
+        .onAppear {
+            setGreeting()
+        }
     }
     
     private func setGreeting() {

@@ -138,18 +138,29 @@ struct GetStartedNumberView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
-                .background(
-                    NavigationLink(
-                        destination: GetStartedEmailView(fullName: fullName),
-                        isActive: $next,
-                        label: { EmptyView() }
-                    )
-                )
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: BackButton())
+                
+                if isVerificationEnabled {
+                    Button(action: {
+                        verificationCodeSent = InputVerifier.sendVerificationCodeViaSMS(to: phoneNumber)
+                    }) {
+                        Text("Resend Code")
+                            .font(.body)
+                            .fontWeight(.regular)
+                            .foregroundColor(.blue)
+                    }
+                }
             }
             .padding(.horizontal, 20)
         }
+        .background(
+            NavigationLink(
+                destination: GetStartedEmailView(fullName: fullName),
+                isActive: $next,
+                label: { EmptyView() }
+            )
+        )
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: BackButton())
         .endEditingOnTap()
     }
 }

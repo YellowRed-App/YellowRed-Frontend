@@ -59,7 +59,7 @@ struct EmergencyContactView: View {
                     .padding(.horizontal, 20)
                 }
                 
-                if nextButtonClicked && emergencyContactsSelected.count != 3 {
+                if nextButtonClicked && emergencyContactsSelected.count != emergencyContacts.count {
                     Text("Please choose three emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.white)
@@ -78,7 +78,7 @@ struct EmergencyContactView: View {
                     let validationResult = InputValidator.validateEmergencyContacts(emergencyContacts)
                     emergencyContactsSelected = validationResult.emergencyContactsSelected
                     emergencyContactsDuplicated = validationResult.emergencyContactsDuplicated
-                    if emergencyContactsSelected.count == 3 && emergencyContactsDuplicated.isEmpty {
+                    if emergencyContactsSelected.count == emergencyContacts.count && emergencyContactsDuplicated.isEmpty {
                         next = true
                     }
                 }) {

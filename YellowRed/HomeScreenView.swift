@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeScreenView: View {
     @State private var greeting: String = ""
+    
     @State private var getStarted: Bool = false
     
     var body: some View {

@@ -138,6 +138,13 @@ struct GetStartedNumberView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
+                .background(
+                    NavigationLink(
+                        destination: GetStartedEmailView(fullName: fullName),
+                        isActive: $next,
+                        label: { EmptyView() }
+                    )
+                )
                 
                 if isVerificationEnabled {
                     Button(action: {
@@ -152,13 +159,6 @@ struct GetStartedNumberView: View {
             }
             .padding(.horizontal, 20)
         }
-        .background(
-            NavigationLink(
-                destination: GetStartedEmailView(fullName: fullName),
-                isActive: $next,
-                label: { EmptyView() }
-            )
-        )
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())
         .endEditingOnTap()

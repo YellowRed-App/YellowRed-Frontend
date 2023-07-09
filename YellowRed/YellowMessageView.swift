@@ -193,8 +193,6 @@ struct YellowMessageView: View {
                     .cornerRadius(15)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 40)
                 .background(
                     NavigationLink(
                         destination: RedMessageView(),
@@ -203,9 +201,10 @@ struct YellowMessageView: View {
                     )
                 )
             }
-            .padding(.horizontal, 20)
-            .navigationBarBackButtonHidden(true)
+            .padding(.horizontal, 40)
+            .padding(.bottom, 40)
         }
+        .navigationBarBackButtonHidden(true)
         .endEditingOnTap()
     }
     

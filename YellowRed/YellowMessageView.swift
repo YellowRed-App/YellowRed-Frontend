@@ -207,7 +207,6 @@ struct YellowMessageView: View {
         .navigationBarBackButtonHidden(true)
         .endEditingOnTap()
     }
-    
 }
 
 struct YellowMessageView_Previews: PreviewProvider {

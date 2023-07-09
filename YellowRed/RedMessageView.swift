@@ -164,8 +164,6 @@ struct RedMessageView: View {
                     .cornerRadius(15)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 40)
                 .background(
                     NavigationLink(
                         destination: YellowRedView(),
@@ -174,12 +172,12 @@ struct RedMessageView: View {
                     )
                 )
             }
-            .padding(.horizontal, 20)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: BackButton())
+            .padding(.horizontal, 40)
+            .padding(.bottom, 40)
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: BackButton())
     }
-    
 }
 
 struct RedMessageView_Previews: PreviewProvider {

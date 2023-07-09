@@ -17,7 +17,6 @@ struct ProfileView: View {
         EmergencyContact(isSelected: true, displayName: "Jane Doe", phoneNumber: "+1 (234) 567-8902"),
         EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
     ]
-    
     @State private var yellowMessage: String = "I'm out and about, and I could use a virtual buddy to keep an eye on my location. You've been sent my live location, and I would appreciate it if you could check in on me from time to time."
     @State private var redMessage: String = "IMMEDIATE HELP NEEDED: I am in a threatening situation and unable to dial 911. Your immediate action is required. Please alert the authorities and come help, if possible. My current location is shared with you."
     
@@ -66,10 +65,9 @@ struct ProfileView: View {
                             InfoView(title: "Yellow\t", value: yellowMessage)
                             InfoView(title: "Red\t", value: redMessage)
                         }, destinationView: AnyView(EditButtonMessageView(yellowMessage: $yellowMessage, redMessage: $redMessage)))
-                        
-                        Spacer()
                     }
                     .padding(.horizontal, 20)
+                    Spacer()
                 }
             }
             .background(.white)
@@ -177,7 +175,6 @@ struct EditPersonalView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.red, lineWidth: isPhoneNumberValid ? 0 : 2.5)
                         )
-                        .padding(.horizontal, 20)
                         .disabled(smsVerificationEnabled)
                         
                         if !isPhoneNumberValid {
@@ -215,7 +212,6 @@ struct EditPersonalView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(.red, lineWidth: smsVerificationValid ? 0 : 2.5)
                             )
-                            .padding(.horizontal, 20)
                             
                             if !smsVerificationValid {
                                 Text("Invalid verification code. Please try again!")
@@ -256,7 +252,6 @@ struct EditPersonalView: View {
                                 .cornerRadius(15)
                                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             }
-                            .padding(.horizontal, 20)
                         }
                     }
                     
@@ -296,7 +291,6 @@ struct EditPersonalView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.red, lineWidth: isEmailAddressValid ? 0 : 2.5)
                         )
-                        .padding(.horizontal, 20)
                         .disabled(emailVerificationEnabled)
                         
                         if !isEmailAddressValid {
@@ -334,7 +328,6 @@ struct EditPersonalView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(.red, lineWidth: emailVerificationValid ? 0 : 2.5)
                             )
-                            .padding(.horizontal, 20)
                             
                             if !emailVerificationValid {
                                 Text("Invalid verification code. Please try again!")
@@ -375,12 +368,11 @@ struct EditPersonalView: View {
                                 .cornerRadius(15)
                                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             }
-                            .padding(.horizontal, 20)
                         }
                     }
-                    .padding(.vertical, 20)
+                    .padding(.vertical, 40)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 40)
                 
                 Spacer()
                 
@@ -511,7 +503,6 @@ struct EditEmergencyContactView: View {
                             .padding(.vertical, 5)
                     }
                 }
-                .padding(.horizontal, 20)
                 
                 if saveButtonClicked && emergencyContactsSelected.count != 3 {
                     Text("Please choose three emergency contacts!")
@@ -638,9 +629,8 @@ struct EditButtonMessageView: View {
                                 )
                         )
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                        .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 40)
                 .sheet(isPresented: $editYellowMessage) {
                     EditYellowMessageView(yellowMessage: $yellowMessage, editYellowMessage: $editYellowMessage)
                 }
@@ -675,9 +665,8 @@ struct EditButtonMessageView: View {
                                 )
                         )
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                        .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 40)
                 .sheet(isPresented: $editRedMessage) {
                     EditRedMessageView(redMessage: $redMessage, editRedMessage: $editRedMessage)
                 }
@@ -807,7 +796,6 @@ struct EditYellowMessageView: View {
                             .padding(12.5)
                             .background(.white)
                             .cornerRadius(10)
-                            .padding(.horizontal, 20)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             
                             Button("Cancel", action: {
@@ -820,7 +808,6 @@ struct EditYellowMessageView: View {
                             .padding(12.5)
                             .background(.white)
                             .cornerRadius(10)
-                            .padding(.horizontal, 20)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
                     } else {
@@ -936,9 +923,8 @@ struct EditYellowMessageView: View {
                     .background(.blue)
                     .cornerRadius(15)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 40)
                 .padding(.bottom, 40)
                 .alert(isPresented: $alert) {
                     Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
@@ -1047,7 +1033,6 @@ struct EditRedMessageView: View {
                             .padding(12.5)
                             .background(.white)
                             .cornerRadius(10)
-                            .padding(.horizontal, 20)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             
                             Button("Cancel", action: {
@@ -1060,7 +1045,6 @@ struct EditRedMessageView: View {
                             .padding(12.5)
                             .background(.white)
                             .cornerRadius(10)
-                            .padding(.horizontal, 20)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
                     } else {
@@ -1134,9 +1118,8 @@ struct EditRedMessageView: View {
                     .background(.blue)
                     .cornerRadius(15)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 40)
                 .padding(.bottom, 40)
                 .alert(isPresented: $alert) {
                     Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))

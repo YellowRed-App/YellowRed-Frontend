@@ -196,8 +196,8 @@ struct YellowRedView: View {
                         .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
                 }
             }
-            .onAppear(perform: GlobalHapticManager.shared.startHapticEngine)
         }
+        .onAppear(perform: GlobalHapticManager.shared.startHapticEngine)
         .navigationBarBackButtonHidden(true)
     }
 }
@@ -330,21 +330,21 @@ struct RedButtonView: View {
                         .padding(.horizontal, 50)
                         .padding(.bottom, 100)
                 }
+                .alert(isPresented: $alert) {
+                    Alert(
+                        title: Text("Are you sure you are ok and want to deactivate the red button?"),
+                        primaryButton: .destructive(Text("Yes, I'm ok")) {
+                            self.redButton = false
+                            presentationMode.wrappedValue.dismiss()
+                        },
+                        secondaryButton: .cancel(Text("No, I'm not ok"))
+                    )
+                }
             }
             .padding(.horizontal, 20)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateRedButton)
-        .alert(isPresented: $alert) {
-            Alert(
-                title: Text("Are you sure you are ok and want to deactivate the red button?"),
-                primaryButton: .destructive(Text("Yes, I'm ok")) {
-                    self.redButton = false
-                    presentationMode.wrappedValue.dismiss()
-                },
-                secondaryButton: .cancel(Text("No, I'm not ok"))
-            )
-        }
     }
     
     private func activateRedButton() {

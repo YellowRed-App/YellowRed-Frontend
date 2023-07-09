@@ -76,9 +76,7 @@ struct HomeScreenView: View {
             }
         }
         .navigationBarHidden(true)
-        .onAppear {
-            setGreeting()
-        }
+        .onAppear(perform: setGreeting)
     }
     
     private func setGreeting() {

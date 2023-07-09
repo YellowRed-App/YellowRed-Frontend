@@ -46,34 +46,31 @@ struct NotificationView: View {
                 
                 Spacer()
                 
-                VStack(spacing: 20) {
-                    Button(action: {
-                        notificationManager.requestNotificationPermission()
-                    }) {
-                        Text("Enable Notifications")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                            .padding(12.5)
-                            .frame(maxWidth: .infinity)
-                            .background(.white)
-                            .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                    }
+                Button(action: {
+                    notificationManager.requestNotificationPermission()
+                }) {
+                    Text("Enable Notifications")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.black)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.white)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 40)
+                .background(
+                    NavigationLink(
+                        destination: LocationView(),
+                        isActive: $notificationManager.next,
+                        label: { EmptyView() }
+                    )
+                )
             }
-            .padding(.horizontal, 20)
-            .navigationBarBackButtonHidden(true)
+            .padding(.horizontal, 40)
+            .padding(.bottom, 40)
         }
-        .background(
-            NavigationLink(
-                destination: LocationView(),
-                isActive: $notificationManager.next,
-                label: { EmptyView() }
-            )
-        )
+        .navigationBarBackButtonHidden(true)
     }
 }
 

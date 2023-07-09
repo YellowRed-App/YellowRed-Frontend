@@ -70,8 +70,9 @@ struct HomeScreenView: View {
                     .fullScreenCover(isPresented: $getStarted) {
                         GetStartedNameView()
                     }
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 40)
+                .padding(.horizontal, 20)
                 .padding(.bottom, 40)
             }
         }

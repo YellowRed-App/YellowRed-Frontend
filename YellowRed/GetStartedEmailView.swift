@@ -24,6 +24,8 @@ struct GetStartedEmailView: View {
         return fullName.components(separatedBy: " ").first ?? ""
     }
     
+    let phoneNumber: String
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -130,7 +132,7 @@ struct GetStartedEmailView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: GetStartedAffiliationView(fullName: fullName),
+                        destination: GetStartedAffiliationView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress),
                         isActive: $next,
                         label: { EmptyView() }
                     )
@@ -156,7 +158,10 @@ struct GetStartedEmailView: View {
 }
 
 struct GetStartedEmailView_Previews: PreviewProvider {
+    @State static var fullName: String = "John Smith"
+    @State static var phoneNumber: String = "(123) 456-7890"
+    
     static var previews: some View {
-        GetStartedEmailView(fullName: "John Smith")
+        GetStartedEmailView(fullName: fullName, phoneNumber: phoneNumber)
     }
 }

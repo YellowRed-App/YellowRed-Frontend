@@ -253,6 +253,17 @@ struct EditPersonalView: View {
                                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             }
                         }
+                        
+                        if smsVerificationEnabled {
+                            Button(action: {
+                                smsVerificationCodeSent = InputVerifier.sendVerificationCodeViaSMS(to: phoneNumber)
+                            }) {
+                                Text("Resend Code")
+                                    .font(.body)
+                                    .fontWeight(.regular)
+                                    .foregroundColor(.blue)
+                            }
+                        }
                     }
                     
                     VStack(spacing: 20) {
@@ -367,6 +378,17 @@ struct EditPersonalView: View {
                                 .background(.blue)
                                 .cornerRadius(15)
                                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            }
+                        }
+                        
+                        if emailVerificationEnabled {
+                            Button(action: {
+                                emailVerificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: emailAddress)
+                            }) {
+                                Text("Resend Code")
+                                    .font(.body)
+                                    .fontWeight(.regular)
+                                    .foregroundColor(.blue)
                             }
                         }
                     }
@@ -797,6 +819,7 @@ struct EditYellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .padding(.horizontal, 10)
                             
                             Button("Cancel", action: {
                                 editingTemplate = nil
@@ -809,6 +832,7 @@ struct EditYellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .padding(.horizontal, 10)
                         }
                     } else {
                         ForEach(0..<messageTemplates.count, id: \.self) { index in
@@ -1034,6 +1058,7 @@ struct EditRedMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .padding(.horizontal, 10)
                             
                             Button("Cancel", action: {
                                 selectingTemplate = nil
@@ -1046,6 +1071,7 @@ struct EditRedMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .padding(.horizontal, 10)
                         }
                     } else {
                         ForEach(0..<messageTemplates.count, id: \.self) { index in

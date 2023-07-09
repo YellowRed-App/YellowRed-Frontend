@@ -23,6 +23,13 @@ struct YellowMessageView: View {
     
     @State private var next: Bool = false
     
+    let fullName: String
+    let phoneNumber: String
+    let emailAddress: String
+    let affiliation: String
+    let university: String
+    let emergencyContacts: [EmergencyContact]
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -55,6 +62,7 @@ struct YellowMessageView: View {
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20)
                 }
                 
                 VStack(spacing: 15) {
@@ -87,6 +95,7 @@ struct YellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .padding(.horizontal, 10)
                             
                             Button("Cancel", action: {
                                 editingTemplate = nil
@@ -99,6 +108,7 @@ struct YellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .padding(.horizontal, 10)
                         }
                     } else {
                         ForEach(0..<messageTemplates.count, id: \.self) { index in
@@ -166,6 +176,7 @@ struct YellowMessageView: View {
                         }
                     }
                 }
+                .padding(.horizontal, 20)
                 
                 Spacer()
                 
@@ -191,13 +202,14 @@ struct YellowMessageView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: RedMessageView(),
+                        destination: RedMessageView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university, emergencyContacts: emergencyContacts, yellowMessage: yellowMessage),
                         isActive: $next,
                         label: { EmptyView() }
                     )
                 )
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 20)
             .padding(.bottom, 40)
         }
         .navigationBarBackButtonHidden(true)
@@ -206,7 +218,18 @@ struct YellowMessageView: View {
 }
 
 struct YellowMessageView_Previews: PreviewProvider {
+    @State static var fullName: String = "John Smith"
+    @State static var phoneNumber: String = "(123) 456-7890"
+    @State static var emailAddress: String = "abc5xy@virginia.edu"
+    @State static var affiliation: String = "Other"
+    @State static var university: String = "University of Michigan"
+    @State static var emergencyContacts: [EmergencyContact] = [
+        EmergencyContact(isSelected: true, displayName: "John Doe", phoneNumber: "+1 (234) 567-8901"),
+        EmergencyContact(isSelected: true, displayName: "Jane Doe", phoneNumber: "+1 (234) 567-8902"),
+        EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
+    ]
+    
     static var previews: some View {
-        YellowMessageView()
+        YellowMessageView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university, emergencyContacts: emergencyContacts)
     }
 }

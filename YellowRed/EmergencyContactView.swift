@@ -15,6 +15,12 @@ struct EmergencyContactView: View {
     @State private var nextButtonClicked: Bool = false
     @State private var next: Bool = false
     
+    let fullName: String
+    let phoneNumber: String
+    let emailAddress: String
+    let affiliation: String
+    let university: String
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -46,6 +52,7 @@ struct EmergencyContactView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
                 
                 VStack(spacing: 15) {
                     ForEach(0..<3, id: \.self) { index in
@@ -56,17 +63,22 @@ struct EmergencyContactView: View {
                             )
                     }
                 }
+                .padding(.horizontal, 20)
                 
                 if nextButtonClicked && emergencyContactsSelected.count != emergencyContacts.count {
                     Text("Please choose three emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20)
                 }
                 
                 if !emergencyContactsDuplicated.isEmpty {
                     Text("Please choose three unique emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20)
                 }
                 
                 Spacer()
@@ -95,13 +107,14 @@ struct EmergencyContactView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: YellowMessageView(),
+                        destination: YellowMessageView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university, emergencyContacts: emergencyContacts),
                         isActive: $next,
                         label: { EmptyView() }
                     )
                 )
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 20)
             .padding(.bottom, 40)
         }
         .navigationBarBackButtonHidden(true)
@@ -109,7 +122,13 @@ struct EmergencyContactView: View {
 }
 
 struct EmergencyContactView_Previews: PreviewProvider {
+    @State static var fullName: String = "John Smith"
+    @State static var phoneNumber: String = "(123) 456-7890"
+    @State static var emailAddress: String = "abc5xy@virginia.edu"
+    @State static var affiliation: String = "Other"
+    @State static var university: String = "University of Michigan"
+    
     static var previews: some View {
-        EmergencyContactView()
+        EmergencyContactView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university)
     }
 }

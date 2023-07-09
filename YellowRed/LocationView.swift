@@ -11,6 +11,12 @@ import CoreLocation
 struct LocationView: View {
     @StateObject private var locationManager = LocationManager()
     
+    let fullName: String
+    let phoneNumber: String
+    let emailAddress: String
+    let affiliation: String
+    let university: String
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -43,6 +49,7 @@ struct LocationView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
                 
                 Text("In order to receive alerts based on your geographic location, you must have your location sharing permissions set to \"Always\" with \"Precise Location\" enabled.")
                     .font(.subheadline)
@@ -50,6 +57,7 @@ struct LocationView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
                 
                 Spacer()
                 
@@ -68,7 +76,7 @@ struct LocationView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: EmergencyContactView(),
+                        destination: EmergencyContactView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university),
                         isActive: $locationManager.next,
                         label: { EmptyView() }
                     )
@@ -80,8 +88,9 @@ struct LocationView: View {
                         dismissButton: .default(Text("OK"))
                     )
                 }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 20)
             .padding(.bottom, 40)
         }
         .navigationBarBackButtonHidden(true)
@@ -89,7 +98,13 @@ struct LocationView: View {
 }
 
 struct LocationView_Previews: PreviewProvider {
+    @State static var fullName: String = "John Smith"
+    @State static var phoneNumber: String = "(123) 456-7890"
+    @State static var emailAddress: String = "abc5xy@virginia.edu"
+    @State static var affiliation: String = "Other"
+    @State static var university: String = "University of Michigan"
+    
     static var previews: some View {
-        LocationView()
+        LocationView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university)
     }
 }

@@ -12,7 +12,6 @@ struct GetStartedAffiliationView: View {
     @State private var isAffiliationValid: Bool = true
     @State private var isUniversityValid: Bool = true
     @State private var isValid: Bool = true
-    
     @State private var university: String = ""
     
     @State private var next: Bool = false
@@ -21,6 +20,9 @@ struct GetStartedAffiliationView: View {
     var firstName: String {
         return fullName.components(separatedBy: " ").first ?? ""
     }
+    
+    let phoneNumber: String
+    let emailAddress: String
     
     var body: some View {
         ZStack {
@@ -76,6 +78,7 @@ struct GetStartedAffiliationView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.black, lineWidth: isUniversityValid ? 0 : 2.5)
                         )
+                        .padding(.horizontal, 20)
                     }
                     
                     RadioButton(
@@ -92,6 +95,7 @@ struct GetStartedAffiliationView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.black, lineWidth: isAffiliationValid ? 0 : 2.5)
                 )
+                .padding(.horizontal, 20)
                 
                 if !isAffiliationValid {
                     Text("Please select an affiliation!")
@@ -130,13 +134,14 @@ struct GetStartedAffiliationView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: NotificationView(),
+                        destination: NotificationView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university),
                         isActive: $next,
                         label: { EmptyView() }
                     )
                 )
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 20)
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())
@@ -145,7 +150,11 @@ struct GetStartedAffiliationView: View {
 }
 
 struct GetStartedAffiliationView_Previews: PreviewProvider {
+    @State static var fullName: String = "John Smith"
+    @State static var phoneNumber: String = "(123) 456-7890"
+    @State static var emailAddress: String = "abc5xy@virginia.edu"
+    
     static var previews: some View {
-        GetStartedAffiliationView(fullName: "John Smith")
+        GetStartedAffiliationView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress)
     }
 }

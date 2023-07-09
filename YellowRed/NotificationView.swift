@@ -11,6 +11,12 @@ import UserNotifications
 struct NotificationView: View {
     @StateObject private var notificationManager = NotificationManager()
     
+    let fullName: String
+    let phoneNumber: String
+    let emailAddress: String
+    let affiliation: String
+    let university: String
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -42,6 +48,7 @@ struct NotificationView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
                 
                 Spacer()
                 
@@ -60,13 +67,14 @@ struct NotificationView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: LocationView(),
+                        destination: LocationView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university),
                         isActive: $notificationManager.next,
                         label: { EmptyView() }
                     )
                 )
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 20)
             .padding(.bottom, 40)
         }
         .navigationBarBackButtonHidden(true)
@@ -74,7 +82,13 @@ struct NotificationView: View {
 }
 
 struct NotificationView_Previews: PreviewProvider {
+    @State static var fullName: String = "John Smith"
+    @State static var phoneNumber: String = "(123) 456-7890"
+    @State static var emailAddress: String = "abc5xy@virginia.edu"
+    @State static var affiliation: String = "Other"
+    @State static var university: String = "University of Michigan"
+    
     static var previews: some View {
-        NotificationView()
+        NotificationView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university)
     }
 }

@@ -137,7 +137,7 @@ struct GetStartedNumberView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: GetStartedEmailView(fullName: fullName),
+                        destination: GetStartedEmailView(fullName: fullName, phoneNumber: phoneNumber),
                         isActive: $next,
                         label: { EmptyView() }
                     )
@@ -163,7 +163,9 @@ struct GetStartedNumberView: View {
 }
 
 struct GetStartedNumberView_Previews: PreviewProvider {
+    @State static var fullName: String = "John Smith"
+    
     static var previews: some View {
-        GetStartedNumberView(fullName: "John Smith")
+        GetStartedNumberView(fullName: fullName)
     }
 }

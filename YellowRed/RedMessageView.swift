@@ -22,6 +22,14 @@ struct RedMessageView: View {
     
     @State private var next: Bool = false
     
+    let fullName: String
+    let phoneNumber: String
+    let emailAddress: String
+    let affiliation: String
+    let university: String
+    let emergencyContacts: [EmergencyContact]
+    let yellowMessage: String
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -54,6 +62,7 @@ struct RedMessageView: View {
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20)
                 }
                 
                 VStack(spacing: 15) {
@@ -86,6 +95,7 @@ struct RedMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .padding(.horizontal, 10)
                             
                             Button("Cancel", action: {
                                 selectingTemplate = nil
@@ -98,6 +108,7 @@ struct RedMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .padding(.horizontal, 10)
                         }
                     } else {
                         ForEach(0..<messageTemplates.count, id: \.self) { index in
@@ -137,6 +148,7 @@ struct RedMessageView: View {
                         }
                     }
                 }
+                .padding(.horizontal, 20)
                 
                 Spacer()
                 
@@ -167,8 +179,9 @@ struct RedMessageView: View {
                         label: { EmptyView() }
                     )
                 )
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 20)
             .padding(.bottom, 40)
         }
         .navigationBarBackButtonHidden(true)
@@ -177,7 +190,19 @@ struct RedMessageView: View {
 }
 
 struct RedMessageView_Previews: PreviewProvider {
+    @State static var fullName: String = "John Smith"
+    @State static var phoneNumber: String = "(123) 456-7890"
+    @State static var emailAddress: String = "abc5xy@virginia.edu"
+    @State static var affiliation: String = "Other"
+    @State static var university: String = "University of Michigan"
+    @State static var emergencyContacts: [EmergencyContact] = [
+        EmergencyContact(isSelected: true, displayName: "John Doe", phoneNumber: "+1 (234) 567-8901"),
+        EmergencyContact(isSelected: true, displayName: "Jane Doe", phoneNumber: "+1 (234) 567-8902"),
+        EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
+    ]
+    @State static var yellowMessage: String = "I'm feeling a bit uncomfortable, can we talk"
+    
     static var previews: some View {
-        RedMessageView()
+        RedMessageView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university, emergencyContacts: emergencyContacts, yellowMessage: yellowMessage)
     }
 }

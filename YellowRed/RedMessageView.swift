@@ -71,8 +71,6 @@ struct RedMessageView: View {
                                 .cornerRadius(10)
                                 .focused($isSelecting)
                                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            
-                            Spacer()
                         }
                         .frame(height: 200)
                         

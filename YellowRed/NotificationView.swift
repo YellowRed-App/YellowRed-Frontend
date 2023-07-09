@@ -9,7 +9,7 @@ import SwiftUI
 import UserNotifications
 
 struct NotificationView: View {
-    @State private var next: Bool = false
+    @StateObject private var notificationManager = NotificationManager()
     
     var body: some View {
         ZStack {
@@ -48,7 +48,7 @@ struct NotificationView: View {
                 
                 VStack(spacing: 20) {
                     Button(action: {
-                        handleButtonTap()
+                        notificationManager.requestNotificationPermission()
                     }) {
                         Text("Enable Notifications")
                             .font(.title)
@@ -70,22 +70,10 @@ struct NotificationView: View {
         .background(
             NavigationLink(
                 destination: LocationView(),
-                isActive: $next,
+                isActive: $notificationManager.next,
                 label: { EmptyView() }
             )
         )
-    }
-    
-    private func handleButtonTap() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
-            if granted {
-                DispatchQueue.main.async {
-                    next = true
-                }
-            } else {
-                next = true
-            }
-        }
     }
 }
 

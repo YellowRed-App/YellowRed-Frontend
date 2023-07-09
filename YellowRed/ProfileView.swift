@@ -898,11 +898,13 @@ struct EditYellowMessageView: View {
                         )
                     }
                     
-                    if !valid {
-                        Text("Please choose a template or create your own!")
-                            .font(.subheadline)
-                            .foregroundColor(.red)
-                            .multilineTextAlignment(.center)
+                    if !isEditing && editingTemplate == nil {
+                        if !valid {
+                            Text("Please choose a template or create your own!")
+                                .font(.subheadline)
+                                .foregroundColor(.red)
+                                .multilineTextAlignment(.center)
+                        }
                     }
                 }
                 .padding(.horizontal, 40)
@@ -1094,11 +1096,13 @@ struct EditRedMessageView: View {
                         }
                     }
                     
-                    if !valid {
-                        Text("Please choose a template")
-                            .font(.subheadline)
-                            .foregroundColor(.red)
-                            .multilineTextAlignment(.center)
+                    if !isSelecting && selectingTemplate == nil {
+                        if !valid {
+                            Text("Please choose a template")
+                                .font(.subheadline)
+                                .foregroundColor(.red)
+                                .multilineTextAlignment(.center)
+                        }
                     }
                 }
                 .padding(.horizontal, 40)

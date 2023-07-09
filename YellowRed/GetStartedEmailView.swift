@@ -131,6 +131,13 @@ struct GetStartedEmailView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
                 .padding(.horizontal, 20)
+                .background(
+                    NavigationLink(
+                        destination: GetStartedAffiliationView(fullName: fullName),
+                        isActive: $next,
+                        label: { EmptyView() }
+                    )
+                )
                 
                 if isVerificationEnabled {
                     Button(action: {
@@ -145,13 +152,6 @@ struct GetStartedEmailView: View {
             }
             .padding(.horizontal, 20)
         }
-        .background(
-            NavigationLink(
-                destination: GetStartedAffiliationView(fullName: fullName),
-                isActive: $next,
-                label: { EmptyView() }
-            )
-        )
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())
         .endEditingOnTap()

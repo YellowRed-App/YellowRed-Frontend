@@ -111,6 +111,7 @@
 				71567E942A20B93300A2BB2D /* Assets.xcassets */,
 				71567E962A20B93300A2BB2D /* Preview Content */,
 				71255CEC2A53FD2B00C70A5B /* ButtonView.swift */,
+				710C704A2A58116300118F32 /* EditingView.swift */,
 				71FB82142A558472005E53DE /* InfoSectionView.swift */,
 				71255CEE2A54012D00C70A5B /* InputValidator.swift */,
 				71255CF02A540AC200C70A5B /* InputVerifier.swift */,
@@ -119,7 +120,6 @@
 				71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */,
 				710EE5262A57ECA30022DD97 /* LocationManager.swift */,
 				71255CF42A54102500C70A5B /* GlobalHapticManager.swift */,
-				710C704A2A58116300118F32 /* EditingView.swift */,
 			);
 			path = YellowRed;
 			sourceTree = "<group>";

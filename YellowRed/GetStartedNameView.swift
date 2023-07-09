@@ -55,7 +55,6 @@ struct GetStartedNameView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: isFullNameValid ? 0 : 2.5)
                     )
-                    .padding(.horizontal, 20)
                     
                     if !isFullNameValid {
                         Text("Please enter a valid name!")
@@ -82,7 +81,6 @@ struct GetStartedNameView: View {
                         .cornerRadius(15)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
-                    .padding(.horizontal, 20)
                     .background(
                         NavigationLink(
                             destination: GetStartedNumberView(fullName: fullName),
@@ -91,7 +89,7 @@ struct GetStartedNameView: View {
                         )
                     )
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 40)
             }
             .endEditingOnTap()
         }

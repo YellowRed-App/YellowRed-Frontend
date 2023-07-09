@@ -51,8 +51,6 @@ struct GetStartedAffiliationView: View {
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
                     
                     RadioButton(
                         id: "other",
@@ -60,7 +58,6 @@ struct GetStartedAffiliationView: View {
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
-                    .padding(.horizontal, 20)
                     
                     if affiliation == "other" {
                         ZStack(alignment: .leading) {
@@ -79,7 +76,6 @@ struct GetStartedAffiliationView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.black, lineWidth: isUniversityValid ? 0 : 2.5)
                         )
-                        .padding(.horizontal, 20)
                     }
                     
                     RadioButton(
@@ -88,16 +84,14 @@ struct GetStartedAffiliationView: View {
                         isSelected: $affiliation,
                         isAffiliationValid: $isAffiliationValid
                     )
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 20)
                 }
+                .padding(.vertical, 20)
                 .background(.white.opacity(0.25))
                 .cornerRadius(10)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.black, lineWidth: isAffiliationValid ? 0 : 2.5)
                 )
-                .padding(.horizontal, 20)
                 
                 if !isAffiliationValid {
                     Text("Please select an affiliation!")
@@ -134,7 +128,6 @@ struct GetStartedAffiliationView: View {
                     .cornerRadius(15)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
-                .padding(.horizontal, 20)
                 .background(
                     NavigationLink(
                         destination: NotificationView(),
@@ -143,7 +136,7 @@ struct GetStartedAffiliationView: View {
                     )
                 )
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 40)
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())

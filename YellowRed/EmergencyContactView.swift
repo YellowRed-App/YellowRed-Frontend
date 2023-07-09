@@ -46,7 +46,6 @@ struct EmergencyContactView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
                 
                 VStack(spacing: 15) {
                     ForEach(0..<3, id: \.self) { index in
@@ -56,7 +55,6 @@ struct EmergencyContactView: View {
                                     .stroke(.black, lineWidth: nextButtonClicked && (!emergencyContactsSelected.contains(index) || emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
                             )
                     }
-                    .padding(.horizontal, 20)
                 }
                 
                 if nextButtonClicked && emergencyContactsSelected.count != emergencyContacts.count {

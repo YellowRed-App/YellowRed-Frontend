@@ -229,7 +229,6 @@ struct YellowButtonView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 20)
                 
                 Spacer()
                 
@@ -249,11 +248,11 @@ struct YellowButtonView: View {
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 50)
                         .padding(.bottom, 100)
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 50)
+            .padding(.bottom, 50)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateYellowButton)
@@ -309,7 +308,6 @@ struct RedButtonView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 20)
                 
                 Spacer()
                 
@@ -327,7 +325,6 @@ struct RedButtonView: View {
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 50)
                         .padding(.bottom, 100)
                 }
                 .alert(isPresented: $alert) {
@@ -341,7 +338,8 @@ struct RedButtonView: View {
                     )
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 50)
+            .padding(.bottom, 50)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateRedButton)

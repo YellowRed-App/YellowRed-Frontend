@@ -42,7 +42,6 @@ struct NotificationView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
                 
                 Spacer()
                 

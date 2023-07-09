@@ -54,7 +54,6 @@ struct RedMessageView: View {
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal, 20)
                 }
                 
                 VStack(spacing: 15) {
@@ -86,7 +85,6 @@ struct RedMessageView: View {
                             .padding(12.5)
                             .background(.white)
                             .cornerRadius(10)
-                            .padding(.horizontal, 20)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             
                             Button("Cancel", action: {
@@ -99,7 +97,6 @@ struct RedMessageView: View {
                             .padding(12.5)
                             .background(.white)
                             .cornerRadius(10)
-                            .padding(.horizontal, 20)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         }
                     } else {
@@ -140,7 +137,6 @@ struct RedMessageView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 20)
                 
                 Spacer()
                 

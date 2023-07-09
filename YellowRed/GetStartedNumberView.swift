@@ -73,7 +73,6 @@ struct GetStartedNumberView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.black, lineWidth: isPhoneNumberValid ? 0 : 2.5)
                 )
-                .padding(.horizontal, 20)
                 .disabled(isVerificationEnabled)
                 
                 if !isPhoneNumberValid {
@@ -101,7 +100,6 @@ struct GetStartedNumberView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: isVerificationValid ? 0 : 2.5)
                     )
-                    .padding(.horizontal, 20)
                     
                     if !isVerificationValid {
                         Text("Invalid verification code. Please try again!")
@@ -137,7 +135,6 @@ struct GetStartedNumberView: View {
                     .cornerRadius(15)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
-                .padding(.horizontal, 20)
                 .background(
                     NavigationLink(
                         destination: GetStartedEmailView(fullName: fullName),
@@ -157,7 +154,7 @@ struct GetStartedNumberView: View {
                     }
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 40)
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())

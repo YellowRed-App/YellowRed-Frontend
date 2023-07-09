@@ -26,7 +26,23 @@ struct InputValidator {
         return emailPredicate.evaluate(with: email)
     }
     
-    static func validateEmergencyContacts(_ emergencyContacts: [EmergencyContact]) -> (emergencyContactsSelected: Set<Int>, emergencyContactsDuplicated: Set<Int>) {
+    public static func validateAffiliation(affiliation: String, university: String) -> (isValid: Bool, isAffiliationValid: Bool, isUniversityValid: Bool) {
+        var isValid = true
+        var isAffiliationValid = true
+        var isUniversityValid = true
+
+        if affiliation == "other" {
+            isValid = !university.isEmpty
+            isUniversityValid = !university.isEmpty
+        } else {
+            isValid = !affiliation.isEmpty
+            isAffiliationValid = !affiliation.isEmpty
+        }
+
+        return (isValid, isAffiliationValid, isUniversityValid)
+    }
+    
+    public static func validateEmergencyContacts(_ emergencyContacts: [EmergencyContact]) -> (emergencyContactsSelected: Set<Int>, emergencyContactsDuplicated: Set<Int>) {
         var emergencyContactsSelected = Set(emergencyContacts.indices.filter({ emergencyContacts[$0].isSelected }))
         var emergencyContactsDuplicated: Set<Int> = []
         

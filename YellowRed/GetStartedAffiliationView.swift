@@ -112,13 +112,10 @@ struct GetStartedAffiliationView: View {
                 }
                 
                 Button(action: {
-                    if affiliation == "other" {
-                        isValid = !university.isEmpty
-                        isUniversityValid = !university.isEmpty
-                    } else {
-                        isValid = !affiliation.isEmpty
-                        isAffiliationValid = !affiliation.isEmpty
-                    }
+                    let validationResult = InputValidator.validateAffiliation(affiliation: affiliation, university: university)
+                        isValid = validationResult.isValid
+                        isAffiliationValid = validationResult.isAffiliationValid
+                        isUniversityValid = validationResult.isUniversityValid
                     
                     if isValid {
                         next = true

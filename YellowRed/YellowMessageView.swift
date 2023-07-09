@@ -159,11 +159,14 @@ struct YellowMessageView: View {
                         )
                     }
                     
-                    if !valid {
-                        Text("Please choose a template or create your own!")
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
+                    if !isEditing && editingTemplate == nil {
+                        if !valid {
+                            Text("Please choose a template or create your own!")
+                                .font(.subheadline)
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(2)
+                        }
                     }
                 }
                 .padding(.horizontal, 20)

@@ -132,11 +132,13 @@ struct RedMessageView: View {
                         }
                     }
                     
-                    if !valid {
-                        Text("Please choose a template!")
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
+                    if !isSelecting && selectingTemplate == nil {
+                        if !valid {
+                            Text("Please choose a template!")
+                                .font(.subheadline)
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                        }
                     }
                 }
                 .padding(.horizontal, 20)

@@ -144,6 +144,12 @@ struct EditPersonalView: View {
                             Text("+1")
                             ZStack(alignment: .leading) {
                                 TextField("", text: $newPhoneNumber)
+                                    .onReceive(newPhoneNumber.publisher.collect()) {
+                                        let number = String($0)
+                                        if let formattedNumber = PhoneNumberFormatter.format(phone: number) {
+                                            self.newPhoneNumber = formattedNumber
+                                        }
+                                    }
                                 //                                    .keyboardType(.numberPad)
                                 
                                 if newPhoneNumber.isEmpty {

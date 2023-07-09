@@ -9,7 +9,6 @@ import SwiftUI
 
 struct EmergencyContactView: View {
     @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 3)
-    
     @State private var emergencyContactsSelected: Set<Int> = []
     @State private var emergencyContactsDuplicated: Set<Int> = []
     
@@ -96,7 +95,6 @@ struct EmergencyContactView: View {
                     .cornerRadius(15)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
-                .padding(.horizontal, 20)
                 .background(
                     NavigationLink(
                         destination: YellowMessageView(),
@@ -104,11 +102,11 @@ struct EmergencyContactView: View {
                         label: { EmptyView() }
                     )
                 )
-                .padding(.bottom, 40)
             }
-            .padding(.horizontal, 20)
-            .navigationBarBackButtonHidden(true)
+            .padding(.horizontal, 40)
+            .padding(.bottom, 40)
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

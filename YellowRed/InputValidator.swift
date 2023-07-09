@@ -26,17 +26,30 @@ struct InputValidator {
         return emailPredicate.evaluate(with: email)
     }
     
-    static func validateEmergencyContacts(_ emergencyContacts: [EmergencyContact]) -> Bool {
-        guard emergencyContacts.allSatisfy({ $0.isSelected }) else {
-            return false
-        }
+    static func validateEmergencyContacts(_ emergencyContacts: [EmergencyContact]) -> (emergencyContactsSelected: Set<Int>, emergencyContactsDuplicated: Set<Int>) {
+        var emergencyContactsSelected = Set(emergencyContacts.indices.filter({ emergencyContacts[$0].isSelected }))
+        var emergencyContactsDuplicated: Set<Int> = []
         
-        let phoneNumbers = emergencyContacts.map({ $0.phoneNumber })
-        let uniquePhoneNumbers = Set(phoneNumbers)
-        guard phoneNumbers.count == uniquePhoneNumbers.count else {
-            return false
+        if emergencyContactsSelected.count == emergencyContacts.count {
+            let phoneNumbers = emergencyContacts.map({ $0.phoneNumber })
+            let duplicatePhoneNumbers = phoneNumbers.duplicates()
+            for (index, contact) in emergencyContacts.enumerated() {
+                if duplicatePhoneNumbers.contains(contact.phoneNumber) {
+                    emergencyContactsDuplicated.insert(index)
+                }
+            }
         }
-        
-        return true
+
+        return (emergencyContactsSelected, emergencyContactsDuplicated)
+    }
+}
+
+extension Array where Element: Hashable {
+    func duplicates() -> Array {
+        var counts = [Element: Int]()
+        for element in self {
+            counts[element, default: 0] += 1
+        }
+        return counts.filter({ $0.value > 1 }).map({ $0.key })
     }
 }

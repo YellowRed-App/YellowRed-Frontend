@@ -438,11 +438,14 @@ struct EditEmergencyContactView: View {
         _emergencyContacts = emergencyContacts
         _newEmergencyContacts = State(initialValue: emergencyContacts.wrappedValue)
     }
-
-    @State private var areEmergencyContactsValid: Bool = true
+    
+    @State private var emergencyContactsSelected: Set<Int> = []
+    @State private var emergencyContactsDuplicated: Set<Int> = []
     
     @State private var alert: Bool = false
     @State private var alertMessage: String = ""
+    
+    @State private var saveButtonClicked: Bool = false
     
     var body: some View {
         ZStack {
@@ -493,15 +496,24 @@ struct EditEmergencyContactView: View {
                                             colors: [.yellow, .red],
                                             startPoint: .topLeading,
                                             endPoint: .bottomTrailing
-                                        ), lineWidth: 2.5
-                                    )
+                                        ), lineWidth: 2.5)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.red, lineWidth: saveButtonClicked && (!emergencyContactsSelected.contains(index) || emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
                             )
                             .padding(.vertical, 5)
                     }
                 }
                 .padding(.horizontal, 20)
                 
-                if !areEmergencyContactsValid {
+                if saveButtonClicked && emergencyContactsSelected.count != 3 {
+                    Text("Please choose three emergency contacts!")
+                        .font(.subheadline)
+                        .foregroundColor(.red)
+                }
+                
+                if !emergencyContactsDuplicated.isEmpty {
                     Text("Please choose three unique emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.red)
@@ -510,13 +522,21 @@ struct EditEmergencyContactView: View {
                 Spacer()
                 
                 Button(action: {
-                    areEmergencyContactsValid = InputValidator.validateEmergencyContacts(newEmergencyContacts)
-                    if areEmergencyContactsValid {
+                    saveButtonClicked = true
+                    let validationResult = InputValidator.validateEmergencyContacts(newEmergencyContacts)
+                    emergencyContactsSelected = validationResult.emergencyContactsSelected
+                    emergencyContactsDuplicated = validationResult.emergencyContactsDuplicated
+                    if emergencyContactsSelected.count == 3 && emergencyContactsDuplicated.isEmpty {
                         emergencyContacts = newEmergencyContacts
                         presentationMode.wrappedValue.dismiss()
                     } else {
                         alert = true
-                        alertMessage = "You have not chosen three unique emergency contacts!"
+                        if emergencyContactsSelected.count != 3 {
+                            alertMessage = "You have not chosen three emergency contacts!"
+                        }
+                        if !emergencyContactsDuplicated.isEmpty {
+                            alertMessage = "You have not chosen three unique emergency contacts!"
+                        }
                     }
                 }) {
                     Text("Save and Exit")

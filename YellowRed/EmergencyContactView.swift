@@ -9,8 +9,11 @@ import SwiftUI
 
 struct EmergencyContactView: View {
     @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 3)
-    @State private var areEmergencyContactsValid: Bool = true
     
+    @State private var emergencyContactsSelected: Set<Int> = []
+    @State private var emergencyContactsDuplicated: Set<Int> = []
+    
+    @State private var nextButtonClicked: Bool = false
     @State private var next: Bool = false
     
     var body: some View {
@@ -49,11 +52,21 @@ struct EmergencyContactView: View {
                 VStack(spacing: 15) {
                     ForEach(0..<3, id: \.self) { index in
                         EmergencyContactPicker(contact: $emergencyContacts[index])
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.black, lineWidth: nextButtonClicked && (!emergencyContactsSelected.contains(index) || emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
+                            )
                     }
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
                 
-                if !areEmergencyContactsValid {
+                if nextButtonClicked && emergencyContactsSelected.count != 3 {
+                    Text("Please choose three emergency contacts!")
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                }
+                
+                if !emergencyContactsDuplicated.isEmpty {
                     Text("Please choose three unique emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.white)
@@ -62,8 +75,11 @@ struct EmergencyContactView: View {
                 Spacer()
                 
                 Button(action: {
-                    areEmergencyContactsValid = InputValidator.validateEmergencyContacts(emergencyContacts)
-                    if areEmergencyContactsValid {
+                    nextButtonClicked = true
+                    let validationResult = InputValidator.validateEmergencyContacts(emergencyContacts)
+                    emergencyContactsSelected = validationResult.emergencyContactsSelected
+                    emergencyContactsDuplicated = validationResult.emergencyContactsDuplicated
+                    if emergencyContactsSelected.count == 3 && emergencyContactsDuplicated.isEmpty {
                         next = true
                     }
                 }) {

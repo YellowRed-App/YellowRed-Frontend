@@ -142,11 +142,11 @@ struct GetStartedAffiliationView: View {
                         label: { EmptyView() }
                     )
                 )
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: BackButton())
             }
             .padding(.horizontal, 20)
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: BackButton())
         .endEditingOnTap()
     }
 }

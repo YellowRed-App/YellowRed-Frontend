@@ -55,41 +55,38 @@ struct LocationView: View {
                 
                 Spacer()
                 
-                VStack(spacing: 20) {
-                    Button(action: {
-                        locationManager.requestLocationPermission()
-                    }) {
-                        Text("Enable Location")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                            .padding(12.5)
-                            .frame(maxWidth: .infinity)
-                            .background(.white)
-                            .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                    }
+                Button(action: {
+                    locationManager.requestLocationPermission()
+                }) {
+                    Text("Enable Location")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.black)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.white)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 40)
+                .background(
+                    NavigationLink(
+                        destination: EmergencyContactView(),
+                        isActive: $locationManager.next,
+                        label: { EmptyView() }
+                    )
+                )
+                .alert(isPresented: $locationManager.alert) {
+                    Alert(
+                        title: Text("Location Services Disabled"),
+                        message: Text("Please enable Location Services in Settings."),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
             }
-            .padding(.horizontal, 20)
-            .navigationBarBackButtonHidden(true)
+            .padding(.horizontal, 40)
+            .padding(.bottom, 40)
         }
-        .background(
-            NavigationLink(
-                destination: EmergencyContactView(),
-                isActive: $locationManager.next,
-                label: { EmptyView() }
-            )
-        )
-        .alert(isPresented: $locationManager.alert) {
-            Alert(
-                title: Text("Location Services Disabled"),
-                message: Text("Please enable Location Services in Settings."),
-                dismissButton: .default(Text("OK"))
-            )
-        }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

@@ -138,6 +138,7 @@ struct RedMessageView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.white)
                                 .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }

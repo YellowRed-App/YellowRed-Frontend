@@ -165,7 +165,7 @@ struct YellowMessageView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.white)
                                 .multilineTextAlignment(.center)
-                                .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }

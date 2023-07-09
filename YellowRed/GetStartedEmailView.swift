@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct GetStartedEmailView: View {
-    @State private var email: String = ""
-    @State private var isEmailValid: Bool = true
+    @State private var emailAddress: String = ""
+    @State private var isEmailAddressValid: Bool = true
     
     @State private var verificationCode: String = ""
     @State private var verificationCodeSent: String = ""
@@ -40,18 +40,18 @@ struct GetStartedEmailView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
-                Text("Enter Organization Email")
+                Text("Enter Email Address")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 ZStack(alignment: .leading) {
-                    TextField("abc5xy@virginia.edu", text: $email)
+                    TextField("abc5xy@virginia.edu", text: $emailAddress)
                         .autocapitalization(.none)
                     //                        .keyboardType(.emailAddress)
                     
-                    if email.isEmpty {
+                    if emailAddress.isEmpty {
                         Text("abc5xy@virginia.edu")
                             .accentColor(.black)
                             .opacity(0.5)
@@ -64,12 +64,12 @@ struct GetStartedEmailView: View {
                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(.black, lineWidth: isEmailValid ? 0 : 2.5)
+                        .stroke(.black, lineWidth: isEmailAddressValid ? 0 : 2.5)
                 )
                 .padding(.horizontal, 20)
                 .disabled(isVerificationEnabled)
                 
-                if !isEmailValid {
+                if !isEmailAddressValid {
                     Text("Please enter a valid email address!")
                         .font(.subheadline)
                         .foregroundColor(.white)
@@ -104,8 +104,8 @@ struct GetStartedEmailView: View {
                 }
                 
                 Button(action: {
-                    isEmailValid = InputValidator.validateEmail(email)
-                    if isEmailValid {
+                    isEmailAddressValid = InputValidator.validateEmail(emailAddress)
+                    if isEmailAddressValid {
                         if isVerificationEnabled && verificationCode == verificationCodeSent {
                             isVerificationValid = true
                             next = true
@@ -113,7 +113,7 @@ struct GetStartedEmailView: View {
                             isVerificationValid = false
                         } else {
                             isVerificationEnabled = true
-                            verificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: email)
+                            verificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: emailAddress)
                         }
                     }
                 }) {
@@ -134,7 +134,7 @@ struct GetStartedEmailView: View {
                 
                 if isVerificationEnabled {
                     Button(action: {
-                        verificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: email)
+                        verificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: emailAddress)
                     }) {
                         Text("Resend Code")
                             .font(.body)

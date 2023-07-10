@@ -103,6 +103,9 @@ struct EditPersonalView: View {
     @State private var alert: Bool = false
     @State private var alertMessage: String = ""
     
+    @ObservedObject var phoneInputVerifier = InputVerifier()
+    @ObservedObject var emailInputVerifier = InputVerifier()
+    
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
@@ -224,18 +227,20 @@ struct EditPersonalView: View {
                             Button(action: {
                                 isPhoneNumberValid = InputValidator.validatePhoneNumber(newPhoneNumber)
                                 if isPhoneNumberValid {
-                                    if smsVerificationEnabled && smsVerificationCode == smsVerificationCodeSent {
+                                    if smsVerificationEnabled && smsVerificationCode ==
+                                        smsVerificationCodeSent {
                                         smsVerificationEnabled = false
                                         smsVerificationValid = true
                                         smsVerificationCode = ""
                                         phoneNumber = newPhoneNumber
                                         newPhoneNumber = ""
+                                        phoneInputVerifier.stopCooldown()
                                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                     } else if smsVerificationEnabled {
                                         smsVerificationValid = false
                                     } else {
                                         smsVerificationEnabled = true
-                                        smsVerificationCodeSent = InputVerifier.sendVerificationCodeViaSMS(to: newPhoneNumber)
+                                        smsVerificationCodeSent = phoneInputVerifier.sendVerificationCodeViaSMS(to: newPhoneNumber)
                                     }
                                 }
                             }) {
@@ -254,14 +259,25 @@ struct EditPersonalView: View {
                             }
                         }
                         
-                        if smsVerificationEnabled {
-                            Button(action: {
-                                smsVerificationCodeSent = InputVerifier.sendVerificationCodeViaSMS(to: phoneNumber)
-                            }) {
-                                Text("Resend Code")
-                                    .font(.body)
-                                    .fontWeight(.regular)
-                                    .foregroundColor(.blue)
+                        VStack(spacing: 10) {
+                            if smsVerificationEnabled {
+                                Button(action: {
+                                    if !phoneInputVerifier.isCooldown {
+                                        smsVerificationCodeSent = phoneInputVerifier.resendVerificationCodeViaSMS(to: newPhoneNumber)
+                                    }
+                                }) {
+                                    Text(phoneInputVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
+                                        .font(.body)
+                                        .fontWeight(.regular)
+                                        .foregroundColor(.blue)
+                                }
+                                
+                                if phoneInputVerifier.cooldownTime > 0 {
+                                    Text("Try again in \(phoneInputVerifier.cooldownTime) seconds")
+                                        .font(.caption)
+                                        .fontWeight(.regular)
+                                        .foregroundColor(.blue)
+                                }
                             }
                         }
                     }
@@ -357,12 +373,13 @@ struct EditPersonalView: View {
                                         emailVerificationCode = ""
                                         emailAddress = newEmailAddress
                                         newEmailAddress = ""
+                                        emailInputVerifier.stopCooldown()
                                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                     } else if emailVerificationEnabled {
                                         emailVerificationValid = false
                                     } else {
                                         emailVerificationEnabled = true
-                                        emailVerificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: newEmailAddress)
+                                        emailVerificationCodeSent = emailInputVerifier.sendVerificationCodeViaEmail(to: newEmailAddress)
                                     }
                                 }
                             }) {
@@ -381,14 +398,25 @@ struct EditPersonalView: View {
                             }
                         }
                         
-                        if emailVerificationEnabled {
-                            Button(action: {
-                                emailVerificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: emailAddress)
-                            }) {
-                                Text("Resend Code")
-                                    .font(.body)
-                                    .fontWeight(.regular)
-                                    .foregroundColor(.blue)
+                        VStack(spacing: 10) {
+                            if emailVerificationEnabled {
+                                Button(action: {
+                                    if !emailInputVerifier.isCooldown {
+                                        emailVerificationCodeSent = emailInputVerifier.resendVerificationCodeViaEmail(to: newEmailAddress)
+                                    }
+                                }) {
+                                    Text(emailInputVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
+                                        .font(.body)
+                                        .fontWeight(.regular)
+                                        .foregroundColor(.blue)
+                                }
+                                
+                                if emailInputVerifier.cooldownTime > 0 {
+                                    Text("Try again in \(emailInputVerifier.cooldownTime) seconds")
+                                        .font(.caption)
+                                        .fontWeight(.regular)
+                                        .foregroundColor(.blue)
+                                }
                             }
                         }
                     }

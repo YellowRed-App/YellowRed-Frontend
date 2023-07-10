@@ -19,6 +19,8 @@ struct GetStartedNumberView: View {
     
     @State private var next: Bool = false
     
+    @ObservedObject var inputVerifier = InputVerifier()
+    
     let fullName: String
     var firstName: String {
         return fullName.components(separatedBy: " ").first ?? ""
@@ -112,13 +114,15 @@ struct GetStartedNumberView: View {
                     isPhoneNumberValid = InputValidator.validatePhoneNumber(phoneNumber)
                     if isPhoneNumberValid {
                         if isVerificationEnabled && verificationCode == verificationCodeSent {
+                            inputVerifier.stopCooldown()
                             isVerificationValid = true
                             next = true
+                            
                         } else if isVerificationEnabled {
                             isVerificationValid = false
                         } else {
                             isVerificationEnabled = true
-                            verificationCodeSent = InputVerifier.sendVerificationCodeViaSMS(to: phoneNumber)
+                            verificationCodeSent = inputVerifier.sendVerificationCodeViaSMS(to: phoneNumber)
                         }
                     }
                 }) {
@@ -143,14 +147,25 @@ struct GetStartedNumberView: View {
                     )
                 )
                 
-                if isVerificationEnabled {
-                    Button(action: {
-                        verificationCodeSent = InputVerifier.sendVerificationCodeViaSMS(to: phoneNumber)
-                    }) {
-                        Text("Resend Code")
-                            .font(.body)
-                            .fontWeight(.regular)
-                            .foregroundColor(.blue)
+                VStack(spacing: 10) {
+                    if isVerificationEnabled {
+                        Button(action: {
+                            if !inputVerifier.isCooldown {
+                                verificationCodeSent = inputVerifier.resendVerificationCodeViaSMS(to: phoneNumber)
+                            }
+                        }) {
+                            Text(inputVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
+                                .font(.body)
+                                .fontWeight(.regular)
+                                .foregroundColor(.blue)
+                        }
+                        
+                        if inputVerifier.cooldownTime > 0 {
+                            Text("Try again in \(inputVerifier.cooldownTime) seconds")
+                                .font(.caption)
+                                .fontWeight(.regular)
+                                .foregroundColor(.blue)
+                        }
                     }
                 }
             }

@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
-struct InputVerifier {
-    public static func sendVerificationCodeViaSMS(to phoneNumber: String) -> String {
-        // Generate a random six-digit code
+class InputVerifier: ObservableObject {
+    @Published var isCooldown: Bool = false
+    @Published var cooldownTime: Int = 0
+    private var cooldownTimer: Timer? = nil
+
+    func sendVerificationCodeViaSMS(to phoneNumber: String) -> String {
         let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
         
         // TODO: Implement code to send the verification code via SMS to the phoneNumber
@@ -19,8 +23,20 @@ struct InputVerifier {
         return randomCode
     }
     
-    public static func sendVerificationCodeViaEmail(to email: String) -> String {
-        // Generate a random six-digit code
+    func resendVerificationCodeViaSMS(to phoneNumber: String) -> String {
+        guard !isCooldown else {
+            return ""
+        }
+        
+        var verificationCode: String = ""
+        verificationCode = sendVerificationCodeViaSMS(to: phoneNumber)
+        
+        startCooldown()
+        
+        return verificationCode
+    }
+    
+    func sendVerificationCodeViaEmail(to emailAddress: String) -> String {
         let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
         
         // TODO: Implement code to send the verification code via email to the email address
@@ -29,4 +45,39 @@ struct InputVerifier {
         
         return randomCode
     }
+    
+    func resendVerificationCodeViaEmail(to emailAddress: String) -> String {
+        guard !isCooldown else {
+            return ""
+        }
+        
+        var verificationCode: String = ""
+        verificationCode = sendVerificationCodeViaEmail(to: emailAddress)
+        
+        startCooldown()
+        
+        return verificationCode
+    }
+    
+    private func startCooldown() {
+        isCooldown = true
+        cooldownTime = 60
+
+        cooldownTimer?.invalidate()
+        cooldownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+            if self?.cooldownTime ?? 0 > 0 {
+                self?.cooldownTime -= 1
+            } else {
+                timer.invalidate()
+                self?.isCooldown = false
+            }
+        }
+    }
+    
+    func stopCooldown() {
+        cooldownTimer?.invalidate()
+        cooldownTimer = nil
+        isCooldown = false
+    }
 }
+

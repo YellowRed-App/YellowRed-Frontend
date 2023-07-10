@@ -19,6 +19,8 @@ struct GetStartedEmailView: View {
     
     @State private var next: Bool = false
     
+    @ObservedObject var inputVerifier = InputVerifier()
+    
     let fullName: String
     var firstName: String {
         return fullName.components(separatedBy: " ").first ?? ""
@@ -107,13 +109,14 @@ struct GetStartedEmailView: View {
                     isEmailAddressValid = InputValidator.validateEmail(emailAddress)
                     if isEmailAddressValid {
                         if isVerificationEnabled && verificationCode == verificationCodeSent {
+                            inputVerifier.stopCooldown()
                             isVerificationValid = true
                             next = true
                         } else if isVerificationEnabled {
                             isVerificationValid = false
                         } else {
                             isVerificationEnabled = true
-                            verificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: emailAddress)
+                            verificationCodeSent = inputVerifier.sendVerificationCodeViaEmail(to: phoneNumber)
                         }
                     }
                 }) {
@@ -138,14 +141,25 @@ struct GetStartedEmailView: View {
                     )
                 )
                 
-                if isVerificationEnabled {
-                    Button(action: {
-                        verificationCodeSent = InputVerifier.sendVerificationCodeViaEmail(to: emailAddress)
-                    }) {
-                        Text("Resend Code")
-                            .font(.body)
-                            .fontWeight(.regular)
-                            .foregroundColor(.blue)
+                VStack(spacing: 10) {
+                    if isVerificationEnabled {
+                        Button(action: {
+                            if !inputVerifier.isCooldown {
+                                verificationCodeSent = inputVerifier.resendVerificationCodeViaEmail(to: phoneNumber)
+                            }
+                        }) {
+                            Text(inputVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
+                                .font(.body)
+                                .fontWeight(.regular)
+                                .foregroundColor(.blue)
+                        }
+                        
+                        if inputVerifier.cooldownTime > 0 {
+                            Text("Try again in \(inputVerifier.cooldownTime) seconds")
+                                .font(.caption)
+                                .fontWeight(.regular)
+                                .foregroundColor(.blue)
+                        }
                     }
                 }
             }

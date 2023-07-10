@@ -20,6 +20,7 @@ struct YellowMessageView: View {
     @State private var yellowMessage: String = ""
     
     @State private var valid: Bool = true
+    @State private var error: Bool = false
     
     @State private var next: Bool = false
     
@@ -55,7 +56,7 @@ struct YellowMessageView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
-                if !isEditing {
+                if !isEditing && editingTemplate == nil {
                     Text("Please choose and edit a message template or create your own custom message!")
                         .font(.title3)
                         .fontWeight(.medium)
@@ -95,7 +96,7 @@ struct YellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .padding(.horizontal, 10)
+                            .padding(.horizontal, 20)
                             
                             Button("Cancel", action: {
                                 editingTemplate = nil
@@ -108,8 +109,9 @@ struct YellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .padding(.horizontal, 10)
+                            .padding(.horizontal, 20)
                         }
+                        .padding(.vertical, 20)
                     } else {
                         ForEach(0..<messageTemplates.count, id: \.self) { index in
                             TextField("Placeholder", text: Binding(
@@ -167,12 +169,17 @@ struct YellowMessageView: View {
                     }
                     
                     if !isEditing && editingTemplate == nil {
-                        if !valid {
+                        if error {
                             Text("Please choose a template or create your own!")
                                 .font(.subheadline)
                                 .foregroundColor(.white)
                                 .multilineTextAlignment(.center)
                                 .fixedSize(horizontal: false, vertical: true)
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                        error = false
+                                    }
+                                }
                         }
                     }
                 }
@@ -180,34 +187,38 @@ struct YellowMessageView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
-                    if valid {
-                        yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
-                        next = true
+                if !isEditing && editingTemplate == nil {
+                    Button(action: {
+                        valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
+                        if valid {
+                            yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
+                            next = true
+                        } else {
+                            error = true
+                        }
+                    }) {
+                        HStack {
+                            Text("Next")
+                            Image(systemName: "arrow.right.circle.fill")
+                        }
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.black)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.white)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
-                }) {
-                    HStack {
-                        Text("Next")
-                        Image(systemName: "arrow.right.circle.fill")
-                    }
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.black)
-                    .padding(12.5)
-                    .frame(maxWidth: .infinity)
-                    .background(.white)
-                    .cornerRadius(15)
-                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                }
-                .background(
-                    NavigationLink(
-                        destination: RedMessageView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university, emergencyContacts: emergencyContacts, yellowMessage: yellowMessage),
-                        isActive: $next,
-                        label: { EmptyView() }
+                    .background(
+                        NavigationLink(
+                            destination: RedMessageView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university, emergencyContacts: emergencyContacts, yellowMessage: yellowMessage),
+                            isActive: $next,
+                            label: { EmptyView() }
+                        )
                     )
-                )
-                .padding(.horizontal, 20)
+                    .padding(.horizontal, 20)
+                }
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 40)

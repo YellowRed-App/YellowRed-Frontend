@@ -738,6 +738,7 @@ struct EditYellowMessageView: View {
     @State private var customMessage: String = ""
     
     @State private var valid: Bool = true
+    @State private var error: Bool = false
     
     @State private var alert: Bool = false
     @State private var alertMessage: String = ""
@@ -819,7 +820,7 @@ struct EditYellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .padding(.horizontal, 10)
+                            .padding(.horizontal, 20)
                             
                             Button("Cancel", action: {
                                 editingTemplate = nil
@@ -832,8 +833,9 @@ struct EditYellowMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .padding(.horizontal, 10)
+                            .padding(.horizontal, 20)
                         }
+                        .padding(.vertical, 20)
                     } else {
                         ForEach(0..<messageTemplates.count, id: \.self) { index in
                             TextField("Placeholder", text: Binding(
@@ -910,12 +912,17 @@ struct EditYellowMessageView: View {
                     }
                     
                     if !isEditing && editingTemplate == nil {
-                        if !valid {
+                        if error {
                             Text("Please choose a template or create your own!")
                                 .font(.subheadline)
                                 .foregroundColor(.red)
                                 .multilineTextAlignment(.center)
                                 .fixedSize(horizontal: false, vertical: true)
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                        error = false
+                                    }
+                                }
                         }
                     }
                 }
@@ -923,35 +930,38 @@ struct EditYellowMessageView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
-                    if valid {
-                        yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
-                        editYellowMessage = false
-                        viewLoaded = false
-                        presentationMode.wrappedValue.dismiss()
-                    } else {
-                        alert = true
-                        alertMessage = "You have not chosen and optionally editted a message template or edited your own custom message!"
+                if !isEditing && editingTemplate == nil {
+                    Button(action: {
+                        valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
+                        if valid {
+                            yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
+                            editYellowMessage = false
+                            viewLoaded = false
+                            presentationMode.wrappedValue.dismiss()
+                        } else {
+                            error = true
+                            alert = true
+                            alertMessage = "You have not chosen and optionally edited a message template or edited your own custom message!"
+                        }
+                    }) {
+                        HStack {
+                            Text("Save")
+                            Image(systemName: "arrow.right.circle.fill")
+                        }
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.blue)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
-                }) {
-                    HStack {
-                        Text("Save")
-                        Image(systemName: "arrow.right.circle.fill")
+                    .padding(.horizontal, 40)
+                    .padding(.bottom, 40)
+                    .alert(isPresented: $alert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .padding(12.5)
-                    .frame(maxWidth: .infinity)
-                    .background(.blue)
-                    .cornerRadius(15)
-                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                }
-                .padding(.horizontal, 40)
-                .padding(.bottom, 40)
-                .alert(isPresented: $alert) {
-                    Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                 }
             }
             .background(.white)
@@ -977,6 +987,7 @@ struct EditRedMessageView: View {
     @State private var selectingTemplate: Int?
     
     @State private var valid: Bool = true
+    @State private var error: Bool = false
     
     @State private var alert: Bool = false
     @State private var alertMessage: String = ""
@@ -1058,7 +1069,7 @@ struct EditRedMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .padding(.horizontal, 10)
+                            .padding(.horizontal, 20)
                             
                             Button("Cancel", action: {
                                 selectingTemplate = nil
@@ -1071,49 +1082,50 @@ struct EditRedMessageView: View {
                             .background(.white)
                             .cornerRadius(10)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .padding(.horizontal, 10)
+                            .padding(.horizontal, 20)
                         }
+                        .padding(.vertical, 20)
                     } else {
                         ForEach(0..<messageTemplates.count, id: \.self) { index in
-                            TextField("Placeholder", text: Binding(
-                                get: { self.messageTemplates[index] },
-                                set: { newValue in
-                                    self.messageTemplates[index] = newValue
-                                    self.selectedTemplate = nil
+                            Text(self.messageTemplates[index])
+                                .font(.body)
+                                .fontWeight(.regular)
+                                .foregroundColor(.black)
+                                .lineLimit(1)
+                                .padding(12.5)
+                                .frame(maxWidth: .infinity)
+                                .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
+                                .cornerRadius(15)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(
+                                            LinearGradient(
+                                                colors: [.yellow, .red],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            ), lineWidth: selectedTemplate == index ? 2.5 : 0
+                                        )
+                                )
+                                .onTapGesture {
+                                    self.selectingTemplate = index
+                                    self.isSelecting = true
                                 }
-                            ))
-                            .font(.body)
-                            .fontWeight(.regular)
-                            .foregroundColor(.black)
-                            .padding(12.5)
-                            .frame(maxWidth: .infinity)
-                            .background(selectedTemplate == index ? .white.opacity(0.5) : .white)
-                            .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(
-                                        LinearGradient(
-                                            colors: [.yellow, .red],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        ), lineWidth: selectedTemplate == index ? 2.5 : 0
-                                    )
-                            )
-                            .onTapGesture {
-                                self.selectingTemplate = index
-                                self.isSelecting = true
-                            }
                         }
                     }
                     
                     if !isSelecting && selectingTemplate == nil {
-                        if !valid {
+                        if error {
                             Text("Please choose a template")
                                 .font(.subheadline)
                                 .foregroundColor(.red)
                                 .multilineTextAlignment(.center)
                                 .fixedSize(horizontal: false, vertical: true)
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                        error = false
+                                    }
+                                }
                         }
                     }
                 }
@@ -1121,34 +1133,37 @@ struct EditRedMessageView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    valid = selectedTemplate != nil
-                    if valid {
-                        redMessage = messageTemplates[selectedTemplate!]
-                        editRedMessage = false
-                        presentationMode.wrappedValue.dismiss()
-                    } else {
-                        alert = true
-                        alertMessage = "You have not chosen a message template!"
+                if !isSelecting && selectingTemplate == nil {
+                    Button(action: {
+                        valid = selectedTemplate != nil
+                        if valid {
+                            redMessage = messageTemplates[selectedTemplate!]
+                            editRedMessage = false
+                            presentationMode.wrappedValue.dismiss()
+                        } else {
+                            error = true
+                            alert = true
+                            alertMessage = "You have not chosen a message template!"
+                        }
+                    }) {
+                        HStack {
+                            Text("Save")
+                            Image(systemName: "arrow.right.circle.fill")
+                        }
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.blue)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
-                }) {
-                    HStack {
-                        Text("Save")
-                        Image(systemName: "arrow.right.circle.fill")
+                    .padding(.horizontal, 40)
+                    .padding(.bottom, 40)
+                    .alert(isPresented: $alert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .padding(12.5)
-                    .frame(maxWidth: .infinity)
-                    .background(.blue)
-                    .cornerRadius(15)
-                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                }
-                .padding(.horizontal, 40)
-                .padding(.bottom, 40)
-                .alert(isPresented: $alert) {
-                    Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                 }
             }
             .background(.white)

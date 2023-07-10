@@ -48,20 +48,18 @@ struct GetStartedAffiliationView: View {
                 
                 VStack(alignment: .leading, spacing: 10) {
                     RadioButton(
-                        id: "uva",
+                        id: "UVA",
                         label: "UVA Student / Faculty",
-                        isSelected: $affiliation,
-                        isAffiliationValid: $isAffiliationValid
+                        isSelected: $affiliation
                     )
                     
                     RadioButton(
-                        id: "other",
+                        id: "Other",
                         label: "Other University",
-                        isSelected: $affiliation,
-                        isAffiliationValid: $isAffiliationValid
+                        isSelected: $affiliation
                     )
                     
-                    if affiliation == "other" {
+                    if affiliation == "Other" {
                         ZStack(alignment: .leading) {
                             TextField("University Name", text: $university)
                             
@@ -82,10 +80,9 @@ struct GetStartedAffiliationView: View {
                     }
                     
                     RadioButton(
-                        id: "none",
+                        id: "None",
                         label: "Not Affiliated",
-                        isSelected: $affiliation,
-                        isAffiliationValid: $isAffiliationValid
+                        isSelected: $affiliation
                     )
                 }
                 .padding(.vertical, 20)

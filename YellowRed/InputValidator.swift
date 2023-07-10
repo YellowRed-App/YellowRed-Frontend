@@ -31,7 +31,7 @@ struct InputValidator {
         var isAffiliationValid = true
         var isUniversityValid = true
 
-        if affiliation == "other" {
+        if affiliation == "Other" {
             isValid = !university.isEmpty
             isUniversityValid = !university.isEmpty
         } else {

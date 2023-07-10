@@ -28,12 +28,10 @@ struct RadioButton: View {
     let id: String
     let label: String
     @Binding var isSelected: String
-    @Binding var isAffiliationValid: Bool
     
     var body: some View {
         Button(action: {
             isSelected = id
-            isAffiliationValid = true
         }) {
             HStack(alignment: .top) {
                 Image(systemName: isSelected == id ? "largecircle.fill.circle" : "circle")

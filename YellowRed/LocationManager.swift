@@ -22,7 +22,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         let status = CLLocationManager.authorizationStatus()
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.next = true
             }
         case .notDetermined:
@@ -31,6 +31,14 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             alert = true
         default:
             break
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.next = true
+            }
         }
     }
 }

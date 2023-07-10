@@ -733,9 +733,11 @@ struct EditYellowMessageView: View {
         "I'm about to take a trip that I'm not entirely comfortable with. Could you accompany me virtually by keeping tabs on my live location?",
         "Just letting you know, I'm out alone right now and it would put me at ease if you could check up on me periodically. You've been sent my live location.",
     ]
-    @State private var selectedTemplate: Int?
     @State private var editingTemplate: Int?
+    @State private var selectedTemplate: Int?
+    @State private var previousSelectedTemplate: Int?
     @State private var customMessage: String = ""
+    @State private var previousCustomMessage: String = ""
     
     @State private var valid: Bool = true
     @State private var error: Bool = false
@@ -772,8 +774,6 @@ struct EditYellowMessageView: View {
                     .edgesIgnoringSafeArea(.all)
                 )
                 
-                Spacer()
-                
                 Text("Edit Yellow Button Message")
                     .font(.title2)
                     .fontWeight(.semibold)
@@ -809,6 +809,7 @@ struct EditYellowMessageView: View {
                         
                         HStack {
                             Button("Select", action: {
+                                previousSelectedTemplate = selectedTemplate
                                 selectedTemplate = editingTemplate
                                 editingTemplate = nil
                                 isEditing = false
@@ -825,6 +826,12 @@ struct EditYellowMessageView: View {
                             Button("Cancel", action: {
                                 editingTemplate = nil
                                 isEditing = false
+                                customMessage = previousCustomMessage
+                                if previousCustomMessage.isEmpty {
+                                    selectedTemplate = previousSelectedTemplate
+                                } else {
+                                    selectedTemplate = nil
+                                }
                             })
                             .font(.title3)
                             .fontWeight(.semibold)
@@ -865,6 +872,8 @@ struct EditYellowMessageView: View {
                                     )
                             )
                             .onTapGesture {
+                                self.previousSelectedTemplate = self.selectedTemplate
+                                self.previousCustomMessage = self.customMessage
                                 self.editingTemplate = index
                                 self.isEditing = true
                             }
@@ -881,7 +890,9 @@ struct EditYellowMessageView: View {
                                 get: { self.customMessage },
                                 set: { newValue in
                                     self.customMessage = newValue
+                                    self.previousCustomMessage = customMessage
                                     self.selectedTemplate = nil
+                                    self.previousSelectedTemplate = nil
                                 }
                             ))
                             .onAppear() {

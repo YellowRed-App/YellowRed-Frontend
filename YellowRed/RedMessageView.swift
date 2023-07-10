@@ -23,12 +23,6 @@ struct RedMessageView: View {
     
     @State private var next: Bool = false
     
-    let fullName: String
-    let phoneNumber: String
-    let emailAddress: String
-    let affiliation: String
-    let university: String
-    let emergencyContacts: [EmergencyContact]
     let yellowMessage: String
     
     var body: some View {
@@ -196,19 +190,9 @@ struct RedMessageView: View {
 }
 
 struct RedMessageView_Previews: PreviewProvider {
-    @State static var fullName: String = "John Smith"
-    @State static var phoneNumber: String = "(123) 456-7890"
-    @State static var emailAddress: String = "abc5xy@virginia.edu"
-    @State static var affiliation: String = "Other"
-    @State static var university: String = "University of Michigan"
-    @State static var emergencyContacts: [EmergencyContact] = [
-        EmergencyContact(isSelected: true, displayName: "John Doe", phoneNumber: "+1 (234) 567-8901"),
-        EmergencyContact(isSelected: true, displayName: "Jane Doe", phoneNumber: "+1 (234) 567-8902"),
-        EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
-    ]
     @State static var yellowMessage: String = "I'm feeling a bit uncomfortable, can we talk"
     
     static var previews: some View {
-        RedMessageView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university, emergencyContacts: emergencyContacts, yellowMessage: yellowMessage)
+        RedMessageView(yellowMessage: yellowMessage)
     }
 }

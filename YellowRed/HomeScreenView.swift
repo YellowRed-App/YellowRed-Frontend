@@ -27,6 +27,9 @@ struct HomeScreenView: View {
                     
                     Image("AppLogo-01")
                         .resizable()
+                        .renderingMode(.template)
+                        .foregroundColor(Color.primary)
+                        .colorInvert()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 150, height: 150)
                         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 0)

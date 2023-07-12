@@ -173,7 +173,7 @@ struct RedMessageView: View {
                     }
                     .background(
                         NavigationLink(
-                            destination: YellowRedView(),
+                            destination: NotificationView(),
                             isActive: $next,
                             label: { EmptyView() }
                         )

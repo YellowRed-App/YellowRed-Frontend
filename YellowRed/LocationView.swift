@@ -71,7 +71,7 @@ struct LocationView: View {
                     }
                     .background(
                         NavigationLink(
-                            destination: EmergencyContactView(),
+                            destination: YellowRedView(),
                             isActive: $locationManager.next,
                             label: { EmptyView() }
                         )

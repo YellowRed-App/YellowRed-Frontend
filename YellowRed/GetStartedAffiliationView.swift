@@ -131,7 +131,7 @@ struct GetStartedAffiliationView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: NotificationView(),
+                        destination: EmergencyContactView(),
                         isActive: $next,
                         label: { EmptyView() }
                     )

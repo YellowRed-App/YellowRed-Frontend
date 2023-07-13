@@ -43,7 +43,7 @@ struct InputValidator {
     }
     
     public static func validateEmergencyContacts(_ emergencyContacts: [EmergencyContact]) -> (emergencyContactsSelected: Set<Int>, emergencyContactsDuplicated: Set<Int>) {
-        var emergencyContactsSelected = Set(emergencyContacts.indices.filter({ emergencyContacts[$0].isSelected }))
+        let emergencyContactsSelected = Set(emergencyContacts.indices.filter({ emergencyContacts[$0].isSelected }))
         var emergencyContactsDuplicated: Set<Int> = []
         
         if emergencyContactsSelected.count == emergencyContacts.count {

@@ -237,7 +237,15 @@ struct EditPersonalView: View {
                                         phoneInputVerifier.stopCooldown()
                                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                     } else if smsVerificationEnabled {
-                                        smsVerificationValid = false
+//                                        smsVerificationValid = false
+                                        // MARK: Temporary
+                                        smsVerificationEnabled = false
+                                        smsVerificationValid = true
+                                        smsVerificationCode = ""
+                                        phoneNumber = newPhoneNumber
+                                        newPhoneNumber = ""
+                                        phoneInputVerifier.stopCooldown()
+                                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                     } else {
                                         smsVerificationEnabled = true
                                         smsVerificationCodeSent = phoneInputVerifier.sendVerificationCodeViaSMS(to: newPhoneNumber)

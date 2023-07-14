@@ -17,13 +17,13 @@ struct InputValidator {
     public static func validatePhoneNumber(_ phoneNumber: String) -> Bool {
         let phoneRegex = "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
         let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
-        return !phonePredicate.evaluate(with: phoneNumber)
+        return phonePredicate.evaluate(with: phoneNumber)
     }
     
     public static func validateEmailAddress(_ emailAddress: String) -> Bool {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        return !emailPredicate.evaluate(with: emailAddress)
+        return emailPredicate.evaluate(with: emailAddress)
     }
     
     public static func validateAffiliation(affiliation: String, university: String) -> (isValid: Bool, isAffiliationValid: Bool, isUniversityValid: Bool) {

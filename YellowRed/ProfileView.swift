@@ -365,7 +365,7 @@ struct EditPersonalView: View {
                         
                         if !newEmailAddress.isEmpty {
                             Button(action: {
-                                isEmailAddressValid = InputValidator.validateEmail(newEmailAddress)
+                                isEmailAddressValid = InputValidator.validateEmailAddress(newEmailAddress)
                                 if isEmailAddressValid {
                                     if emailVerificationEnabled && emailVerificationCode == emailVerificationCodeSent {
                                         emailVerificationEnabled = false

@@ -106,7 +106,7 @@ struct GetStartedEmailView: View {
                 }
                 
                 Button(action: {
-                    isEmailAddressValid = InputValidator.validateEmail(emailAddress)
+                    isEmailAddressValid = InputValidator.validateEmailAddress(emailAddress)
                     if isEmailAddressValid {
                         if isVerificationEnabled && verificationCode == verificationCodeSent {
                             inputVerifier.stopCooldown()

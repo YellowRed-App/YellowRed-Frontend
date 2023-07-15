@@ -113,11 +113,7 @@ struct GetStartedEmailView: View {
                             isVerificationValid = true
                             next = true
                         } else if isVerificationEnabled {
-//                            isVerificationValid = false
-                            // MARK: Temporary
-                            inputVerifier.stopCooldown()
-                            isVerificationValid = true
-                            next = true
+                            isVerificationValid = false
                         } else {
                             isVerificationEnabled = true
                             verificationCodeSent = inputVerifier.sendVerificationCodeViaEmail(to: phoneNumber)

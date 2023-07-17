@@ -5,7 +5,6 @@
 //  Created by Krish Mehta on 9/7/23.
 //
 
-import SwiftUI
 import UserNotifications
 
 class NotificationManager: NSObject, ObservableObject {

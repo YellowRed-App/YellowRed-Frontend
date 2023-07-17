@@ -5,7 +5,6 @@
 //  Created by Krish Mehta on 7/7/23.
 //
 
-import SwiftUI
 import CoreLocation
 
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {

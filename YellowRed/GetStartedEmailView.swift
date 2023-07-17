@@ -51,7 +51,7 @@ struct GetStartedEmailView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 ZStack(alignment: .leading) {
-                    TextField("abc5xy@virginia.edu", text: $emailAddress)
+                    TextField("", text: $emailAddress)
                         .autocapitalization(.none)
                     //                        .keyboardType(.emailAddress)
                     

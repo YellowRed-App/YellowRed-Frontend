@@ -7,7 +7,7 @@
 
 import CoreHaptics
 
-class GlobalHapticManager: ObservableObject {
+final class GlobalHapticManager: ObservableObject {
     static let shared = GlobalHapticManager()
     @Published var engine: CHHapticEngine?
     

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class InputVerifier: ObservableObject {
+final class InputVerifier: ObservableObject {
     @Published var cooldown: Bool = false
     @Published var cooldownTime: Int = 0
     private var cooldownTimer: Timer? = nil

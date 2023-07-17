@@ -7,7 +7,7 @@
 
 import UserNotifications
 
-class NotificationManager: NSObject, ObservableObject {
+final class NotificationManager: NSObject, ObservableObject {
     @Published var next: Bool = false
     
     func requestNotificationPermission() {

@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var next: Bool = false
     @Published var alert: Bool = false
     private var locationManager = CLLocationManager()

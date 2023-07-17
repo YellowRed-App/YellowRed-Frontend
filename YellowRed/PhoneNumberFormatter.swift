@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PhoneNumberFormatter {
+class PhoneNumberFormatter {
     static func format(phone: String) -> String? {
         let numbers = phone.components(separatedBy: CharacterSet.decimalDigits.inverted)
         let pureNumber = numbers.joined()

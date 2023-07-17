@@ -149,7 +149,7 @@ struct GetStartedNumberView: View {
                 VStack(spacing: 10) {
                     if isVerificationEnabled {
                         Button(action: {
-                            if !inputVerifier.isCooldown {
+                            if !inputVerifier.cooldown {
                                 verificationCodeSent = inputVerifier.resendVerificationCodeViaSMS(to: phoneNumber)
                             }
                         }) {

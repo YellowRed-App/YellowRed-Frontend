@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 class InputVerifier: ObservableObject {
-    @Published var isCooldown: Bool = false
+    @Published var cooldown: Bool = false
     @Published var cooldownTime: Int = 0
     private var cooldownTimer: Timer? = nil
 
@@ -24,7 +24,7 @@ class InputVerifier: ObservableObject {
     }
     
     func resendVerificationCodeViaSMS(to phoneNumber: String) -> String {
-        guard !isCooldown else {
+        guard !cooldown else {
             return ""
         }
         
@@ -47,7 +47,7 @@ class InputVerifier: ObservableObject {
     }
     
     func resendVerificationCodeViaEmail(to emailAddress: String) -> String {
-        guard !isCooldown else {
+        guard !cooldown else {
             return ""
         }
         
@@ -60,7 +60,7 @@ class InputVerifier: ObservableObject {
     }
     
     private func startCooldown() {
-        isCooldown = true
+        cooldown = true
         cooldownTime = 60
 
         cooldownTimer?.invalidate()
@@ -69,7 +69,7 @@ class InputVerifier: ObservableObject {
                 self?.cooldownTime -= 1
             } else {
                 timer.invalidate()
-                self?.isCooldown = false
+                self?.cooldown = false
             }
         }
     }
@@ -77,7 +77,7 @@ class InputVerifier: ObservableObject {
     func stopCooldown() {
         cooldownTimer?.invalidate()
         cooldownTimer = nil
-        isCooldown = false
+        cooldown = false
     }
 }
 

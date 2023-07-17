@@ -144,7 +144,7 @@ struct GetStartedEmailView: View {
                 VStack(spacing: 10) {
                     if isVerificationEnabled {
                         Button(action: {
-                            if !inputVerifier.isCooldown {
+                            if !inputVerifier.cooldown {
                                 verificationCodeSent = inputVerifier.resendVerificationCodeViaEmail(to: phoneNumber)
                             }
                         }) {

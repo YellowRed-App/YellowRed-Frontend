@@ -262,7 +262,7 @@ struct EditPersonalView: View {
                         VStack(spacing: 10) {
                             if smsVerificationEnabled {
                                 Button(action: {
-                                    if !phoneInputVerifier.isCooldown {
+                                    if !phoneInputVerifier.cooldown {
                                         smsVerificationCodeSent = phoneInputVerifier.resendVerificationCodeViaSMS(to: newPhoneNumber)
                                     }
                                 }) {
@@ -401,7 +401,7 @@ struct EditPersonalView: View {
                         VStack(spacing: 10) {
                             if emailVerificationEnabled {
                                 Button(action: {
-                                    if !emailInputVerifier.isCooldown {
+                                    if !emailInputVerifier.cooldown {
                                         emailVerificationCodeSent = emailInputVerifier.resendVerificationCodeViaEmail(to: newEmailAddress)
                                     }
                                 }) {

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>21183287-sln2j1oh177uhmot5n5n97s47qkm4oqm.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.21183287-sln2j1oh177uhmot5n5n97s47qkm4oqm</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCTwEjhLsN2_-gegNyQat_Xq2t6ny-BZoU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>21183287</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.yellow-red.YellowRed</string>
+	<key>PROJECT_ID</key>
+	<string>yellowred-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>yellowred-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:21183287:ios:ef78dfb3ecc7748c1f78b2</string>
+</dict>
+</plist>

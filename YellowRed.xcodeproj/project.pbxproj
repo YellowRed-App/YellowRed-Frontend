@@ -31,6 +31,7 @@
 		71B7B5902A5AD96E003CD5C8 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */; };
 		71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */; };
 		71CF77CB2A25EA81001D81E0 /* GetStartedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */; };
+		71F91AAE2A652F63008F9209 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71F91AAD2A652F63008F9209 /* GoogleService-Info.plist */; };
 		71FB82152A558472005E53DE /* InfoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FB82142A558472005E53DE /* InfoSectionView.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedNumberView.swift; sourceTree = "<group>"; };
 		71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedEmailView.swift; sourceTree = "<group>"; };
+		71F91AAD2A652F63008F9209 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71FB82142A558472005E53DE /* InfoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				7171C17F2A3F26E200CC8F9B /* Info.plist */,
+				71F91AAD2A652F63008F9209 /* GoogleService-Info.plist */,
 				71567E902A20B92E00A2BB2D /* YellowRedApp.swift */,
 				71567E922A20B92E00A2BB2D /* HomeScreenView.swift */,
 				71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */,
@@ -196,6 +199,7 @@
 			files = (
 				71567E982A20B93300A2BB2D /* Preview Assets.xcassets in Resources */,
 				71567E952A20B93300A2BB2D /* Assets.xcassets in Resources */,
+				71F91AAE2A652F63008F9209 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

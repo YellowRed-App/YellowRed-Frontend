@@ -58,7 +58,7 @@ class InputVerifier: ObservableObject {
         return verificationCode
     }
     
-    private func startCooldown() {
+    func startCooldown() {
         cooldown = true
         cooldownTime = 60
         

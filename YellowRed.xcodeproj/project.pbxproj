@@ -34,6 +34,7 @@
 		71F91AAE2A652F63008F9209 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71F91AAD2A652F63008F9209 /* GoogleService-Info.plist */; };
 		71F91AE82A653546008F9209 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 71F91AE72A653546008F9209 /* FirebaseAnalytics */; };
 		71F91AEC2A653546008F9209 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 71F91AEB2A653546008F9209 /* FirebaseAnalyticsSwift */; };
+		71F91B1F2A654F5F008F9209 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 71F91B1E2A654F5F008F9209 /* FirebaseAuth */; };
 		71FB82152A558472005E53DE /* InfoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FB82142A558472005E53DE /* InfoSectionView.swift */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +75,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71F91AEC2A653546008F9209 /* FirebaseAnalyticsSwift in Frameworks */,
+				71F91B1F2A654F5F008F9209 /* FirebaseAuth in Frameworks */,
 				71F91AE82A653546008F9209 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +88,7 @@
 			children = (
 				71567E8F2A20B92E00A2BB2D /* YellowRed */,
 				71567E8E2A20B92E00A2BB2D /* Products */,
+				71F91B1D2A654F5E008F9209 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,6 +142,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		71F91B1D2A654F5E008F9209 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -158,6 +168,7 @@
 			packageProductDependencies = (
 				71F91AE72A653546008F9209 /* FirebaseAnalytics */,
 				71F91AEB2A653546008F9209 /* FirebaseAnalyticsSwift */,
+				71F91B1E2A654F5F008F9209 /* FirebaseAuth */,
 			);
 			productName = YellowRed;
 			productReference = 71567E8D2A20B92E00A2BB2D /* YellowRed.app */;
@@ -484,6 +495,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 71F91AE62A653546008F9209 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalyticsSwift;
+		};
+		71F91B1E2A654F5F008F9209 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71F91AE62A653546008F9209 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -11,12 +11,12 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var next: Bool = false
     @Published var alert: Bool = false
     private var locationManager = CLLocationManager()
-
+    
     override init() {
         super.init()
         self.locationManager.delegate = self
     }
-
+    
     func requestLocationPermission() {
         let status = CLLocationManager.authorizationStatus()
         switch status {

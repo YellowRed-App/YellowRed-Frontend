@@ -30,7 +30,7 @@ class InputValidator {
         var isValid = true
         var isAffiliationValid = true
         var isUniversityValid = true
-
+        
         if affiliation == "Other" {
             isValid = !university.isEmpty
             isUniversityValid = !university.isEmpty
@@ -38,7 +38,7 @@ class InputValidator {
             isValid = !affiliation.isEmpty
             isAffiliationValid = !affiliation.isEmpty
         }
-
+        
         return (isValid, isAffiliationValid, isUniversityValid)
     }
     
@@ -55,7 +55,7 @@ class InputValidator {
                 }
             }
         }
-
+        
         return (emergencyContactsSelected, emergencyContactsDuplicated)
     }
 }

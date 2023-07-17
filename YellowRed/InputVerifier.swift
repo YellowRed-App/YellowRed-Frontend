@@ -11,7 +11,7 @@ class InputVerifier: ObservableObject {
     @Published var cooldown: Bool = false
     @Published var cooldownTime: Int = 0
     private var cooldownTimer: Timer? = nil
-
+    
     func sendVerificationCodeViaSMS(to phoneNumber: String) -> String {
         let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
         
@@ -61,7 +61,7 @@ class InputVerifier: ObservableObject {
     private func startCooldown() {
         cooldown = true
         cooldownTime = 60
-
+        
         cooldownTimer?.invalidate()
         cooldownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
             if self?.cooldownTime ?? 0 > 0 {

@@ -11,10 +11,10 @@ class PhoneNumberFormatter {
     static func format(phone: String) -> String? {
         let numbers = phone.components(separatedBy: CharacterSet.decimalDigits.inverted)
         let pureNumber = numbers.joined()
-
+        
         var finalText = ""
         var index = 0
-
+        
         for char in pureNumber {
             if index == 3 {
                 finalText += ") "

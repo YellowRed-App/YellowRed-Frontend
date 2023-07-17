@@ -12,7 +12,7 @@ struct EmergencyContact: Hashable {
     var isSelected = false
     var displayName = ""
     var phoneNumber = ""
-
+    
     init(isSelected: Bool = false, displayName: String = "", phoneNumber: String = "") {
         self.isSelected = isSelected
         self.displayName = displayName

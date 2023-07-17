@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InputValidator {
+class InputValidator {
     public static func validateFullName(_ fullName: String) -> Bool {
         let nameRegex = "^[a-zA-Z\\.\\'\\-]{2,50}(?: [a-zA-Z\\.\\'\\-]{2,50})+$"
         let namePredicate = NSPredicate(format: "SELF MATCHES %@", nameRegex)

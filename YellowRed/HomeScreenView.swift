@@ -7,10 +7,27 @@
 
 import SwiftUI
 
-struct HomeScreenView: View {
-    @State private var greeting: String = ""
+final class HomeScreenViewModel: ObservableObject {
+    @Published var greeting: String = ""
+    @Published var getStarted: Bool = false
     
-    @State private var getStarted: Bool = false
+    func setGreeting() {
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: Date())
+        
+        switch hour {
+        case 5..<12:
+            greeting = "Good Morning"
+        case 12..<17:
+            greeting = "Good Afternoon"
+        default:
+            greeting = "Good Evening"
+        }
+    }
+}
+
+struct HomeScreenView: View {
+    @StateObject private var model = HomeScreenViewModel()
     
     var body: some View {
         NavigationView {
@@ -45,14 +62,14 @@ struct HomeScreenView: View {
                     
                     Spacer()
                     
-                    Text(greeting)
+                    Text(model.greeting)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
                     
                     Button(action: {
-                        getStarted = true
+                        model.getStarted = true
                     }) {
                         HStack {
                             Text("Get Started")
@@ -67,7 +84,7 @@ struct HomeScreenView: View {
                         .cornerRadius(15)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
-                    .fullScreenCover(isPresented: $getStarted) {
+                    .fullScreenCover(isPresented: $model.getStarted) {
                         GetStartedNameView()
                     }
                     .padding(.horizontal, 20)
@@ -77,21 +94,7 @@ struct HomeScreenView: View {
             }
         }
         .navigationBarHidden(true)
-        .onAppear(perform: setGreeting)
-    }
-    
-    private func setGreeting() {
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: Date())
-        
-        switch hour {
-        case 5..<12:
-            greeting = "Good Morning"
-        case 12..<17:
-            greeting = "Good Afternoon"
-        default:
-            greeting = "Good Evening"
-        }
+        .onAppear(perform: model.setGreeting)
     }
 }
 

@@ -7,20 +7,15 @@
 
 import SwiftUI
 
-
-final class GetStartedNumberViewModel: ObservableObject {
-    @Published var phoneNumber: String = ""
-    @Published var isPhoneNumberValid: Bool = true
-    
-    @Published var verificationCode: String = ""
-    @Published var verificationCodeSent: String = ""
-    
-    @Published var isVerificationEnabled: Bool = false
-    @Published var isVerificationValid: Bool = true
-}
-
 struct GetStartedNumberView: View {
-    @StateObject private var model = GetStartedNumberViewModel()
+    @State private var phoneNumber: String = ""
+    @State private var isPhoneNumberValid: Bool = true
+    
+    @State private var verificationCode: String = ""
+    @State private var verificationCodeSent: String = ""
+    
+    @State private var isVerificationEnabled: Bool = false
+    @State private var isVerificationValid: Bool = true
     
     @State private var next: Bool = false
     
@@ -56,16 +51,16 @@ struct GetStartedNumberView: View {
                 HStack(spacing: 10) {
                     Text("+1")
                     ZStack(alignment: .leading) {
-                        TextField("(123) 456-7890", text: $model.phoneNumber)
-                            .onReceive(model.phoneNumber.publisher.collect()) {
+                        TextField("(123) 456-7890", text: $phoneNumber)
+                            .onReceive(phoneNumber.publisher.collect()) {
                                 let number = String($0)
                                 if let formattedNumber = PhoneNumberFormatter.format(phone: number) {
-                                    self.model.phoneNumber = formattedNumber
+                                    self.phoneNumber = formattedNumber
                                 }
                             }
                         //                            .keyboardType(.numberPad)
                         
-                        if model.phoneNumber.isEmpty {
+                        if phoneNumber.isEmpty {
                             Text("(123) 456-7890")
                                 .opacity(0.5)
                         }
@@ -78,22 +73,22 @@ struct GetStartedNumberView: View {
                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(.black, lineWidth: model.isPhoneNumberValid ? 0 : 2.5)
+                        .stroke(.black, lineWidth: isPhoneNumberValid ? 0 : 2.5)
                 )
-                .disabled(model.isVerificationEnabled)
+                .disabled(isVerificationEnabled)
                 
-                if !model.isPhoneNumberValid {
+                if !isPhoneNumberValid {
                     Text("Please enter a valid phone number!")
                         .font(.subheadline)
                         .foregroundColor(.white)
                 }
                 
-                if model.isVerificationEnabled {
+                if isVerificationEnabled {
                     ZStack(alignment: .leading) {
-                        TextField("Verification Code", text: $model.verificationCode)
+                        TextField("Verification Code", text: $verificationCode)
                         //                            .keyboardType(.numberPad)
                         
-                        if model.verificationCode.isEmpty {
+                        if verificationCode.isEmpty {
                             Text("Verification Code")
                                 .opacity(0.5)
                         }
@@ -105,10 +100,10 @@ struct GetStartedNumberView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: model.isVerificationValid ? 0 : 2.5)
+                            .stroke(.black, lineWidth: isVerificationValid ? 0 : 2.5)
                     )
                     
-                    if !model.isVerificationValid {
+                    if !isVerificationValid {
                         Text("Invalid verification code. Please try again!")
                             .font(.subheadline)
                             .foregroundColor(.white)
@@ -116,23 +111,23 @@ struct GetStartedNumberView: View {
                 }
                 
                 Button(action: {
-                    model.isPhoneNumberValid = InputValidator.validatePhoneNumber(model.phoneNumber)
-                    if model.isPhoneNumberValid {
-                        if model.isVerificationEnabled && model.verificationCode == model.verificationCodeSent {
+                    isPhoneNumberValid = InputValidator.validatePhoneNumber(phoneNumber)
+                    if isPhoneNumberValid {
+                        if isVerificationEnabled && verificationCode == verificationCodeSent {
                             inputVerifier.stopCooldown()
-                            model.isVerificationValid = true
+                            isVerificationValid = true
                             next = true
-                        } else if model.isVerificationEnabled {
-                            model.isVerificationValid = false
+                        } else if isVerificationEnabled {
+                            isVerificationValid = false
                         } else {
-                            model.isVerificationEnabled = true
-                            model.verificationCodeSent = inputVerifier.sendVerificationCodeViaSMS(to: model.phoneNumber)
+                            isVerificationEnabled = true
+                            verificationCodeSent = inputVerifier.sendVerificationCodeViaSMS(to: phoneNumber)
                         }
                     }
                 }) {
                     HStack {
-                        Text(model.isVerificationEnabled ? "Next" : "Verify")
-                        Image(systemName: model.isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
+                        Text(isVerificationEnabled ? "Next" : "Verify")
+                        Image(systemName: isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
                     }
                     .font(.title)
                     .fontWeight(.semibold)
@@ -145,17 +140,17 @@ struct GetStartedNumberView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: GetStartedEmailView(fullName: fullName, phoneNumber: model.phoneNumber),
+                        destination: GetStartedEmailView(fullName: fullName, phoneNumber: phoneNumber),
                         isActive: $next,
                         label: { EmptyView() }
                     )
                 )
                 
                 VStack(spacing: 10) {
-                    if model.isVerificationEnabled {
+                    if isVerificationEnabled {
                         Button(action: {
                             if !inputVerifier.cooldown {
-                                model.verificationCodeSent = inputVerifier.resendVerificationCodeViaSMS(to: model.phoneNumber)
+                                verificationCodeSent = inputVerifier.resendVerificationCodeViaSMS(to: phoneNumber)
                             }
                         }) {
                             Text(inputVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")

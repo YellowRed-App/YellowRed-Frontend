@@ -7,15 +7,9 @@
 
 import SwiftUI
 
-final class GetStartedNameViewModel: ObservableObject {
-    @Published var fullName: String = ""
-    @Published var isFullNameValid: Bool = true
-    
-}
-
-
 struct GetStartedNameView: View {
-    @StateObject private var model = GetStartedNameViewModel()
+    @State private var fullName: String = ""
+    @State private var isFullNameValid: Bool = true
     
     @State private var next: Bool = false
     
@@ -43,11 +37,11 @@ struct GetStartedNameView: View {
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     
                     ZStack(alignment: .leading) {
-                        TextField("John Smith", text: $model.fullName)
+                        TextField("John Smith", text: $fullName)
                             .autocapitalization(.words)
                         //                            .keyboardType(.alphabet)
                         
-                        if model.fullName.isEmpty {
+                        if fullName.isEmpty {
                             Text("John Smith")
                                 .opacity(0.5)
                         }
@@ -59,18 +53,18 @@ struct GetStartedNameView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: model.isFullNameValid ? 0 : 2.5)
+                            .stroke(.black, lineWidth: isFullNameValid ? 0 : 2.5)
                     )
                     
-                    if !model.isFullNameValid {
+                    if !isFullNameValid {
                         Text("Please enter a valid name!")
                             .font(.subheadline)
                             .foregroundColor(.white)
                     }
                     
                     Button(action: {
-                        model.isFullNameValid = InputValidator.validateFullName(model.fullName)
-                        if model.isFullNameValid {
+                        isFullNameValid = InputValidator.validateFullName(fullName)
+                        if isFullNameValid {
                             next = true
                         }
                     }) {
@@ -89,7 +83,7 @@ struct GetStartedNameView: View {
                     }
                     .background(
                         NavigationLink(
-                            destination: GetStartedNumberView(fullName: model.fullName),
+                            destination: GetStartedNumberView(fullName: fullName),
                             isActive: $next,
                             label: { EmptyView() }
                         )

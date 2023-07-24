@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>21183287-sln2j1oh177uhmot5n5n97s47qkm4oqm.apps.googleusercontent.com</string>
+	<string>21183287-beugdl59p7ni8egbr01qurc07ls9p5nu.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.21183287-sln2j1oh177uhmot5n5n97s47qkm4oqm</string>
+	<string>com.googleusercontent.apps.21183287-beugdl59p7ni8egbr01qurc07ls9p5nu</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCTwEjhLsN2_-gegNyQat_Xq2t6ny-BZoU</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.yellow-red.YellowRed</string>
+	<string>com.krishvmehta.YellowRed</string>
 	<key>PROJECT_ID</key>
 	<string>yellowred-app</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:21183287:ios:ef78dfb3ecc7748c1f78b2</string>
+	<string>1:21183287:ios:810c4babef986a961f78b2</string>
 </dict>
 </plist>

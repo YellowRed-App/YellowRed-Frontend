@@ -116,7 +116,7 @@ struct GetStartedEmailView: View {
                             isVerificationValid = false
                         } else {
                             isVerificationEnabled = true
-                            verificationCodeSent = inputVerifier.sendVerificationCodeViaEmail(to: phoneNumber)
+                            verificationCodeSent = inputVerifier.sendVerificationCodeViaEmail(to: emailAddress)
                         }
                     }
                 }) {
@@ -145,7 +145,7 @@ struct GetStartedEmailView: View {
                     if isVerificationEnabled {
                         Button(action: {
                             if !inputVerifier.cooldown {
-                                verificationCodeSent = inputVerifier.resendVerificationCodeViaEmail(to: phoneNumber)
+                                verificationCodeSent = inputVerifier.resendVerificationCodeViaEmail(to: emailAddress)
                             }
                         }) {
                             Text(inputVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")

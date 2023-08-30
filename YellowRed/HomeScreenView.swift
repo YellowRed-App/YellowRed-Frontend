@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct HomeScreenView: View {
-    @State private var greeting: String = ""
-    
-    @State private var getStarted: Bool = false
+    @StateObject private var model = HomeScreenViewModel()
     
     var body: some View {
         NavigationView {
@@ -45,14 +43,14 @@ struct HomeScreenView: View {
                     
                     Spacer()
                     
-                    Text(greeting)
+                    Text(model.greeting)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
                     
                     Button(action: {
-                        getStarted = true
+                        model.getStarted = true
                     }) {
                         HStack {
                             Text("Get Started")
@@ -67,7 +65,7 @@ struct HomeScreenView: View {
                         .cornerRadius(15)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     }
-                    .fullScreenCover(isPresented: $getStarted) {
+                    .fullScreenCover(isPresented: $model.getStarted) {
                         GetStartedNameView()
                     }
                     .padding(.horizontal, 20)
@@ -77,10 +75,24 @@ struct HomeScreenView: View {
             }
         }
         .navigationBarHidden(true)
-        .onAppear(perform: setGreeting)
+    }
+}
+
+struct HomeScreenView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeScreenView()
+    }
+}
+
+final class HomeScreenViewModel: ObservableObject {
+    @Published var greeting: String = ""
+    @Published var getStarted: Bool = false
+    
+    init() {
+        setGreeting()
     }
     
-    private func setGreeting() {
+    func setGreeting() {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: Date())
         
@@ -92,11 +104,5 @@ struct HomeScreenView: View {
         default:
             greeting = "Good Evening"
         }
-    }
-}
-
-struct HomeScreenView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeScreenView()
     }
 }

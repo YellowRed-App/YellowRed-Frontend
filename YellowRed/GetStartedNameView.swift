@@ -103,5 +103,5 @@ struct GetStartedNameView_Previews: PreviewProvider {
 
 final class GetStartedNameViewModel: ObservableObject {
     @Published var fullName: String = ""
-    @Published var isFullNameValid: Bool = false
+    @Published var isFullNameValid: Bool = true
 }

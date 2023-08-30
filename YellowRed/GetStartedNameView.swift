@@ -35,14 +35,14 @@ struct GetStartedNameView: View {
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     
                     ZStack(alignment: .leading) {
-                        TextField("John Smith", text: $model.fullName)
-                            .autocapitalization(.words)
-                        //                            .keyboardType(.alphabet)
-                        
                         if model.fullName.isEmpty {
                             Text("John Smith")
                                 .opacity(0.5)
                         }
+                        
+                        TextField("", text: $model.fullName)
+                            .autocapitalization(.words)
+                        //                            .keyboardType(.alphabet)
                     }
                     .font(.title3)
                     .foregroundColor(.black)
@@ -91,6 +91,7 @@ struct GetStartedNameView: View {
             }
             .endEditingOnTap()
         }
+        .navigationBarBackButtonHidden()
     }
 }
 

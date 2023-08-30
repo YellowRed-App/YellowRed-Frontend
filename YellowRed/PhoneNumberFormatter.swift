@@ -33,4 +33,3 @@ final class PhoneNumberFormatter {
         return finalText
     }
 }
-

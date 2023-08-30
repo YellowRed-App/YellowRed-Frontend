@@ -9,10 +9,11 @@ import SwiftUI
 
 struct GetStartedAffiliationView: View {
     @State private var affiliation: String = ""
+    @State private var university: String = ""
+    
     @State private var isAffiliationValid: Bool = true
     @State private var isUniversityValid: Bool = true
     @State private var isValid: Bool = true
-    @State private var university: String = ""
     
     @State private var next: Bool = false
     

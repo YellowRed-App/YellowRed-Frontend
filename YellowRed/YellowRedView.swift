@@ -330,11 +330,11 @@ struct RedButtonView: View {
                 .alert(isPresented: $alert) {
                     Alert(
                         title: Text("Are you sure you are ok and want to deactivate the red button?"),
-                        primaryButton: .destructive(Text("Yes, I'm ok")) {
+                        primaryButton: .destructive(Text("No, I'm not ok")),
+                        secondaryButton: .cancel(Text("Yes, I'm ok")) {
                             self.redButton = false
                             presentationMode.wrappedValue.dismiss()
-                        },
-                        secondaryButton: .cancel(Text("No, I'm not ok"))
+                        }
                     )
                 }
             }

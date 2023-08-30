@@ -51,15 +51,15 @@ struct GetStartedEmailView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 ZStack(alignment: .leading) {
-                    TextField("", text: $emailAddress)
-                        .autocapitalization(.none)
-                    //                        .keyboardType(.emailAddress)
-                    
                     if emailAddress.isEmpty {
                         Text("abc5xy@virginia.edu")
                             .accentColor(.black)
                             .opacity(0.5)
                     }
+                    
+                    TextField("", text: $emailAddress)
+                        .autocapitalization(.none)
+                    //                        .keyboardType(.emailAddress)
                 }
                 .font(.title3)
                 .foregroundColor(.black)
@@ -80,13 +80,13 @@ struct GetStartedEmailView: View {
                 
                 if isVerificationEnabled {
                     ZStack(alignment: .leading) {
-                        TextField("Verification Code", text: $verificationCode)
-                        //                            .keyboardType(.numberPad)
-                        
                         if verificationCode.isEmpty {
                             Text("Verification Code")
                                 .opacity(0.5)
                         }
+                        
+                        TextField("Verification Code", text: $verificationCode)
+                        //                            .keyboardType(.numberPad)
                     }
                     .font(.title3)
                     .foregroundColor(.black)

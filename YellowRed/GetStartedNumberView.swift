@@ -51,19 +51,19 @@ struct GetStartedNumberView: View {
                 HStack(spacing: 10) {
                     Text("+1")
                     ZStack(alignment: .leading) {
-                        TextField("(123) 456-7890", text: $phoneNumber)
-                            .onReceive(phoneNumber.publisher.collect()) {
-                                let number = String($0)
-                                if let formattedNumber = PhoneNumberFormatter.format(phone: number) {
-                                    self.phoneNumber = formattedNumber
-                                }
-                            }
-                        //                            .keyboardType(.numberPad)
-                        
                         if phoneNumber.isEmpty {
                             Text("(123) 456-7890")
                                 .opacity(0.5)
                         }
+                        
+                        TextField("(123) 456-7890", text: $phoneNumber)
+                            .onReceive(phoneNumber.publisher.collect()) {
+                                let number = String($0)
+                                if let formattedNumber = PhoneNumberFormatter.format(phone: number) {
+                                    phoneNumber = formattedNumber
+                                }
+                            }
+                        //                            .keyboardType(.numberPad)
                     }
                 }
                 .font(.title3)
@@ -85,13 +85,13 @@ struct GetStartedNumberView: View {
                 
                 if isVerificationEnabled {
                     ZStack(alignment: .leading) {
-                        TextField("Verification Code", text: $verificationCode)
-                        //                            .keyboardType(.numberPad)
-                        
                         if verificationCode.isEmpty {
                             Text("Verification Code")
                                 .opacity(0.5)
                         }
+                        
+                        TextField("Verification Code", text: $verificationCode)
+                        //                            .keyboardType(.numberPad)
                     }
                     .font(.title3)
                     .foregroundColor(.black)

@@ -142,6 +142,11 @@ struct EditPersonalView: View {
                         HStack(spacing: 10) {
                             Text("+1")
                             ZStack(alignment: .leading) {
+                                if newPhoneNumber.isEmpty {
+                                    Text(phoneNumber)
+                                        .opacity(0.5)
+                                }
+                                
                                 TextField("", text: $newPhoneNumber)
                                     .onReceive(newPhoneNumber.publisher.collect()) {
                                         let number = String($0)
@@ -150,11 +155,6 @@ struct EditPersonalView: View {
                                         }
                                     }
                                 //                                    .keyboardType(.numberPad)
-                                
-                                if newPhoneNumber.isEmpty {
-                                    Text(phoneNumber)
-                                        .opacity(0.5)
-                                }
                             }
                         }
                         .font(.title3)
@@ -186,13 +186,13 @@ struct EditPersonalView: View {
                         
                         if smsVerificationEnabled {
                             ZStack(alignment: .leading) {
-                                TextField("Verification Code", text: $smsVerificationCode)
-                                //                                    .keyboardType(.numberPad)
-                                
                                 if smsVerificationCode.isEmpty {
                                     Text("Verification Code")
                                         .opacity(0.5)
                                 }
+                                
+                                TextField("Verification Code", text: $smsVerificationCode)
+                                //                                    .keyboardType(.numberPad)
                             }
                             .font(.title3)
                             .foregroundColor(.black)
@@ -288,14 +288,14 @@ struct EditPersonalView: View {
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         
                         ZStack(alignment: .leading) {
-                            TextField("", text: $newEmailAddress)
-                                .autocapitalization(.none)
-                            //                                .keyboardType(.emailAddress)
-                            
                             if newEmailAddress.isEmpty {
                                 Text(emailAddress)
                                     .opacity(0.5)
                             }
+                            
+                            TextField("", text: $newEmailAddress)
+                                .autocapitalization(.none)
+                            //                                .keyboardType(.emailAddress)
                         }
                         .font(.title3)
                         .foregroundColor(.black)
@@ -326,13 +326,13 @@ struct EditPersonalView: View {
                         
                         if emailVerificationEnabled {
                             ZStack(alignment: .leading) {
-                                TextField("Verification Code", text: $emailVerificationCode)
-                                //                                    .keyboardType(.numberPad)
-                                
                                 if emailVerificationCode.isEmpty {
                                     Text("Verification Code")
                                         .opacity(0.5)
                                 }
+                                
+                                TextField("Verification Code", text: $emailVerificationCode)
+                                //                                    .keyboardType(.numberPad)
                             }
                             .font(.title3)
                             .foregroundColor(.black)

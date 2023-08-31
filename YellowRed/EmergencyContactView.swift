@@ -9,11 +9,11 @@ import SwiftUI
 
 struct EmergencyContactView: View {
     @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 3)
-    @State private var emergencyContactsSelected: Set<Int> = []
-    @State private var emergencyContactsDuplicated: Set<Int> = []
     
     @State private var nextButtonClicked: Bool = false
     @State private var next: Bool = false
+    
+    @ObservedObject private var validator = InputValidator()
     
     var body: some View {
         NavigationView {
@@ -54,13 +54,13 @@ struct EmergencyContactView: View {
                             EmergencyContactPicker(contact: $emergencyContacts[index])
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(.black, lineWidth: nextButtonClicked && (!emergencyContactsSelected.contains(index) || emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
+                                        .stroke(.black, lineWidth: nextButtonClicked && (!validator.emergencyContactsSelected.contains(index) || validator.emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
                                 )
                         }
                     }
                     .padding(.horizontal, 20)
                     
-                    if nextButtonClicked && emergencyContactsSelected.count != emergencyContacts.count {
+                    if nextButtonClicked && validator.emergencyContactsSelected.count != emergencyContacts.count {
                         Text("Please choose three emergency contacts!")
                             .font(.subheadline)
                             .foregroundColor(.white)
@@ -68,7 +68,7 @@ struct EmergencyContactView: View {
                             .padding(.horizontal, 20)
                     }
                     
-                    if !emergencyContactsDuplicated.isEmpty {
+                    if !validator.emergencyContactsDuplicated.isEmpty {
                         Text("Please choose three unique emergency contacts!")
                             .font(.subheadline)
                             .foregroundColor(.white)
@@ -80,10 +80,8 @@ struct EmergencyContactView: View {
                     
                     Button(action: {
                         nextButtonClicked = true
-                        let validationResult = InputValidator.validateEmergencyContacts(emergencyContacts)
-                        emergencyContactsSelected = validationResult.emergencyContactsSelected
-                        emergencyContactsDuplicated = validationResult.emergencyContactsDuplicated
-                        if emergencyContactsSelected.count == emergencyContacts.count && emergencyContactsDuplicated.isEmpty {
+                        validator.validateEmergencyContacts(emergencyContacts)
+                        if validator.emergencyContactsSelected.count == emergencyContacts.count && validator.emergencyContactsDuplicated.isEmpty {
                             next = true
                         }
                     }) {

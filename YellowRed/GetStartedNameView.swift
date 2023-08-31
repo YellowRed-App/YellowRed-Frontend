@@ -9,9 +9,10 @@ import SwiftUI
 
 struct GetStartedNameView: View {
     @State private var fullName: String = ""
-    @State private var isFullNameValid: Bool = true
     
     @State private var next: Bool = false
+    
+    @ObservedObject private var validator = InputValidator()
     
     var body: some View {
         NavigationView {
@@ -53,18 +54,18 @@ struct GetStartedNameView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: isFullNameValid ? 0 : 2.5)
+                            .stroke(.black, lineWidth: validator.isFullNameValid ? 0 : 2.5)
                     )
                     
-                    if !isFullNameValid {
+                    if !validator.isFullNameValid {
                         Text("Please enter a valid name!")
                             .font(.subheadline)
                             .foregroundColor(.white)
                     }
                     
                     Button(action: {
-                        isFullNameValid = InputValidator.validateFullName(fullName)
-                        if isFullNameValid {
+                        validator.validateFullName(fullName)
+                        if validator.isFullNameValid {
                             next = true
                         }
                     }) {

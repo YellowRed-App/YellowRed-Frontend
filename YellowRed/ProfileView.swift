@@ -87,9 +87,6 @@ struct EditPersonalView: View {
     @State private var newPhoneNumber: String = ""
     @State private var newEmailAddress: String = ""
     
-    @State private var isPhoneNumberValid: Bool = true
-    @State private var isEmailAddressValid: Bool = true
-    
     @State private var smsVerificationCode: String = ""
     @State private var smsVerificationCodeSent: String = ""
     @State private var emailVerificationCode: String = ""
@@ -103,8 +100,9 @@ struct EditPersonalView: View {
     @State private var alert: Bool = false
     @State private var alertMessage: String = ""
     
-    @ObservedObject var phoneInputVerifier = InputVerifier()
-    @ObservedObject var emailInputVerifier = InputVerifier()
+    @ObservedObject private var validator = InputValidator()
+    @ObservedObject private var phoneVerifier = InputVerifier()
+    @ObservedObject private var emailVerifier = InputVerifier()
     
     var body: some View {
         ZStack {
@@ -171,16 +169,16 @@ struct EditPersonalView: View {
                                         colors: [.yellow, .red],
                                         startPoint: .topLeading,
                                         endPoint: .bottomTrailing
-                                    ), lineWidth: isPhoneNumberValid ? 2.5 : 0
+                                    ), lineWidth: validator.isPhoneNumberValid ? 2.5 : 0
                                 )
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(.red, lineWidth: isPhoneNumberValid ? 0 : 2.5)
+                                .stroke(.red, lineWidth: validator.isPhoneNumberValid ? 0 : 2.5)
                         )
                         .disabled(smsVerificationEnabled)
                         
-                        if !isPhoneNumberValid {
+                        if !validator.isPhoneNumberValid {
                             Text("Please enter a valid phone number!")
                                 .font(.subheadline)
                                 .foregroundColor(.red)
@@ -225,8 +223,8 @@ struct EditPersonalView: View {
                         
                         if !newPhoneNumber.isEmpty {
                             Button(action: {
-                                isPhoneNumberValid = InputValidator.validatePhoneNumber(newPhoneNumber)
-                                if isPhoneNumberValid {
+                                validator.validatePhoneNumber(newPhoneNumber)
+                                if validator.isPhoneNumberValid {
                                     if smsVerificationEnabled && smsVerificationCode ==
                                         smsVerificationCodeSent {
                                         smsVerificationEnabled = false
@@ -234,13 +232,13 @@ struct EditPersonalView: View {
                                         smsVerificationCode = ""
                                         phoneNumber = newPhoneNumber
                                         newPhoneNumber = ""
-                                        phoneInputVerifier.stopCooldown()
+                                        phoneVerifier.stopCooldown()
                                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                     } else if smsVerificationEnabled {
                                         smsVerificationValid = false
                                     } else {
                                         smsVerificationEnabled = true
-                                        smsVerificationCodeSent = phoneInputVerifier.sendVerificationCodeViaSMS(to: newPhoneNumber)
+                                        smsVerificationCodeSent = phoneVerifier.sendVerificationCodeViaSMS(to: newPhoneNumber)
                                     }
                                 }
                             }) {
@@ -262,18 +260,18 @@ struct EditPersonalView: View {
                         VStack(spacing: 10) {
                             if smsVerificationEnabled {
                                 Button(action: {
-                                    if !phoneInputVerifier.cooldown {
-                                        smsVerificationCodeSent = phoneInputVerifier.resendVerificationCodeViaSMS(to: newPhoneNumber)
+                                    if !phoneVerifier.cooldown {
+                                        smsVerificationCodeSent = phoneVerifier.resendVerificationCodeViaSMS(to: newPhoneNumber)
                                     }
                                 }) {
-                                    Text(phoneInputVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
+                                    Text(phoneVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
                                         .font(.body)
                                         .fontWeight(.regular)
                                         .foregroundColor(.blue)
                                 }
                                 
-                                if phoneInputVerifier.cooldownTime > 0 {
-                                    Text("Try again in \(phoneInputVerifier.cooldownTime) seconds")
+                                if phoneVerifier.cooldownTime > 0 {
+                                    Text("Try again in \(phoneVerifier.cooldownTime) seconds")
                                         .font(.caption)
                                         .fontWeight(.regular)
                                         .foregroundColor(.blue)
@@ -311,16 +309,16 @@ struct EditPersonalView: View {
                                         colors: [.yellow, .red],
                                         startPoint: .topLeading,
                                         endPoint: .bottomTrailing
-                                    ), lineWidth: isEmailAddressValid ? 2.5 : 0
+                                    ), lineWidth: validator.isEmailAddressValid ? 2.5 : 0
                                 )
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(.red, lineWidth: isEmailAddressValid ? 0 : 2.5)
+                                .stroke(.red, lineWidth: validator.isEmailAddressValid ? 0 : 2.5)
                         )
                         .disabled(emailVerificationEnabled)
                         
-                        if !isEmailAddressValid {
+                        if !validator.isEmailAddressValid {
                             Text("Please enter a valid email address!")
                                 .font(.subheadline)
                                 .foregroundColor(.red)
@@ -365,21 +363,21 @@ struct EditPersonalView: View {
                         
                         if !newEmailAddress.isEmpty {
                             Button(action: {
-                                isEmailAddressValid = InputValidator.validateEmailAddress(newEmailAddress)
-                                if isEmailAddressValid {
+                                validator.validateEmailAddress(newEmailAddress)
+                                if validator.isEmailAddressValid {
                                     if emailVerificationEnabled && emailVerificationCode == emailVerificationCodeSent {
                                         emailVerificationEnabled = false
                                         emailVerificationValid = true
                                         emailVerificationCode = ""
                                         emailAddress = newEmailAddress
                                         newEmailAddress = ""
-                                        emailInputVerifier.stopCooldown()
+                                        emailVerifier.stopCooldown()
                                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                     } else if emailVerificationEnabled {
                                         emailVerificationValid = false
                                     } else {
                                         emailVerificationEnabled = true
-                                        emailVerificationCodeSent = emailInputVerifier.sendVerificationCodeViaEmail(to: newEmailAddress)
+                                        emailVerificationCodeSent = emailVerifier.sendVerificationCodeViaEmail(to: newEmailAddress)
                                     }
                                 }
                             }) {
@@ -401,18 +399,18 @@ struct EditPersonalView: View {
                         VStack(spacing: 10) {
                             if emailVerificationEnabled {
                                 Button(action: {
-                                    if !emailInputVerifier.cooldown {
-                                        emailVerificationCodeSent = emailInputVerifier.resendVerificationCodeViaEmail(to: newEmailAddress)
+                                    if !emailVerifier.cooldown {
+                                        emailVerificationCodeSent = emailVerifier.resendVerificationCodeViaEmail(to: newEmailAddress)
                                     }
                                 }) {
-                                    Text(emailInputVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
+                                    Text(emailVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
                                         .font(.body)
                                         .fontWeight(.regular)
                                         .foregroundColor(.blue)
                                 }
                                 
-                                if emailInputVerifier.cooldownTime > 0 {
-                                    Text("Try again in \(emailInputVerifier.cooldownTime) seconds")
+                                if emailVerifier.cooldownTime > 0 {
+                                    Text("Try again in \(emailVerifier.cooldownTime) seconds")
                                         .font(.caption)
                                         .fontWeight(.regular)
                                         .foregroundColor(.blue)
@@ -487,13 +485,12 @@ struct EditEmergencyContactView: View {
         _newEmergencyContacts = State(initialValue: emergencyContacts.wrappedValue)
     }
     
-    @State private var emergencyContactsSelected: Set<Int> = []
-    @State private var emergencyContactsDuplicated: Set<Int> = []
-    
     @State private var alert: Bool = false
     @State private var alertMessage: String = ""
     
     @State private var saveButtonClicked: Bool = false
+    
+    @ObservedObject private var validator = InputValidator()
     
     var body: some View {
         ZStack {
@@ -548,19 +545,19 @@ struct EditEmergencyContactView: View {
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.red, lineWidth: saveButtonClicked && (!emergencyContactsSelected.contains(index) || emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
+                                    .stroke(.red, lineWidth: saveButtonClicked && (!validator.emergencyContactsSelected.contains(index) || validator.emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
                             )
                             .padding(.vertical, 5)
                     }
                 }
                 
-                if saveButtonClicked && emergencyContactsSelected.count != 3 {
+                if saveButtonClicked && validator.emergencyContactsSelected.count != 3 {
                     Text("Please choose three emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.red)
                 }
                 
-                if !emergencyContactsDuplicated.isEmpty {
+                if !validator.emergencyContactsDuplicated.isEmpty {
                     Text("Please choose three unique emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.red)
@@ -570,18 +567,16 @@ struct EditEmergencyContactView: View {
                 
                 Button(action: {
                     saveButtonClicked = true
-                    let validationResult = InputValidator.validateEmergencyContacts(newEmergencyContacts)
-                    emergencyContactsSelected = validationResult.emergencyContactsSelected
-                    emergencyContactsDuplicated = validationResult.emergencyContactsDuplicated
-                    if emergencyContactsSelected.count == 3 && emergencyContactsDuplicated.isEmpty {
+                    validator.validateEmergencyContacts(emergencyContacts)
+                    if validator.emergencyContactsSelected.count == 3 && validator.emergencyContactsDuplicated.isEmpty {
                         emergencyContacts = newEmergencyContacts
                         presentationMode.wrappedValue.dismiss()
                     } else {
                         alert = true
-                        if emergencyContactsSelected.count != 3 {
+                        if validator.emergencyContactsSelected.count != 3 {
                             alertMessage = "You have not chosen three emergency contacts!"
                         }
-                        if !emergencyContactsDuplicated.isEmpty {
+                        if !validator.emergencyContactsDuplicated.isEmpty {
                             alertMessage = "You have not chosen three unique emergency contacts!"
                         }
                     }

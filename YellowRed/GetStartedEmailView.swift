@@ -9,7 +9,6 @@ import SwiftUI
 
 struct GetStartedEmailView: View {
     @State private var emailAddress: String = ""
-    @State private var isEmailAddressValid: Bool = true
     
     @State private var verificationCode: String = ""
     @State private var verificationCodeSent: String = ""
@@ -19,7 +18,8 @@ struct GetStartedEmailView: View {
     
     @State private var next: Bool = false
     
-    @ObservedObject var inputVerifier = InputVerifier()
+    @ObservedObject var validator = InputValidator()
+    @ObservedObject var verifier = InputVerifier()
     
     let fullName: String
     var firstName: String {
@@ -68,11 +68,11 @@ struct GetStartedEmailView: View {
                 .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(.black, lineWidth: isEmailAddressValid ? 0 : 2.5)
+                        .stroke(.black, lineWidth: validator.isEmailAddressValid ? 0 : 2.5)
                 )
                 .disabled(isVerificationEnabled)
                 
-                if !isEmailAddressValid {
+                if !validator.isEmailAddressValid {
                     Text("Please enter a valid email address!")
                         .font(.subheadline)
                         .foregroundColor(.white)
@@ -106,17 +106,17 @@ struct GetStartedEmailView: View {
                 }
                 
                 Button(action: {
-                    isEmailAddressValid = InputValidator.validateEmailAddress(emailAddress)
-                    if isEmailAddressValid {
+                    validator.validateEmailAddress(emailAddress)
+                    if validator.isEmailAddressValid {
                         if isVerificationEnabled && verificationCode == verificationCodeSent {
-                            inputVerifier.stopCooldown()
+                            verifier.stopCooldown()
                             isVerificationValid = true
                             next = true
                         } else if isVerificationEnabled {
                             isVerificationValid = false
                         } else {
                             isVerificationEnabled = true
-                            verificationCodeSent = inputVerifier.sendVerificationCodeViaEmail(to: emailAddress)
+                            verificationCodeSent = verifier.sendVerificationCodeViaEmail(to: emailAddress)
                         }
                     }
                 }) {
@@ -144,18 +144,18 @@ struct GetStartedEmailView: View {
                 VStack(spacing: 10) {
                     if isVerificationEnabled {
                         Button(action: {
-                            if !inputVerifier.cooldown {
-                                verificationCodeSent = inputVerifier.resendVerificationCodeViaEmail(to: emailAddress)
+                            if !verifier.cooldown {
+                                verificationCodeSent = verifier.resendVerificationCodeViaEmail(to: emailAddress)
                             }
                         }) {
-                            Text(inputVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
+                            Text(verifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
                                 .font(.body)
                                 .fontWeight(.regular)
                                 .foregroundColor(.blue)
                         }
                         
-                        if inputVerifier.cooldownTime > 0 {
-                            Text("Try again in \(inputVerifier.cooldownTime) seconds")
+                        if verifier.cooldownTime > 0 {
+                            Text("Try again in \(verifier.cooldownTime) seconds")
                                 .font(.caption)
                                 .fontWeight(.regular)
                                 .foregroundColor(.blue)

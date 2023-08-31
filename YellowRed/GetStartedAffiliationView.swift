@@ -11,11 +11,9 @@ struct GetStartedAffiliationView: View {
     @State private var affiliation: String = ""
     @State private var university: String = ""
     
-    @State private var isAffiliationValid: Bool = true
-    @State private var isUniversityValid: Bool = true
-    @State private var isValid: Bool = true
-    
     @State private var next: Bool = false
+    
+    @ObservedObject private var validator = InputValidator()
     
     let fullName: String
     var firstName: String {
@@ -75,7 +73,7 @@ struct GetStartedAffiliationView: View {
                         .background(RoundedRectangle(cornerRadius: 10).fill(.white))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: isUniversityValid ? 0 : 2.5)
+                                .stroke(.black, lineWidth: validator.isUniversityValid ? 0 : 2.5)
                         )
                         .padding(.horizontal, 20)
                     }
@@ -91,29 +89,27 @@ struct GetStartedAffiliationView: View {
                 .cornerRadius(10)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(.black, lineWidth: isAffiliationValid ? 0 : 2.5)
+                        .stroke(.black, lineWidth: validator.isAffiliationValid ? 0 : 2.5)
                 )
                 .padding(.horizontal, 20)
                 
-                if !isAffiliationValid {
-                    Text("Please select an affiliation!")
-                        .font(.subheadline)
-                        .foregroundColor(.white)
-                }
-                
-                if !isUniversityValid {
-                    Text("Please enter a university!")
-                        .font(.subheadline)
-                        .foregroundColor(.white)
+                if affiliation != "Other" {
+                    if !validator.isAffiliationValid {
+                        Text("Please select an affiliation!")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                    }
+                } else {
+                    if !validator.isUniversityValid {
+                        Text("Please enter a university!")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                    }
                 }
                 
                 Button(action: {
-                    let validationResult = InputValidator.validateAffiliation(affiliation: affiliation, university: university)
-                    isValid = validationResult.isValid
-                    isAffiliationValid = validationResult.isAffiliationValid
-                    isUniversityValid = validationResult.isUniversityValid
-                    
-                    if isValid {
+                    validator.validateAffiliation(affiliation, university)
+                    if validator.isAffiliated {
                         next = true
                     }
                 }) {

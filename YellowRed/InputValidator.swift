@@ -7,57 +7,60 @@
 
 import SwiftUI
 
-final class InputValidator {
-    public static func validateFullName(_ fullName: String) -> Bool {
+final class InputValidator: ObservableObject {
+    @Published var isFullNameValid: Bool = true
+    @Published var isPhoneNumberValid: Bool = true
+    @Published var isEmailAddressValid: Bool = true
+    @Published var isAffiliated: Bool = true
+    @Published var isAffiliationValid: Bool = true
+    @Published var isUniversityValid: Bool = true
+    @Published var emergencyContactsSelected: Set<Int> = []
+    @Published var emergencyContactsDuplicated: Set<Int> = []
+    
+    func validateFullName(_ fullName: String) {
         let nameRegex = "^[a-zA-Z\\.\\'\\-]{2,50}(?: [a-zA-Z\\.\\'\\-]{2,50})+$"
         let namePredicate = NSPredicate(format: "SELF MATCHES %@", nameRegex)
-        return namePredicate.evaluate(with: fullName)
+        isFullNameValid = namePredicate.evaluate(with: fullName)
     }
     
-    public static func validatePhoneNumber(_ phoneNumber: String) -> Bool {
+    func validatePhoneNumber(_ phoneNumber: String) {
         let phoneRegex = "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
         let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
-        return phonePredicate.evaluate(with: phoneNumber)
+        isPhoneNumberValid = phonePredicate.evaluate(with: phoneNumber)
     }
     
-    public static func validateEmailAddress(_ emailAddress: String) -> Bool {
+    func validateEmailAddress(_ emailAddress: String) {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        return emailPredicate.evaluate(with: emailAddress)
+        isEmailAddressValid = emailPredicate.evaluate(with: emailAddress)
     }
     
-    public static func validateAffiliation(affiliation: String, university: String) -> (isValid: Bool, isAffiliationValid: Bool, isUniversityValid: Bool) {
-        var isValid = true
-        var isAffiliationValid = true
-        var isUniversityValid = true
-        
+    func validateAffiliation(_ affiliation: String, _ university: String) {
         if affiliation == "Other" {
-            isValid = !university.isEmpty
+            isAffiliated = !university.isEmpty
             isUniversityValid = !university.isEmpty
         } else {
-            isValid = !affiliation.isEmpty
+            isAffiliated = !affiliation.isEmpty
             isAffiliationValid = !affiliation.isEmpty
         }
-        
-        return (isValid, isAffiliationValid, isUniversityValid)
     }
     
-    public static func validateEmergencyContacts(_ emergencyContacts: [EmergencyContact]) -> (emergencyContactsSelected: Set<Int>, emergencyContactsDuplicated: Set<Int>) {
-        let emergencyContactsSelected = Set(emergencyContacts.indices.filter({ emergencyContacts[$0].isSelected }))
-        var emergencyContactsDuplicated: Set<Int> = []
+    func validateEmergencyContacts(_ emergencyContacts: [EmergencyContact]) {
+        emergencyContactsSelected = Set(emergencyContacts.indices.filter({ emergencyContacts[$0].isSelected }))
+        emergencyContactsDuplicated = []
         
         if emergencyContactsSelected.count == emergencyContacts.count {
             let phoneNumbers = emergencyContacts.map({ $0.phoneNumber })
             let duplicatePhoneNumbers = phoneNumbers.duplicates()
+            
             for (index, contact) in emergencyContacts.enumerated() {
                 if duplicatePhoneNumbers.contains(contact.phoneNumber) {
                     emergencyContactsDuplicated.insert(index)
                 }
             }
         }
-        
-        return (emergencyContactsSelected, emergencyContactsDuplicated)
     }
+
 }
 
 extension Array where Element: Hashable {

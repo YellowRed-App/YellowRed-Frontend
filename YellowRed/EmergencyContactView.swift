@@ -81,7 +81,7 @@ struct EmergencyContactView: View {
                     Button(action: {
                         nextButtonClicked = true
                         validator.validateEmergencyContacts(emergencyContacts)
-                        if validator.emergencyContactsSelected.count == emergencyContacts.count && validator.emergencyContactsDuplicated.isEmpty {
+                        if validator.areEmergencyContactsValid {
                             next = true
                         }
                     }) {

@@ -16,6 +16,7 @@ final class InputValidator: ObservableObject {
     @Published var isUniversityValid: Bool = true
     @Published var emergencyContactsSelected: Set<Int> = []
     @Published var emergencyContactsDuplicated: Set<Int> = []
+    @Published var areEmergencyContactsValid: Bool = false
     
     func validateFullName(_ fullName: String) {
         let nameRegex = "^[a-zA-Z\\.\\'\\-]{2,50}(?: [a-zA-Z\\.\\'\\-]{2,50})+$"
@@ -58,6 +59,9 @@ final class InputValidator: ObservableObject {
                     emergencyContactsDuplicated.insert(index)
                 }
             }
+        }
+        if emergencyContactsSelected.count == emergencyContacts.count && emergencyContactsDuplicated.isEmpty {
+            areEmergencyContactsValid = true
         }
     }
 

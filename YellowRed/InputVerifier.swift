@@ -6,11 +6,66 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 final class InputVerifier: ObservableObject {
     @Published var cooldown: Bool = false
     @Published var cooldownTime: Int = 0
     private var cooldownTimer: Timer? = nil
+    
+    @Published var alert: Bool = false
+    @Published var alertMessage: String = ""
+    
+    @Published var verificationID: String = ""
+    @Published var verificationCode: String = ""
+    
+    @Published var isVerificationEnabled: Bool = false
+    @Published var isVerificationValid: Bool = true
+    
+    @Published var next: Bool = false
+    
+    func sendVerificationCode(to phoneNumber: String) {
+        PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { verificationID, error in
+            if let error = error {
+                self.showMessagePrompt(error.localizedDescription)
+                return
+            }
+            UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
+            self.verificationID = verificationID ?? ""
+            self.isVerificationEnabled = true
+        }
+    }
+    
+    func verifyVerificationCode(_ verificationCode: String) {
+        guard let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") else {
+            self.showMessagePrompt("Verification ID not found.")
+            return
+        }
+        
+        let credential = PhoneAuthProvider.provider().credential(
+            withVerificationID: verificationID,
+            verificationCode: verificationCode
+        )
+        
+        Auth.auth().signIn(with: credential) { authResult, error in
+            if let error = error {
+                self.isVerificationValid = false
+            } else {
+                self.isVerificationValid = true
+                self.next = true
+                self.stopCooldown()
+            }
+        }
+    }
+    
+    func resendVerificationCode(to phoneNumber: String) {
+        guard !cooldown else {
+            return
+        }
+        
+        sendVerificationCode(to: "+1\(phoneNumber)")
+        startCooldown()
+    }
     
     func sendVerificationCodeViaSMS(to phoneNumber: String) -> String {
         let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
@@ -77,6 +132,11 @@ final class InputVerifier: ObservableObject {
         cooldownTimer?.invalidate()
         cooldownTimer = nil
         cooldown = false
+    }
+    
+    func showMessagePrompt(_ message: String) {
+        alertMessage = message
+        alert = true
     }
 }
 

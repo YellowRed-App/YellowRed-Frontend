@@ -86,14 +86,10 @@ struct EditPersonalView: View {
     
     @State private var newPhoneNumber: String = ""
     @State private var newEmailAddress: String = ""
-    
-    @State private var smsVerificationCode: String = ""
-    @State private var smsVerificationCodeSent: String = ""
+
     @State private var emailVerificationCode: String = ""
     @State private var emailVerificationCodeSent: String = ""
-    
-    @State private var smsVerificationEnabled: Bool = false
-    @State private var smsVerificationValid: Bool = true
+
     @State private var emailVerificationEnabled: Bool = false
     @State private var emailVerificationValid: Bool = true
     
@@ -176,7 +172,7 @@ struct EditPersonalView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.red, lineWidth: validator.isPhoneNumberValid ? 0 : 2.5)
                         )
-                        .disabled(smsVerificationEnabled)
+                        .disabled(phoneVerifier.isVerificationEnabled)
                         
                         if !validator.isPhoneNumberValid {
                             Text("Please enter a valid phone number!")
@@ -184,14 +180,14 @@ struct EditPersonalView: View {
                                 .foregroundColor(.red)
                         }
                         
-                        if smsVerificationEnabled {
+                        if phoneVerifier.isVerificationEnabled {
                             ZStack(alignment: .leading) {
-                                if smsVerificationCode.isEmpty {
+                                if phoneVerifier.verificationCode.isEmpty {
                                     Text("Verification Code")
                                         .opacity(0.5)
                                 }
                                 
-                                TextField("Verification Code", text: $smsVerificationCode)
+                                TextField("Verification Code", text: $phoneVerifier.verificationCode)
                                 //                                    .keyboardType(.numberPad)
                             }
                             .font(.title3)
@@ -206,15 +202,15 @@ struct EditPersonalView: View {
                                             colors: [.yellow, .red],
                                             startPoint: .topLeading,
                                             endPoint: .bottomTrailing
-                                        ), lineWidth: smsVerificationValid ? 2.5 : 0
+                                        ), lineWidth: phoneVerifier.isVerificationValid ? 2.5 : 0
                                     )
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.red, lineWidth: smsVerificationValid ? 0 : 2.5)
+                                    .stroke(.red, lineWidth: phoneVerifier.isVerificationValid ? 0 : 2.5)
                             )
                             
-                            if !smsVerificationValid {
+                            if !phoneVerifier.isVerificationValid {
                                 Text("Invalid verification code. Please try again!")
                                     .font(.subheadline)
                                     .foregroundColor(.red)
@@ -225,26 +221,24 @@ struct EditPersonalView: View {
                             Button(action: {
                                 validator.validatePhoneNumber(newPhoneNumber)
                                 if validator.isPhoneNumberValid {
-                                    if smsVerificationEnabled && smsVerificationCode ==
-                                        smsVerificationCodeSent {
-                                        smsVerificationEnabled = false
-                                        smsVerificationValid = true
-                                        smsVerificationCode = ""
-                                        phoneNumber = newPhoneNumber
-                                        newPhoneNumber = ""
-                                        phoneVerifier.stopCooldown()
-                                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                    } else if smsVerificationEnabled {
-                                        smsVerificationValid = false
+                                    if phoneVerifier.isVerificationEnabled {
+                                        phoneVerifier.verifyVerificationCode(phoneVerifier.verificationCode)
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            if phoneVerifier.isVerificationValid {
+                                                phoneNumber = newPhoneNumber
+                                                newPhoneNumber = ""
+                                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                            }
+                                        }
                                     } else {
-                                        smsVerificationEnabled = true
-                                        smsVerificationCodeSent = phoneVerifier.sendVerificationCodeViaSMS(to: newPhoneNumber)
+                                        phoneVerifier.isVerificationEnabled = true
+                                        phoneVerifier.sendVerificationCode(to: "+1\(newPhoneNumber)")
                                     }
                                 }
                             }) {
                                 HStack {
-                                    Text(smsVerificationEnabled ? "Save" : "Verify")
-                                    Image(systemName: smsVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
+                                    Text(phoneVerifier.isVerificationEnabled ? "Save" : "Verify")
+                                    Image(systemName: phoneVerifier.isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
                                 }
                                 .font(.title2)
                                 .fontWeight(.semibold)
@@ -258,10 +252,10 @@ struct EditPersonalView: View {
                         }
                         
                         VStack(spacing: 10) {
-                            if smsVerificationEnabled {
+                            if phoneVerifier.isVerificationEnabled {
                                 Button(action: {
                                     if !phoneVerifier.cooldown {
-                                        smsVerificationCodeSent = phoneVerifier.resendVerificationCodeViaSMS(to: newPhoneNumber)
+                                        phoneVerifier.resendVerificationCode(to: "+1\(newPhoneNumber)")
                                     }
                                 }) {
                                     Text(phoneVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
@@ -426,10 +420,10 @@ struct EditPersonalView: View {
                 
                 Button(action: {
                     if !(newPhoneNumber.isEmpty && newEmailAddress.isEmpty) {
-                        if smsVerificationEnabled && smsVerificationCode == smsVerificationCodeSent {
-                            smsVerificationEnabled = false
-                            smsVerificationValid = true
-                            smsVerificationCode = ""
+                        if phoneVerifier.isVerificationEnabled && phoneVerifier.isVerificationValid {
+                            phoneVerifier.isVerificationEnabled = false
+                            phoneVerifier.isVerificationValid = true
+                            phoneVerifier.verificationCode = ""
                             phoneNumber = newPhoneNumber
                             newPhoneNumber = ""
                         } else {

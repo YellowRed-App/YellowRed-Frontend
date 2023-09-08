@@ -36,6 +36,15 @@ final class InputVerifier: ObservableObject {
         }
     }
     
+    func resendVerificationCode(to phoneNumber: String) {
+        guard !cooldown else {
+            return
+        }
+        
+        sendVerificationCode(to: "+1\(phoneNumber)")
+        startCooldown()
+    }
+    
     func verifyVerificationCode(_ verificationCode: String) {
         guard let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") else {
             self.showMessagePrompt("Verification ID not found.")
@@ -56,38 +65,6 @@ final class InputVerifier: ObservableObject {
                 self.stopCooldown()
             }
         }
-    }
-    
-    func resendVerificationCode(to phoneNumber: String) {
-        guard !cooldown else {
-            return
-        }
-        
-        sendVerificationCode(to: "+1\(phoneNumber)")
-        startCooldown()
-    }
-    
-    func sendVerificationCodeViaSMS(to phoneNumber: String) -> String {
-        let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
-        
-        // TODO: Implement code to send the verification code via SMS to the phoneNumber
-        // For demonstration purposes, we'll print the code to the console
-        print("Verification Code (SMS): \(randomCode)")
-        
-        return randomCode
-    }
-    
-    func resendVerificationCodeViaSMS(to phoneNumber: String) -> String {
-        guard !cooldown else {
-            return ""
-        }
-        
-        var verificationCode: String = ""
-        verificationCode = sendVerificationCodeViaSMS(to: phoneNumber)
-        
-        startCooldown()
-        
-        return verificationCode
     }
     
     func sendVerificationCodeViaEmail(to emailAddress: String) -> String {

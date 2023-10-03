@@ -15,6 +15,16 @@ struct EmergencyContactView: View {
     
     @ObservedObject private var validator = InputValidator()
     
+    let fullName: String
+    var firstName: String {
+        return fullName.components(separatedBy: " ").first ?? ""
+    }
+    
+    let phoneNumber: String
+    let emailAddress: String
+    let affiliation: String
+    let university: String
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -116,7 +126,13 @@ struct EmergencyContactView: View {
 }
 
 struct EmergencyContactView_Previews: PreviewProvider {
+    @State static var fullName: String = "John Smith"
+    @State static var phoneNumber: String = "(123) 456-7890"
+    @State static var emailAddress: String = "abc5xy@virginia.edu"
+    @State static var affiliation: String = "Other"
+    @State static var university: String = "Harvard University"
+    
     static var previews: some View {
-        EmergencyContactView()
+        EmergencyContactView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university)
     }
 }

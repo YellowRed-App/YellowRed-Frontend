@@ -128,7 +128,7 @@ struct GetStartedAffiliationView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: EmergencyContactView(),
+                        destination: EmergencyContactView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university),
                         isActive: $next,
                         label: { EmptyView() }
                     )

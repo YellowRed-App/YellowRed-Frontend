@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseFirestore
 
 final class InputVerifier: ObservableObject {
     @Published var cooldown: Bool = false
@@ -23,6 +24,8 @@ final class InputVerifier: ObservableObject {
     @Published var isVerificationValid: Bool = true
     
     @Published var next: Bool = false
+    
+    private let db = Firestore.firestore()
     
     func sendVerificationCode(to phoneNumber: String) {
         PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { verificationID, error in
@@ -67,27 +70,47 @@ final class InputVerifier: ObservableObject {
         }
     }
     
-    func sendVerificationCodeViaEmail(to emailAddress: String) -> String {
-        let randomCode = String(format: "%06d", Int.random(in: 0..<100000))
-        
-        // TODO: Implement code to send the verification code via email to the email address
-        // For demonstration purposes, we'll print the code to the console
-        print("Verification Code (Email): \(randomCode)")
-        
-        return randomCode
+    func sendVerificationCodeViaEmail(to emailAddress: String) {
+        let randomCode = String(format: "%06d", Int.random(in: 0..<1000000))
+        UserDefaults.standard.set(randomCode, forKey: "emailVerificationID")
+        let docRef = db.collection("mail").document()
+        docRef.setData([
+            "to": [emailAddress],
+            "message": [
+                "subject": "Your YellowRed Verification Code",
+                "text": "Your verification code is \(randomCode)"
+            ]
+        ]) { error in
+            if let error = error {
+                self.showMessagePrompt(error.localizedDescription)
+                return
+            }
+            self.isVerificationEnabled = true
+        }
     }
     
-    func resendVerificationCodeViaEmail(to emailAddress: String) -> String {
+    func resendVerificationCodeViaEmail(to emailAddress: String) {
         guard !cooldown else {
-            return ""
+            return
         }
         
-        var verificationCode: String = ""
-        verificationCode = sendVerificationCodeViaEmail(to: emailAddress)
-        
+        sendVerificationCodeViaEmail(to: emailAddress)
         startCooldown()
+    }
+    
+    func verifyVerificationCodeViaEmail(_ verificationCode: String) {
+        guard let verificationID = UserDefaults.standard.string(forKey: "emailVerificationID") else {
+            self.showMessagePrompt("Verification ID not found.")
+            return
+        }
         
-        return verificationCode
+        if verificationCode == verificationID {
+            self.isVerificationValid = true
+            self.next = true
+            self.stopCooldown()
+        } else {
+            self.isVerificationValid = false
+        }
     }
     
     func startCooldown() {

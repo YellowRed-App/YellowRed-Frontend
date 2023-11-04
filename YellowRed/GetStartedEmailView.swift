@@ -10,14 +10,6 @@ import SwiftUI
 struct GetStartedEmailView: View {
     @State private var emailAddress: String = ""
     
-    @State private var verificationCode: String = ""
-    @State private var verificationCodeSent: String = ""
-    
-    @State private var isVerificationEnabled: Bool = false
-    @State private var isVerificationValid: Bool = true
-    
-    @State private var next: Bool = false
-    
     @ObservedObject var validator = InputValidator()
     @ObservedObject var verifier = InputVerifier()
     
@@ -70,7 +62,7 @@ struct GetStartedEmailView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.black, lineWidth: validator.isEmailAddressValid ? 0 : 2.5)
                 )
-                .disabled(isVerificationEnabled)
+                .disabled(verifier.isVerificationEnabled)
                 
                 if !validator.isEmailAddressValid {
                     Text("Please enter a valid email address!")
@@ -78,14 +70,14 @@ struct GetStartedEmailView: View {
                         .foregroundColor(.white)
                 }
                 
-                if isVerificationEnabled {
+                if verifier.isVerificationEnabled {
                     ZStack(alignment: .leading) {
-                        if verificationCode.isEmpty {
+                        if verifier.verificationCode.isEmpty {
                             Text("Verification Code")
                                 .opacity(0.5)
                         }
                         
-                        TextField("Verification Code", text: $verificationCode)
+                        TextField("Verification Code", text: $verifier.verificationCode)
                         //                            .keyboardType(.numberPad)
                     }
                     .font(.title3)
@@ -95,10 +87,10 @@ struct GetStartedEmailView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: isVerificationValid ? 0 : 2.5)
+                            .stroke(.black, lineWidth: verifier.isVerificationValid ? 0 : 2.5)
                     )
                     
-                    if !isVerificationValid {
+                    if !verifier.isVerificationValid {
                         Text("Invalid verification code. Please try again!")
                             .font(.subheadline)
                             .foregroundColor(.white)
@@ -108,21 +100,17 @@ struct GetStartedEmailView: View {
                 Button(action: {
                     validator.validateEmailAddress(emailAddress)
                     if validator.isEmailAddressValid {
-                        if isVerificationEnabled && verificationCode == verificationCodeSent {
-                            verifier.stopCooldown()
-                            isVerificationValid = true
-                            next = true
-                        } else if isVerificationEnabled {
-                            isVerificationValid = false
+                        if verifier.isVerificationEnabled {
+                            verifier.verifyVerificationCodeViaEmail(verifier.verificationCode)
                         } else {
-                            isVerificationEnabled = true
-                            verificationCodeSent = verifier.sendVerificationCodeViaEmail(to: emailAddress)
+                            verifier.isVerificationEnabled = true
+                            verifier.sendVerificationCodeViaEmail(to: emailAddress)
                         }
                     }
                 }) {
                     HStack {
-                        Text(isVerificationEnabled ? "Next" : "Verify")
-                        Image(systemName: isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
+                        Text(verifier.isVerificationEnabled ? "Next" : "Verify")
+                        Image(systemName: verifier.isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
                     }
                     .font(.title)
                     .fontWeight(.semibold)
@@ -136,16 +124,16 @@ struct GetStartedEmailView: View {
                 .background(
                     NavigationLink(
                         destination: GetStartedAffiliationView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress),
-                        isActive: $next,
+                        isActive: $verifier.next,
                         label: { EmptyView() }
                     )
                 )
                 
                 VStack(spacing: 10) {
-                    if isVerificationEnabled {
+                    if verifier.isVerificationEnabled {
                         Button(action: {
                             if !verifier.cooldown {
-                                verificationCodeSent = verifier.resendVerificationCodeViaEmail(to: emailAddress)
+                                verifier.resendVerificationCodeViaEmail(to: emailAddress)
                             }
                         }) {
                             Text(verifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")

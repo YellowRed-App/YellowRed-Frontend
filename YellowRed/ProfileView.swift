@@ -86,12 +86,6 @@ struct EditPersonalView: View {
     
     @State private var newPhoneNumber: String = ""
     @State private var newEmailAddress: String = ""
-
-    @State private var emailVerificationCode: String = ""
-    @State private var emailVerificationCodeSent: String = ""
-
-    @State private var emailVerificationEnabled: Bool = false
-    @State private var emailVerificationValid: Bool = true
     
     @State private var alert: Bool = false
     @State private var alertMessage: String = ""
@@ -310,7 +304,7 @@ struct EditPersonalView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.red, lineWidth: validator.isEmailAddressValid ? 0 : 2.5)
                         )
-                        .disabled(emailVerificationEnabled)
+                        .disabled(emailVerifier.isVerificationEnabled)
                         
                         if !validator.isEmailAddressValid {
                             Text("Please enter a valid email address!")
@@ -318,14 +312,14 @@ struct EditPersonalView: View {
                                 .foregroundColor(.red)
                         }
                         
-                        if emailVerificationEnabled {
+                        if emailVerifier.isVerificationEnabled {
                             ZStack(alignment: .leading) {
-                                if emailVerificationCode.isEmpty {
+                                if emailVerifier.verificationCode.isEmpty {
                                     Text("Verification Code")
                                         .opacity(0.5)
                                 }
                                 
-                                TextField("Verification Code", text: $emailVerificationCode)
+                                TextField("Verification Code", text: $emailVerifier.verificationCode)
                                 //                                    .keyboardType(.numberPad)
                             }
                             .font(.title3)
@@ -340,15 +334,15 @@ struct EditPersonalView: View {
                                             colors: [.yellow, .red],
                                             startPoint: .topLeading,
                                             endPoint: .bottomTrailing
-                                        ), lineWidth: emailVerificationValid ? 2.5 : 0
+                                        ), lineWidth: emailVerifier.isVerificationValid ? 2.5 : 0
                                     )
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.red, lineWidth: emailVerificationValid ? 0 : 2.5)
+                                    .stroke(.red, lineWidth: emailVerifier.isVerificationValid ? 0 : 2.5)
                             )
                             
-                            if !emailVerificationValid {
+                            if !emailVerifier.isVerificationValid {
                                 Text("Invalid verification code. Please try again!")
                                     .font(.subheadline)
                                     .foregroundColor(.red)
@@ -359,25 +353,24 @@ struct EditPersonalView: View {
                             Button(action: {
                                 validator.validateEmailAddress(newEmailAddress)
                                 if validator.isEmailAddressValid {
-                                    if emailVerificationEnabled && emailVerificationCode == emailVerificationCodeSent {
-                                        emailVerificationEnabled = false
-                                        emailVerificationValid = true
-                                        emailVerificationCode = ""
-                                        emailAddress = newEmailAddress
-                                        newEmailAddress = ""
-                                        emailVerifier.stopCooldown()
-                                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                    } else if emailVerificationEnabled {
-                                        emailVerificationValid = false
+                                    if emailVerifier.isVerificationEnabled {
+                                        emailVerifier.verifyVerificationCodeViaEmail(emailVerifier.verificationCode)
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            if emailVerifier.isVerificationValid {
+                                                emailAddress = newEmailAddress
+                                                newEmailAddress = ""
+                                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                            }
+                                        }
                                     } else {
-                                        emailVerificationEnabled = true
-                                        emailVerificationCodeSent = emailVerifier.sendVerificationCodeViaEmail(to: newEmailAddress)
+                                        emailVerifier.isVerificationEnabled = true
+                                        emailVerifier.sendVerificationCodeViaEmail(to: newEmailAddress)
                                     }
                                 }
                             }) {
                                 HStack {
-                                    Text(emailVerificationEnabled ? "Save" : "Verify")
-                                    Image(systemName: emailVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
+                                    Text(emailVerifier.isVerificationEnabled ? "Save" : "Verify")
+                                    Image(systemName: emailVerifier.isVerificationEnabled ? "arrow.right.circle.fill" : "checkmark.circle.fill")
                                 }
                                 .font(.title2)
                                 .fontWeight(.semibold)
@@ -391,10 +384,10 @@ struct EditPersonalView: View {
                         }
                         
                         VStack(spacing: 10) {
-                            if emailVerificationEnabled {
+                            if emailVerifier.isVerificationEnabled {
                                 Button(action: {
                                     if !emailVerifier.cooldown {
-                                        emailVerificationCodeSent = emailVerifier.resendVerificationCodeViaEmail(to: newEmailAddress)
+                                        emailVerifier.resendVerificationCodeViaEmail(to: newEmailAddress)
                                     }
                                 }) {
                                     Text(emailVerifier.cooldownTime > 0 ? "Code Resent" : "Resend Code")
@@ -431,15 +424,15 @@ struct EditPersonalView: View {
                             alertMessage = "You have not verified your new phone number!"
                             return
                         }
-                        if emailVerificationEnabled && emailVerificationCode == emailVerificationCodeSent {
-                            emailVerificationEnabled = false
-                            emailVerificationValid = true
-                            emailVerificationCode = ""
+                        if emailVerifier.isVerificationEnabled && emailVerifier.isVerificationValid {
+                            emailVerifier.isVerificationEnabled = false
+                            emailVerifier.isVerificationValid = true
+                            emailVerifier.verificationCode = ""
                             emailAddress = newEmailAddress
                             newEmailAddress = ""
                         } else {
                             alert = true
-                            alertMessage = "You have not verified your new email address!"
+                            alertMessage = "You have not verified your new phone number!"
                             return
                         }
                     }

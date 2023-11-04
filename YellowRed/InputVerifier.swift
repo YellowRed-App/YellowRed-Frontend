@@ -60,7 +60,7 @@ final class InputVerifier: ObservableObject {
         )
         
         Auth.auth().signIn(with: credential) { authResult, error in
-            if let error = error {
+            if error != nil {
                 self.isVerificationValid = false
             } else {
                 self.isVerificationValid = true

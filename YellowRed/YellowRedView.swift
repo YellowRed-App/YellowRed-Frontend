@@ -53,7 +53,7 @@ struct YellowRedView: View {
                                 isPressingYellowButton = pressing
                                 if pressing {
                                     self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                                        if self.yellowCountdown > 0 {
+                                        if self.yellowCountdown > 1 {
                                             self.yellowCountdown -= 1
                                             GlobalHapticManager.shared.triggerHapticFeedback(0.25)
                                         } else {
@@ -70,7 +70,7 @@ struct YellowRedView: View {
                                     self.countdownTimer?.invalidate()
                                     self.countdownTimer = nil
                                     self.yellowCountdown = 3
-                                    if self.yellowCountdown > 0 {
+                                    if self.yellowCountdown > 1 {
                                         self.yellowHint = true
                                         self.redHint = false
                                         self.hintTimer?.invalidate()
@@ -106,7 +106,7 @@ struct YellowRedView: View {
                                 isPressingRedButton = pressing
                                 if pressing {
                                     self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                                        if self.redCountdown > 0 {
+                                        if self.redCountdown > 1 {
                                             self.redCountdown -= 1
                                             GlobalHapticManager.shared.triggerHapticFeedback(0.25)
                                         } else {
@@ -123,7 +123,7 @@ struct YellowRedView: View {
                                     self.countdownTimer?.invalidate()
                                     self.countdownTimer = nil
                                     self.redCountdown = 5
-                                    if self.redCountdown > 0 {
+                                    if self.redCountdown > 1 {
                                         self.redHint = true
                                         self.yellowHint = false
                                         self.hintTimer?.invalidate()

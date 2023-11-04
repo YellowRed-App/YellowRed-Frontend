@@ -17,6 +17,8 @@
 		71255CF52A54102500C70A5B /* GlobalHapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CF42A54102500C70A5B /* GlobalHapticManager.swift */; };
 		71255CF72A5415B600C70A5B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71255CF62A5415B600C70A5B /* ProfileView.swift */; };
 		713F803F2A488D7D00A03D29 /* YellowRedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F803E2A488D7D00A03D29 /* YellowRedView.swift */; };
+		714716142AF6CB3700C825AE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 714716132AF6CB3700C825AE /* FirebaseFirestore */; };
+		714716162AF6CB3700C825AE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 714716152AF6CB3700C825AE /* FirebaseFirestoreSwift */; };
 		715086372A2E1DC700841F44 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715086362A2E1DC700841F44 /* NotificationView.swift */; };
 		71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E902A20B92E00A2BB2D /* YellowRedApp.swift */; };
 		71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E922A20B92E00A2BB2D /* HomeScreenView.swift */; };
@@ -75,7 +77,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				714716162AF6CB3700C825AE /* FirebaseFirestoreSwift in Frameworks */,
 				71F91AEC2A653546008F9209 /* FirebaseAnalyticsSwift in Frameworks */,
+				714716142AF6CB3700C825AE /* FirebaseFirestore in Frameworks */,
 				71F91B1F2A654F5F008F9209 /* FirebaseAuth in Frameworks */,
 				71F91AE82A653546008F9209 /* FirebaseAnalytics in Frameworks */,
 			);
@@ -171,6 +175,8 @@
 				71F91AE72A653546008F9209 /* FirebaseAnalytics */,
 				71F91AEB2A653546008F9209 /* FirebaseAnalyticsSwift */,
 				71F91B1E2A654F5F008F9209 /* FirebaseAuth */,
+				714716132AF6CB3700C825AE /* FirebaseFirestore */,
+				714716152AF6CB3700C825AE /* FirebaseFirestoreSwift */,
 			);
 			productName = YellowRed;
 			productReference = 71567E8D2A20B92E00A2BB2D /* YellowRed.app */;
@@ -490,6 +496,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		714716132AF6CB3700C825AE /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71F91AE62A653546008F9209 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		714716152AF6CB3700C825AE /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71F91AE62A653546008F9209 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
 		71F91AE72A653546008F9209 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 71F91AE62A653546008F9209 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

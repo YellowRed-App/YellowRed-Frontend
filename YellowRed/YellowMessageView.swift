@@ -26,6 +26,8 @@ struct YellowMessageView: View {
     
     @State private var next: Bool = false
     
+    @EnvironmentObject var userViewModel: UserViewModel
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -219,7 +221,7 @@ struct YellowMessageView: View {
                         }
                         .background(
                             NavigationLink(
-                                destination: RedMessageView(yellowMessage: yellowMessage),
+                                destination: RedMessageView(yellowMessage: yellowMessage).environmentObject(userViewModel),
                                 isActive: $next,
                                 label: { EmptyView() }
                             )

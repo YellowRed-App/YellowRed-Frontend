@@ -23,6 +23,8 @@ struct RedMessageView: View {
     
     @State private var next: Bool = false
     
+    @EnvironmentObject var userViewModel: UserViewModel
+    
     let yellowMessage: String
     
     var body: some View {
@@ -153,7 +155,15 @@ struct RedMessageView: View {
                         valid = selectedTemplate != nil
                         if valid {
                             redMessage = messageTemplates[selectedTemplate!]
-                            next = true
+                            userViewModel.addYellowRedMessages(yellowMessage: yellowMessage, redMessage: redMessage) { success in
+                                if success {
+                                    print("YellowRed messages successfully added.")
+                                    next = true
+                                } else {
+                                    print("Error adding YellowRed messages.")
+                                    error = true
+                                }
+                            }
                         } else {
                             error = true
                         }

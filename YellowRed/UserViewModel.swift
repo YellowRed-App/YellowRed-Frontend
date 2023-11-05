@@ -41,5 +41,21 @@ class UserViewModel: ObservableObject {
             }
         }
     }
-
+    
+    func addYellowRedMessages(yellowMessage: String, redMessage: String, completion: @escaping (Bool) -> Void) {
+        guard let userId = userId else {
+            completion(false)
+            return
+        }
+        
+        firestoreManager.addYellowRedMessagesToUser(userId: userId, yellowMessage: yellowMessage, redMessage: redMessage) { error in
+            if let error = error {
+                print(error.localizedDescription)
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
+    }
+    
 }

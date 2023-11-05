@@ -19,6 +19,8 @@
 		713F803F2A488D7D00A03D29 /* YellowRedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F803E2A488D7D00A03D29 /* YellowRedView.swift */; };
 		714716142AF6CB3700C825AE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 714716132AF6CB3700C825AE /* FirebaseFirestore */; };
 		714716162AF6CB3700C825AE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 714716152AF6CB3700C825AE /* FirebaseFirestoreSwift */; };
+		714716182AF701CE00C825AE /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714716172AF701CE00C825AE /* FirestoreManager.swift */; };
+		7147161A2AF7175800C825AE /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714716192AF7175800C825AE /* UserViewModel.swift */; };
 		715086372A2E1DC700841F44 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715086362A2E1DC700841F44 /* NotificationView.swift */; };
 		71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E902A20B92E00A2BB2D /* YellowRedApp.swift */; };
 		71567E932A20B92E00A2BB2D /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567E922A20B92E00A2BB2D /* HomeScreenView.swift */; };
@@ -51,6 +53,8 @@
 		71255CF42A54102500C70A5B /* GlobalHapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHapticManager.swift; sourceTree = "<group>"; };
 		71255CF62A5415B600C70A5B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		713F803E2A488D7D00A03D29 /* YellowRedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowRedView.swift; sourceTree = "<group>"; };
+		714716172AF701CE00C825AE /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		714716192AF7175800C825AE /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		715086362A2E1DC700841F44 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		715189EF2AA6C2880074B620 /* YellowRed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YellowRed.entitlements; sourceTree = "<group>"; };
 		71567E8D2A20B92E00A2BB2D /* YellowRed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YellowRed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,11 +135,13 @@
 				71FB82142A558472005E53DE /* InfoSectionView.swift */,
 				71255CEE2A54012D00C70A5B /* InputValidator.swift */,
 				71255CF02A540AC200C70A5B /* InputVerifier.swift */,
+				714716192AF7175800C825AE /* UserViewModel.swift */,
 				710C70482A5809DC00118F32 /* PhoneNumberFormatter.swift */,
 				71255CF22A540EC600C70A5B /* EmergencyContactManager.swift */,
 				71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */,
 				710EE5262A57ECA30022DD97 /* LocationManager.swift */,
 				71255CF42A54102500C70A5B /* GlobalHapticManager.swift */,
+				714716172AF701CE00C825AE /* FirestoreManager.swift */,
 			);
 			path = YellowRed;
 			sourceTree = "<group>";
@@ -243,6 +249,7 @@
 				71255CF32A540EC600C70A5B /* EmergencyContactManager.swift in Sources */,
 				71FB82152A558472005E53DE /* InfoSectionView.swift in Sources */,
 				71255CF72A5415B600C70A5B /* ProfileView.swift in Sources */,
+				714716182AF701CE00C825AE /* FirestoreManager.swift in Sources */,
 				713F803F2A488D7D00A03D29 /* YellowRedView.swift in Sources */,
 				71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */,
 				71CF77CB2A25EA81001D81E0 /* GetStartedEmailView.swift in Sources */,
@@ -258,6 +265,7 @@
 				71567E912A20B92E00A2BB2D /* YellowRedApp.swift in Sources */,
 				71255CED2A53FD2B00C70A5B /* ButtonView.swift in Sources */,
 				715086372A2E1DC700841F44 /* NotificationView.swift in Sources */,
+				7147161A2AF7175800C825AE /* UserViewModel.swift in Sources */,
 				71B7B5902A5AD96E003CD5C8 /* NotificationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

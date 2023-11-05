@@ -15,6 +15,8 @@ struct EmergencyContactView: View {
     
     @ObservedObject private var validator = InputValidator()
     
+    @EnvironmentObject var userViewModel: UserViewModel
+    
     let fullName: String
     var firstName: String {
         return fullName.components(separatedBy: " ").first ?? ""
@@ -92,7 +94,14 @@ struct EmergencyContactView: View {
                         nextButtonClicked = true
                         validator.validateEmergencyContacts(emergencyContacts)
                         if validator.areEmergencyContactsValid {
-                            next = true
+                            userViewModel.addEmergencyContacts(emergencyContacts: emergencyContacts) { success in
+                                if success {
+                                    print("Emergency contacts successfully added.")
+                                    next = true
+                                } else {
+                                    print("Error adding emergency contacts")
+                                }
+                            }
                         }
                     }) {
                         HStack {
@@ -110,7 +119,7 @@ struct EmergencyContactView: View {
                     }
                     .background(
                         NavigationLink(
-                            destination: YellowMessageView(),
+                            destination: YellowMessageView().environmentObject(userViewModel),
                             isActive: $next,
                             label: { EmptyView() }
                         )

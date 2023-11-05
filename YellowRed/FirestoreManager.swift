@@ -33,5 +33,24 @@ class FirestoreManager {
             }
         }
     }
+    
+    func addEmergencyContactsToUser(userId: String, emergencyContacts: [EmergencyContact], completion: @escaping (Error?) -> Void) {
+            let userRef = db.collection("users").document(userId)
+            
+            let batch = db.batch()
+            
+            for contact in emergencyContacts {
+                let contactRef = userRef.collection("emergencyContacts").document()
+                let contactData: [String: Any] = [
+                    "displayName": contact.displayName,
+                    "phoneNumber": contact.phoneNumber
+                ]
+                batch.setData(contactData, forDocument: contactRef)
+            }
+            
+            batch.commit { error in
+                completion(error)
+            }
+        }
 
 }

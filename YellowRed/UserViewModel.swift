@@ -25,5 +25,21 @@ class UserViewModel: ObservableObject {
             }
         }
     }
+    
+    func addEmergencyContacts(emergencyContacts: [EmergencyContact], completion: @escaping (Bool) -> Void) {
+        guard let userId = userId else {
+            completion(false)
+            return
+        }
+        
+        firestoreManager.addEmergencyContactsToUser(userId: userId, emergencyContacts: emergencyContacts) { error in
+            if let error = error {
+                print(error.localizedDescription)
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
+    }
 
 }

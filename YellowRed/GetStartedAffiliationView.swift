@@ -15,6 +15,8 @@ struct GetStartedAffiliationView: View {
     
     @ObservedObject private var validator = InputValidator()
     
+    @StateObject private var userViewModel = UserViewModel()
+    
     let fullName: String
     var firstName: String {
         return fullName.components(separatedBy: " ").first ?? ""
@@ -110,7 +112,14 @@ struct GetStartedAffiliationView: View {
                 Button(action: {
                     validator.validateAffiliation(affiliation, university)
                     if validator.isAffiliated {
-                        next = true
+                        userViewModel.createUser(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university) { success in
+                            if success {
+                                print("User created with ID: \(userViewModel.userId ?? "")")
+                                next = true;
+                            } else {
+                                print("Error creating user")
+                            }
+                        }
                     }
                 }) {
                     HStack {
@@ -128,7 +137,8 @@ struct GetStartedAffiliationView: View {
                 }
                 .background(
                     NavigationLink(
-                        destination: EmergencyContactView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university),
+                        destination: EmergencyContactView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university)
+                            .environmentObject(userViewModel),
                         isActive: $next,
                         label: { EmptyView() }
                     )

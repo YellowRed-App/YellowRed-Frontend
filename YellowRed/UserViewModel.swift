@@ -12,16 +12,14 @@ class UserViewModel: ObservableObject {
     
     private let firestoreManager = FirestoreManager()
     
-    func createUser(fullName: String, phoneNumber: String, emailAddress: String, affiliation: String, university: String,
-                    completion: @escaping (Bool) -> Void) {
-        firestoreManager.createUser(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress,
-                                    affiliation: affiliation, university: university) { userId, error in
-            if let userId = userId {
-                self.userId = userId
-                completion(true)
-            } else {
-                print(error?.localizedDescription ?? "Unknown error")
+    func createUser(userUID: String, fullName: String, phoneNumber: String, emailAddress: String, affiliation: String, university: String, completion: @escaping (Bool) -> Void) {
+        firestoreManager.createUser(userUID: userUID, fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university) { error in
+            if let error = error {
+                print(error.localizedDescription)
                 completion(false)
+            } else {
+                self.userId = userUID
+                completion(true)
             }
         }
     }

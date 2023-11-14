@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct GetStartedAffiliationView: View {
     @State private var affiliation: String = ""
@@ -112,12 +113,14 @@ struct GetStartedAffiliationView: View {
                 Button(action: {
                     validator.validateAffiliation(affiliation, university)
                     if validator.isAffiliated {
-                        userViewModel.createUser(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university) { success in
-                            if success {
-                                print("User created with ID: \(userViewModel.userId ?? "")")
-                                next = true;
-                            } else {
-                                print("Error creating user")
+                        if let userUID = Auth.auth().currentUser?.uid {
+                            userViewModel.createUser(userUID: userUID, fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university) { success in
+                                if success {
+                                    print("User created with ID: \(userViewModel.userId ?? "")")
+                                    next = true;
+                                } else {
+                                    print("Error creating user")
+                                }
                             }
                         }
                     }

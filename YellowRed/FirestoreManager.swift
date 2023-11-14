@@ -12,10 +12,8 @@ class FirestoreManager {
     
     private let db = Firestore.firestore()
     
-    func createUser(fullName: String, phoneNumber: String, emailAddress: String, affiliation: String, university: String,
-                    completion: @escaping (String?, Error?) -> Void) {
-        let usersRef = db.collection("users")
-        
+    func createUser(userUID: String, fullName: String, phoneNumber: String, emailAddress: String, affiliation: String, university: String, completion: @escaping (Error?) -> Void) {
+        let userRef = db.collection("users")
         let userData: [String: Any] = [
             "fullName": fullName,
             "phoneNumber": phoneNumber,
@@ -24,13 +22,8 @@ class FirestoreManager {
             "university": university
         ]
         
-        var ref: DocumentReference? = nil
-        ref = usersRef.addDocument(data: userData) { error in
-            if let error = error {
-                completion(nil, error)
-            } else {
-                completion(ref?.documentID, nil)
-            }
+        userRef.document(userUID).setData(userData) { error in
+            completion(error)
         }
     }
     

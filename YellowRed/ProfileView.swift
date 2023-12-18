@@ -7,18 +7,10 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ProfileView: View {
-    @State private var fullName: String = "John Smith"
-    @State private var phoneNumber: String = "(123) 456-7890"
-    @State private var emailAddress: String = "abc5xy@virginia.edu"
-    @State private var emergencyContacts: [EmergencyContact] = [
-        EmergencyContact(isSelected: true, displayName: "John Doe", phoneNumber: "+1 (234) 567-8901"),
-        EmergencyContact(isSelected: true, displayName: "Jane Doe", phoneNumber: "+1 (234) 567-8902"),
-        EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
-    ]
-    @State private var yellowMessage: String = "I'm out and about, and I could use a virtual buddy to keep an eye on my location. You've been sent my live location, and I would appreciate it if you could check in on me from time to time."
-    @State private var redMessage: String = "IMMEDIATE HELP NEEDED: I am in a threatening situation and unable to dial 911. Your immediate action is required. Please alert the authorities and come help, if possible. My current location is shared with you."
+    @StateObject private var userViewModel = UserViewModel()
     
     var body: some View {
         NavigationView {
@@ -32,7 +24,7 @@ struct ProfileView: View {
                             .foregroundColor(.white)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         
-                        Text(fullName)
+                        Text(userViewModel.fullName)
                             .font(.largeTitle)
                             .fontWeight(.heavy)
                             .foregroundColor(.white)
@@ -51,20 +43,19 @@ struct ProfileView: View {
                     
                     VStack {
                         SectionView(title: "Personal Info", content:  {
-                            InfoView(title: "Phone Number", value: phoneNumber)
-                            InfoView(title: "Email Address", value: emailAddress)
-                        }, destinationView: AnyView(EditPersonalView(fullName: $fullName, phoneNumber: $phoneNumber, emailAddress: $emailAddress)))
-                        
+                            InfoView(title: "Phone Number", value: userViewModel.phoneNumber)
+                            InfoView(title: "Email Address", value: userViewModel.emailAddress)
+                        }, destinationView: AnyView(EditPersonalView(userViewModel: userViewModel)))
                         SectionView(title: "Emergency Contacts", content:  {
-                            ForEach(emergencyContacts.indices, id: \.self) { index in
-                                InfoView(title: "Contact \(index + 1)", value: "\(emergencyContacts[index].displayName)")
+                            ForEach(userViewModel.emergencyContacts.indices, id: \.self) { index in
+                                InfoView(title: "Contact \(index + 1)", value: "\(userViewModel.emergencyContacts[index].displayName)")
                             }
-                        }, destinationView: AnyView(EditEmergencyContactView(emergencyContacts: $emergencyContacts)))
+                        }, destinationView: AnyView(EditEmergencyContactView(userViewModel: userViewModel)))
                         
                         SectionView(title: "Button Messages", content:  {
-                            InfoView(title: "Yellow\t", value: yellowMessage)
-                            InfoView(title: "Red\t", value: redMessage)
-                        }, destinationView: AnyView(EditButtonMessageView(yellowMessage: $yellowMessage, redMessage: $redMessage)))
+                            InfoView(title: "Yellow\t", value: userViewModel.yellowMessage)
+                            InfoView(title: "Red\t", value: userViewModel.redMessage)
+                        }, destinationView: AnyView(EditButtonMessageView(userViewModel: userViewModel)))
                     }
                     .padding(.horizontal, 20)
                     Spacer()
@@ -74,15 +65,20 @@ struct ProfileView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())
+        .onAppear {
+            if let userUID = Auth.auth().currentUser?.uid {
+                userViewModel.fetchUserData(userId: userUID)
+                userViewModel.fetchEmergencyContacts(userId: userUID)
+                userViewModel.fetchYellowRedMessages(userId: userUID)
+            }
+        }
     }
 }
 
 struct EditPersonalView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    @Binding var fullName: String
-    @Binding var phoneNumber: String
-    @Binding var emailAddress: String
+    @ObservedObject var userViewModel: UserViewModel
     
     @State private var newPhoneNumber: String = ""
     @State private var newEmailAddress: String = ""
@@ -105,7 +101,7 @@ struct EditPersonalView: View {
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     
-                    Text(fullName)
+                    Text(userViewModel.fullName)
                         .font(.largeTitle)
                         .fontWeight(.heavy)
                         .foregroundColor(.white)
@@ -133,7 +129,7 @@ struct EditPersonalView: View {
                             Text("+1")
                             ZStack(alignment: .leading) {
                                 if newPhoneNumber.isEmpty {
-                                    Text(phoneNumber)
+                                    Text(userViewModel.phoneNumber)
                                         .opacity(0.5)
                                 }
                                 
@@ -219,9 +215,18 @@ struct EditPersonalView: View {
                                         phoneVerifier.verifyVerificationCode(phoneVerifier.verificationCode)
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             if phoneVerifier.isVerificationValid {
-                                                phoneNumber = newPhoneNumber
-                                                newPhoneNumber = ""
-                                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                                if let userUID = Auth.auth().currentUser?.uid {
+                                                    userViewModel.updateUser(userId: userUID, phoneNumber: newPhoneNumber, emailAddress: userViewModel.emailAddress) { success in
+                                                        if success {
+                                                            userViewModel.phoneNumber = newPhoneNumber
+                                                            newPhoneNumber = ""
+                                                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                                        } else {
+                                                            alert = true
+                                                            alertMessage = "Failed to update phone number."
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     } else {
@@ -277,7 +282,7 @@ struct EditPersonalView: View {
                         
                         ZStack(alignment: .leading) {
                             if newEmailAddress.isEmpty {
-                                Text(emailAddress)
+                                Text(userViewModel.emailAddress)
                                     .opacity(0.5)
                             }
                             
@@ -357,9 +362,18 @@ struct EditPersonalView: View {
                                         emailVerifier.verifyVerificationCodeViaEmail(emailVerifier.verificationCode)
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             if emailVerifier.isVerificationValid {
-                                                emailAddress = newEmailAddress
-                                                newEmailAddress = ""
-                                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                                if let userUID = Auth.auth().currentUser?.uid {
+                                                    userViewModel.updateUser(userId: userUID, phoneNumber: userViewModel.phoneNumber, emailAddress: newEmailAddress) { success in
+                                                        if success {
+                                                            userViewModel.emailAddress = newEmailAddress
+                                                            newEmailAddress = ""
+                                                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                                        } else {
+                                                            alert = true
+                                                            alertMessage = "Failed to update email address."
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     } else {
@@ -417,7 +431,7 @@ struct EditPersonalView: View {
                             phoneVerifier.isVerificationEnabled = false
                             phoneVerifier.isVerificationValid = true
                             phoneVerifier.verificationCode = ""
-                            phoneNumber = newPhoneNumber
+                            userViewModel.phoneNumber = newPhoneNumber
                             newPhoneNumber = ""
                         } else {
                             alert = true
@@ -428,7 +442,7 @@ struct EditPersonalView: View {
                             emailVerifier.isVerificationEnabled = false
                             emailVerifier.isVerificationValid = true
                             emailVerifier.verificationCode = ""
-                            emailAddress = newEmailAddress
+                            userViewModel.emailAddress = newEmailAddress
                             newEmailAddress = ""
                         } else {
                             alert = true
@@ -464,13 +478,9 @@ struct EditPersonalView: View {
 struct EditEmergencyContactView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    @Binding var emergencyContacts: [EmergencyContact]
+    @ObservedObject var userViewModel: UserViewModel
     
     @State private var newEmergencyContacts: [EmergencyContact]
-    init(emergencyContacts: Binding<[EmergencyContact]>) {
-        _emergencyContacts = emergencyContacts
-        _newEmergencyContacts = State(initialValue: emergencyContacts.wrappedValue)
-    }
     
     @State private var alert: Bool = false
     @State private var alertMessage: String = ""
@@ -478,6 +488,11 @@ struct EditEmergencyContactView: View {
     @State private var saveButtonClicked: Bool = false
     
     @ObservedObject private var validator = InputValidator()
+    
+    init(userViewModel: UserViewModel) {
+        _userViewModel = ObservedObject(initialValue: userViewModel)
+        _newEmergencyContacts = State(initialValue: userViewModel.emergencyContacts)
+    }
     
     var body: some View {
         ZStack {
@@ -554,10 +569,19 @@ struct EditEmergencyContactView: View {
                 
                 Button(action: {
                     saveButtonClicked = true
-                    validator.validateEmergencyContacts(emergencyContacts)
+                    validator.validateEmergencyContacts(newEmergencyContacts)
                     if validator.emergencyContactsSelected.count == 3 && validator.emergencyContactsDuplicated.isEmpty {
-                        emergencyContacts = newEmergencyContacts
-                        presentationMode.wrappedValue.dismiss()
+                        if let userUID = Auth.auth().currentUser?.uid {
+                            userViewModel.updateEmergencyContacts(userId: userUID, emergencyContacts: newEmergencyContacts) { success in
+                                if success {
+                                    userViewModel.emergencyContacts = newEmergencyContacts
+                                    presentationMode.wrappedValue.dismiss()
+                                } else {
+                                    alert = true
+                                    alertMessage = "Failed to update emergency contacts."
+                                }
+                            }
+                        }
                     } else {
                         alert = true
                         if validator.emergencyContactsSelected.count != 3 {
@@ -593,8 +617,7 @@ struct EditEmergencyContactView: View {
 struct EditButtonMessageView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    @Binding var yellowMessage: String
-    @Binding var redMessage: String
+    @ObservedObject var userViewModel: UserViewModel
     
     @State private var editYellowMessage: Bool = false
     @State private var editRedMessage: Bool = false
@@ -640,7 +663,7 @@ struct EditButtonMessageView: View {
                 Button(action: {
                     editYellowMessage = true
                 }) {
-                    Text(yellowMessage)
+                    Text(userViewModel.yellowMessage)
                         .font(.body)
                         .fontWeight(.regular)
                         .foregroundColor(.black)
@@ -664,7 +687,7 @@ struct EditButtonMessageView: View {
                 }
                 .padding(.horizontal, 40)
                 .sheet(isPresented: $editYellowMessage) {
-                    EditYellowMessageView(yellowMessage: $yellowMessage, editYellowMessage: $editYellowMessage)
+                    EditYellowMessageView(userViewModel: userViewModel, editYellowMessage: $editYellowMessage)
                 }
                 
                 Text("Edit Red Button Message")
@@ -676,7 +699,7 @@ struct EditButtonMessageView: View {
                 Button(action: {
                     editRedMessage = true
                 }) {
-                    Text(redMessage)
+                    Text(userViewModel.redMessage)
                         .font(.body)
                         .fontWeight(.regular)
                         .foregroundColor(.black)
@@ -700,7 +723,7 @@ struct EditButtonMessageView: View {
                 }
                 .padding(.horizontal, 40)
                 .sheet(isPresented: $editRedMessage) {
-                    EditRedMessageView(redMessage: $redMessage, editRedMessage: $editRedMessage)
+                    EditRedMessageView(userViewModel: userViewModel, editRedMessage: $editRedMessage)
                 }
                 
                 Spacer()
@@ -734,7 +757,8 @@ struct EditButtonMessageView: View {
 struct EditYellowMessageView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    @Binding var yellowMessage: String
+    @ObservedObject var userViewModel: UserViewModel
+    
     @Binding var editYellowMessage: Bool
     
     @FocusState private var isEditing: Bool
@@ -891,7 +915,7 @@ struct EditYellowMessageView: View {
                         
                         ZStack(alignment: .leading) {
                             if customMessage.isEmpty {
-                                Text(yellowMessage)
+                                Text(userViewModel.yellowMessage)
                                     .lineLimit(1)
                                     .opacity(0.5)
                             }
@@ -907,7 +931,7 @@ struct EditYellowMessageView: View {
                             ))
                             .onAppear() {
                                 if !viewLoaded {
-                                    customMessage = yellowMessage
+                                    customMessage = userViewModel.yellowMessage
                                     viewLoaded = true
                                 }
                             }
@@ -955,10 +979,20 @@ struct EditYellowMessageView: View {
                     Button(action: {
                         valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
                         if valid {
-                            yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
-                            editYellowMessage = false
-                            viewLoaded = false
-                            presentationMode.wrappedValue.dismiss()
+                            if let userUID = Auth.auth().currentUser?.uid {
+                                userViewModel.updateYellowRedMessages(userId: userUID, yellowMessage: selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage, redMessage: userViewModel.redMessage) { success in
+                                    if success {
+                                        userViewModel.yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
+                                        editYellowMessage = false
+                                        viewLoaded = false
+                                        presentationMode.wrappedValue.dismiss()
+                                    } else {
+                                        error = true
+                                        alert = true
+                                        alertMessage = "Failed to update yellow message."
+                                    }
+                                }
+                            }
                         } else {
                             error = true
                             alert = true
@@ -995,7 +1029,8 @@ struct EditYellowMessageView: View {
 struct EditRedMessageView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    @Binding var redMessage: String
+    @ObservedObject var userViewModel: UserViewModel
+    
     @Binding var editRedMessage: Bool
     
     @FocusState private var isSelecting: Bool
@@ -1158,9 +1193,19 @@ struct EditRedMessageView: View {
                     Button(action: {
                         valid = selectedTemplate != nil
                         if valid {
-                            redMessage = messageTemplates[selectedTemplate!]
-                            editRedMessage = false
-                            presentationMode.wrappedValue.dismiss()
+                            if let userUID = Auth.auth().currentUser?.uid {
+                                userViewModel.updateYellowRedMessages(userId: userUID, yellowMessage: userViewModel.yellowMessage, redMessage: messageTemplates[selectedTemplate!]) { success in
+                                    if success {
+                                        userViewModel.redMessage = messageTemplates[selectedTemplate!]
+                                        editRedMessage = false
+                                        presentationMode.wrappedValue.dismiss()
+                                    } else {
+                                        error = true
+                                        alert = true
+                                        alertMessage = "Failed to update red message."
+                                    }
+                                }
+                            }
                         } else {
                             error = true
                             alert = true
@@ -1194,26 +1239,12 @@ struct EditRedMessageView: View {
 }
 
 struct ProfileView_Previews: PreviewProvider {
-    @State static var fullName: String = "John Smith"
-    @State static var phoneNumber: String = "(123) 456-7890"
-    @State static var emailAddress: String = "abc5xy@virginia.edu"
-    @State static var emergencyContacts: [EmergencyContact] = [
-        EmergencyContact(isSelected: true, displayName: "John Doe", phoneNumber: "+1 (234) 567-8901"),
-        EmergencyContact(isSelected: true, displayName: "Jane Doe", phoneNumber: "+1 (234) 567-8902"),
-        EmergencyContact(isSelected: true, displayName: "Baby Doe", phoneNumber: "+1 (234) 567-8903")
-    ]
-    @State static var yellowMessage: String = "I'm feeling a bit uncomfortable, can we talk"
-    @State static var redMessage: String = "I'm feeling a bit unsafe, can you check on me"
-    
-    @State static var editYellowMessage: Bool = true
-    @State static var editRedMessage: Bool = false
-    
     static var previews: some View {
         ProfileView()
-        EditPersonalView(fullName: $fullName, phoneNumber: $phoneNumber, emailAddress: $emailAddress)
-        EditEmergencyContactView(emergencyContacts: $emergencyContacts)
-        EditButtonMessageView(yellowMessage: $yellowMessage, redMessage: $redMessage)
-        EditYellowMessageView(yellowMessage: $yellowMessage, editYellowMessage: $editYellowMessage)
-        EditRedMessageView(redMessage: $redMessage, editRedMessage: $editRedMessage)
+        EditPersonalView(userViewModel: UserViewModel())
+        EditEmergencyContactView(userViewModel: UserViewModel())
+        EditButtonMessageView(userViewModel: UserViewModel())
+        EditYellowMessageView(userViewModel: UserViewModel(), editYellowMessage: Binding.constant(true))
+        EditRedMessageView(userViewModel: UserViewModel(), editRedMessage: Binding.constant(false))
     }
 }

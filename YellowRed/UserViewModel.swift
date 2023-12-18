@@ -135,4 +135,18 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    func fetchYellowRedMessages(userId: String) {
+        firestoreManager.fetchYellowRedMessagesForUser(userId: userId) { result in
+            switch result {
+            case .success(let messages):
+                DispatchQueue.main.async {
+                    self.yellowMessage = messages.yellowMessage
+                    self.redMessage = messages.redMessage
+                }
+            case .failure(let error):
+                print("Error fetching messages: \(error)")
+            }
+        }
+    }
+    
 }

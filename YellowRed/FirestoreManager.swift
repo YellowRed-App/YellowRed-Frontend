@@ -147,4 +147,20 @@ class FirestoreManager {
         }
     }
     
+    func fetchYellowRedMessagesForUser(userId: String, completion: @escaping (Result<(yellowMessage: String, redMessage: String), Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.getDocument { document, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let document = document, document.exists {
+                let data = document.data() ?? [:]
+                let yellowMessage = data["yellowMessage"] as? String ?? ""
+                let redMessage = data["redMessage"] as? String ?? ""
+                completion(.success((yellowMessage: yellowMessage, redMessage: redMessage)))
+            } else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist"])))
+            }
+        }
+    }
+    
 }

@@ -27,6 +27,21 @@ class FirestoreManager {
         }
     }
     
+    func updateUser(userId: String, phoneNumber: String, emailAddress: String, completion: @escaping (Error?) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.updateData([
+            "phoneNumber": phoneNumber,
+            "emailAddress": emailAddress
+        ]) { error in
+            if let error = error {
+                print("Error updating user: \(error.localizedDescription)")
+                completion(error)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
     func addEmergencyContactsToUser(userId: String, emergencyContacts: [EmergencyContact], completion: @escaping (Error?) -> Void) {
         let userRef = db.collection("users").document(userId)
         

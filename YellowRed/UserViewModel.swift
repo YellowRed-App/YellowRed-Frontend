@@ -62,6 +62,20 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    func updateEmergencyContacts(userId: String, emergencyContacts: [EmergencyContact], completion: @escaping (Bool) -> Void) {
+        firestoreManager.updateEmergencyContactsForUser(userId: userId, emergencyContacts: emergencyContacts) { error in
+            if let error = error {
+                print(error.localizedDescription)
+                completion(false)
+            } else {
+                DispatchQueue.main.async {
+                    self.emergencyContacts = emergencyContacts
+                }
+                completion(true)
+            }
+        }
+    }
+    
     func addYellowRedMessages(yellowMessage: String, redMessage: String, completion: @escaping (Bool) -> Void) {
         guard let userId = userId else {
             completion(false)

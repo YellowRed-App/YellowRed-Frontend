@@ -32,9 +32,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct YellowRedApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
+    @StateObject var userAuth = UserAuth()
+    
     var body: some Scene {
         WindowGroup {
-            HomeScreenView()
+            if userAuth.isUserAuthenticated {
+                YellowRedView()
+            } else {
+                HomeScreenView()
+            }
         }
     }
 }

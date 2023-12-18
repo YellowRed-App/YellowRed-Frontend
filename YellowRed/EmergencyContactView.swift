@@ -142,6 +142,6 @@ struct EmergencyContactView_Previews: PreviewProvider {
     @State static var university: String = "Harvard University"
     
     static var previews: some View {
-        EmergencyContactView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university)
+        EmergencyContactView(fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university).environmentObject(UserViewModel())
     }
 }

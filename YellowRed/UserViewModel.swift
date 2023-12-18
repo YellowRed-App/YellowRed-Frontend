@@ -107,4 +107,19 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    func fetchUserData(userId: String) {
+        firestoreManager.fetchUserData(userId: userId) { result in
+            switch result {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.fullName = data["fullName"] as? String ?? ""
+                    self.phoneNumber = data["phoneNumber"] as? String ?? ""
+                    self.emailAddress = data["emailAddress"] as? String ?? ""
+                }
+            case .failure(let error):
+                print("Error fetching user data: \(error)")
+            }
+        }
+    }
+    
 }

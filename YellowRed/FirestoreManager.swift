@@ -61,6 +61,38 @@ class FirestoreManager {
         }
     }
     
+    func updateEmergencyContactsForUser(userId: String, emergencyContacts: [EmergencyContact], completion: @escaping (Error?) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        let contactsRef = userRef.collection("emergencyContacts")
+        
+        contactsRef.getDocuments { (snapshot, error) in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            self.db.runTransaction({ (transaction, errorPointer) -> Any? in
+                // delete existing contacts
+                snapshot?.documents.forEach { document in
+                    transaction.deleteDocument(document.reference)
+                }
+
+                // add new contacts
+                emergencyContacts.forEach { contact in
+                    let newContactRef = contactsRef.document()
+                    transaction.setData([
+                        "displayName": contact.displayName,
+                        "phoneNumber": contact.phoneNumber
+                    ], forDocument: newContactRef)
+                }
+                
+                return nil
+            }) { (_, error) in
+                completion(error)
+            }
+        }
+    }
+    
     func addYellowRedMessagesToUser(userId: String, yellowMessage: String, redMessage: String, completion: @escaping (Error?) -> Void) {
         let userRef = db.collection("users").document(userId)
         userRef.updateData([

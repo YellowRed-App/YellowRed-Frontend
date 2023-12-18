@@ -122,4 +122,17 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    func fetchEmergencyContacts(userId: String) {
+        firestoreManager.fetchEmergencyContactsForUser(userId: userId) { result in
+            switch result {
+            case .success(let contacts):
+                DispatchQueue.main.async {
+                    self.emergencyContacts = contacts
+                }
+            case .failure(let error):
+                print("Error fetching emergency contacts: \(error)")
+            }
+        }
+    }
+    
 }

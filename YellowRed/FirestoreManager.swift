@@ -103,4 +103,14 @@ class FirestoreManager {
         }
     }
     
+    func updateYellowRedMessagesForUser(userId: String, yellowMessage: String, redMessage: String, completion: @escaping (Error?) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.updateData([
+            "yellowMessage": yellowMessage,
+            "redMessage": redMessage
+        ]) { error in
+            completion(error)
+        }
+    }
+    
 }

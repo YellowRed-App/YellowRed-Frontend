@@ -126,4 +126,25 @@ class FirestoreManager {
         }
     }
     
+    func fetchEmergencyContactsForUser(userId: String, completion: @escaping (Result<[EmergencyContact], Error>) -> Void) {
+        let contactsRef = db.collection("users").document(userId).collection("emergencyContacts")
+        contactsRef.getDocuments { querySnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var contacts: [EmergencyContact] = []
+                querySnapshot?.documents.forEach { document in
+                    let data = document.data()
+                    let contact = EmergencyContact(
+                        isSelected: false,
+                        displayName: data["displayName"] as? String ?? "",
+                        phoneNumber: data["phoneNumber"] as? String ?? ""
+                    )
+                    contacts.append(contact)
+                }
+                completion(.success(contacts))
+            }
+        }
+    }
+    
 }

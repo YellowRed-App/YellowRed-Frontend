@@ -240,6 +240,6 @@ struct YellowMessageView: View {
 
 struct YellowMessageView_Previews: PreviewProvider {
     static var previews: some View {
-        YellowMessageView()
+        YellowMessageView().environmentObject(UserViewModel())
     }
 }

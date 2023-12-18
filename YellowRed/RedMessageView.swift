@@ -203,6 +203,6 @@ struct RedMessageView_Previews: PreviewProvider {
     @State static var yellowMessage: String = "I'm feeling a bit uncomfortable, can we talk"
     
     static var previews: some View {
-        RedMessageView(yellowMessage: yellowMessage)
+        RedMessageView(yellowMessage: yellowMessage).environmentObject(UserViewModel())
     }
 }

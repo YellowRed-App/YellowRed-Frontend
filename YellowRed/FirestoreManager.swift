@@ -113,4 +113,17 @@ class FirestoreManager {
         }
     }
     
+    func fetchUserData(userId: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.getDocument { document, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let document = document, document.exists {
+                completion(.success(document.data() ?? [:]))
+            } else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist"])))
+            }
+        }
+    }
+    
 }

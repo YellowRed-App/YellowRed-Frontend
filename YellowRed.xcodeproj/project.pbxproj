@@ -29,6 +29,7 @@
 		71567EA12A20D10D00A2BB2D /* GetStartedNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71567EA02A20D10D00A2BB2D /* GetStartedNameView.swift */; };
 		715D5CE22A48706C001701AA /* YellowMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715D5CE12A48706C001701AA /* YellowMessageView.swift */; };
 		715D5CE42A4870D3001701AA /* RedMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715D5CE32A4870D3001701AA /* RedMessageView.swift */; };
+		71675F552B3126B700057760 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 71675F542B3126B700057760 /* FirebaseFunctions */; };
 		7171C17E2A3DC34200CC8F9B /* EmergencyContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7171C17D2A3DC34200CC8F9B /* EmergencyContactView.swift */; };
 		717B156C2A2605A300096580 /* GetStartedAffiliationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B156B2A2605A300096580 /* GetStartedAffiliationView.swift */; };
 		717F74D02A31E7BB00C55AC8 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F74CF2A31E7BB00C55AC8 /* LocationView.swift */; };
@@ -86,6 +87,7 @@
 				714716162AF6CB3700C825AE /* FirebaseFirestoreSwift in Frameworks */,
 				71F91AEC2A653546008F9209 /* FirebaseAnalyticsSwift in Frameworks */,
 				714716142AF6CB3700C825AE /* FirebaseFirestore in Frameworks */,
+				71675F552B3126B700057760 /* FirebaseFunctions in Frameworks */,
 				71F91B1F2A654F5F008F9209 /* FirebaseAuth in Frameworks */,
 				71F91AE82A653546008F9209 /* FirebaseAnalytics in Frameworks */,
 			);
@@ -186,6 +188,7 @@
 				71F91B1E2A654F5F008F9209 /* FirebaseAuth */,
 				714716132AF6CB3700C825AE /* FirebaseFirestore */,
 				714716152AF6CB3700C825AE /* FirebaseFirestoreSwift */,
+				71675F542B3126B700057760 /* FirebaseFunctions */,
 			);
 			productName = YellowRed;
 			productReference = 71567E8D2A20B92E00A2BB2D /* YellowRed.app */;
@@ -517,6 +520,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 71F91AE62A653546008F9209 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		71675F542B3126B700057760 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71F91AE62A653546008F9209 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
 		};
 		71F91AE72A653546008F9209 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct YellowRedView: View {
     @State private var profile: Bool = false
@@ -209,6 +210,8 @@ struct YellowButtonView: View {
     
     @State private var flash: Bool = false
     
+    @StateObject private var userViewModel = UserViewModel()
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -255,7 +258,14 @@ struct YellowButtonView: View {
             .padding(.bottom, 50)
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear(perform: activateYellowButton)
+        .onAppear {
+            activateYellowButton()
+            if let userUID = Auth.auth().currentUser?.uid {
+                userViewModel.fetchUserData(userId: userUID)
+                userViewModel.fetchEmergencyContacts(userId: userUID)
+                userViewModel.fetchYellowRedMessages(userId: userUID)
+            }
+        }
     }
     
     private func activateYellowButton() {
@@ -264,7 +274,19 @@ struct YellowButtonView: View {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
         startFlashing()
-        // TODO: activate yellow button
+
+        let emergencyContacts = userViewModel.emergencyContacts
+        let emergencyContactNames = emergencyContacts.map {
+            $0.displayName }
+        let emergencyContactNumbers = emergencyContacts.map { $0.phoneNumber }
+        
+        let yellowMessage = userViewModel.yellowMessage
+        
+        sendEmergencyMessage(contacts: emergencyContactNumbers, message: yellowMessage)
+    }
+    
+    private func sendEmergencyMessage(contacts: [String], message: String) {
+        // TODO: connect frontend to backend
     }
     
     private func deactivateYellowButton() {

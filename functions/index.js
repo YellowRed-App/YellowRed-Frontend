@@ -1,19 +1,29 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const functions = require('firebase-functions');
+const twilio = require('twilio');
 
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+// Twilio configuration from Firebase config
+const twilioAccountSid = functions.config().twilio.sid;
+const twilioAuthToken = functions.config().twilio.token;
+const twilioPhoneNumber = functions.config().twilio.phone;
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+const client = new twilio(twilioAccountSid, twilioAuthToken);
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.sendEmergencySMS = functions.https.onRequest((req, res) => {
+    const { contacts, message } = req.body;
+
+    if (!contacts || !message) {
+        return res.status(400).send('Contacts and message are required');
+    }
+
+    const smsPromises = contacts.map(contact => {
+        return client.messages.create({
+            to: contact,
+            from: twilioPhoneNumber,
+            body: message
+        });
+    });
+
+    Promise.all(smsPromises)
+        .then(results => res.status(200).json({ success: true, results }))
+        .catch(error => res.status(500).json({ success: false, error: error.message }));
+});

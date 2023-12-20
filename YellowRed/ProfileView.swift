@@ -489,19 +489,12 @@ struct EditEmergencyContactView: View {
     
     @ObservedObject var userViewModel: UserViewModel
     
-    @State private var newEmergencyContacts: [EmergencyContact]
-    
     @State private var alert: Bool = false
     @State private var alertMessage: String = ""
     
     @State private var saveButtonClicked: Bool = false
     
     @ObservedObject private var validator = InputValidator()
-    
-    init(userViewModel: UserViewModel) {
-        _userViewModel = ObservedObject(initialValue: userViewModel)
-        _newEmergencyContacts = State(initialValue: userViewModel.emergencyContacts)
-    }
     
     var body: some View {
         ZStack {
@@ -540,7 +533,7 @@ struct EditEmergencyContactView: View {
                 
                 VStack(spacing: 15) {
                     ForEach(0..<3, id: \.self) { index in
-                        EmergencyContactPicker(contact: $newEmergencyContacts[index])
+                        EmergencyContactPicker(contact: $userViewModel.emergencyContacts[index])
                             .font(.title3)
                             .background(.white)
                             .cornerRadius(10)
@@ -578,12 +571,11 @@ struct EditEmergencyContactView: View {
                 
                 Button(action: {
                     saveButtonClicked = true
-                    validator.validateEmergencyContacts(newEmergencyContacts)
+                    validator.validateEmergencyContacts(userViewModel.emergencyContacts)
                     if validator.emergencyContactsSelected.count == 3 && validator.emergencyContactsDuplicated.isEmpty {
                         if let userUID = Auth.auth().currentUser?.uid {
-                            userViewModel.updateEmergencyContacts(userId: userUID, emergencyContacts: newEmergencyContacts) { success in
+                            userViewModel.updateEmergencyContacts(userId: userUID, emergencyContacts: userViewModel.emergencyContacts) { success in
                                 if success {
-                                    userViewModel.emergencyContacts = newEmergencyContacts
                                     presentationMode.wrappedValue.dismiss()
                                 } else {
                                     alert = true
@@ -620,6 +612,11 @@ struct EditEmergencyContactView: View {
             .background(.white)
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            for index in userViewModel.emergencyContacts.indices {
+                userViewModel.emergencyContacts[index].isSelected = true
+            }
+        }
     }
 }
 

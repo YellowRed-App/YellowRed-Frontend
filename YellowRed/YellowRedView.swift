@@ -236,7 +236,7 @@ struct YellowButtonView: View {
                 Spacer()
                 
                 Button(action: {
-                    self.yellowButton = false
+                    yellowButton = false
                     deactivateYellowButton()
                     presentationMode.wrappedValue.dismiss()
                 }) {
@@ -258,16 +258,25 @@ struct YellowButtonView: View {
             .padding(.bottom, 50)
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-            if let userUID = Auth.auth().currentUser?.uid {
-                fetchAllData(userId: userUID)
-            }
-            activateYellowButton()
+        .onAppear(perform: activateYellowButton)
+        .onDisappear(perform: deactivateYellowButton)
+    }
+    
+    private func activateYellowButton() {
+        GlobalHapticManager.shared.startHapticEngine()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
-        .onDisappear {
-            sendEmergencyMessageIfNeeded(message: "Yellow Button Deactivated")
-            deactivateYellowButton()
+        startFlashing()
+        if let userUID = Auth.auth().currentUser?.uid {
+            fetchAllData(userId: userUID)
         }
+    }
+    
+    private func deactivateYellowButton() {
+        GlobalHapticManager.shared.stopHapticEngine()
+        stopFlashing()
+        sendEmergencyMessageIfNeeded(message: "Yellow Button Deactivated")
     }
     
     private func fetchAllData(userId: String) {
@@ -279,14 +288,6 @@ struct YellowButtonView: View {
                 }
             }
         }
-    }
-    
-    private func activateYellowButton() {
-        GlobalHapticManager.shared.startHapticEngine()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            GlobalHapticManager.shared.triggerHapticFeedback(5)
-        }
-        startFlashing()
     }
     
     private func sendEmergencyMessageIfNeeded(message: String) {
@@ -324,11 +325,6 @@ struct YellowButtonView: View {
                 print("Response data: \(dataString)")
             }
         }.resume()
-    }
-    
-    private func deactivateYellowButton() {
-        GlobalHapticManager.shared.stopHapticEngine()
-        stopFlashing()
     }
     
     private func startFlashing() {

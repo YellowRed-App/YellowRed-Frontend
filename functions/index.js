@@ -1,10 +1,9 @@
 const functions = require('firebase-functions');
+const twilio = require('twilio');
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
-
-const twilio = require('twilio');
 
 const twilioAccountSid = process.env.NODE_ENV === 'production'
     ? functions.config().twilio.sid
@@ -21,7 +20,7 @@ const client = new twilio(twilioAccountSid, twilioAuthToken);
 exports.sendEmergencySMS = functions.https.onRequest((req, res) => {
     console.log("Function triggered with body:", req.body);
 
-    const { contacts, message } = req.body;
+    const {contacts, message} = req.body;
 
     if (!contacts || !message) {
         console.log("Missing contacts or message");
@@ -41,10 +40,10 @@ exports.sendEmergencySMS = functions.https.onRequest((req, res) => {
     Promise.all(smsPromises)
         .then(results => {
             console.log("Messages sent:", results);
-            res.status(200).json({ success: true, results })
+            res.status(200).json({success: true, results});
         })
         .catch(error => {
             console.error("Error sending messages:", error);
-            res.status(500).json({ success: false, error: error.message });
+            res.status(500).json({success: false, error: error.message});
         });
 });

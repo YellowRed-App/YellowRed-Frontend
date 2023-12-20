@@ -425,6 +425,10 @@ struct RedButtonView: View {
             }
         }
     }
+    
+    private func stopFlashing() {
+        flash = false
+    }
 }
 
 struct YellowRedView_Previews: PreviewProvider {

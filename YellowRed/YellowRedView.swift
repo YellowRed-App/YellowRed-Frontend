@@ -333,6 +333,10 @@ struct YellowButtonView: View {
             }
         }
     }
+    
+    private func stopFlashing() {
+        flash = false
+    }
 }
 
 struct RedButtonView: View {

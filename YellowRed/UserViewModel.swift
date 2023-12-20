@@ -107,7 +107,7 @@ class UserViewModel: ObservableObject {
         }
     }
     
-    func fetchUserData(userId: String) {
+    func fetchUserData(userId: String, completion: @escaping () -> Void) {
         firestoreManager.fetchUserData(userId: userId) { result in
             switch result {
             case .success(let data):
@@ -115,36 +115,42 @@ class UserViewModel: ObservableObject {
                     self.fullName = data["fullName"] as? String ?? ""
                     self.phoneNumber = data["phoneNumber"] as? String ?? ""
                     self.emailAddress = data["emailAddress"] as? String ?? ""
+                    completion()
                 }
             case .failure(let error):
                 print("Error fetching user data: \(error)")
+                completion()
             }
         }
     }
     
-    func fetchEmergencyContacts(userId: String) {
+    func fetchEmergencyContacts(userId: String, completion: @escaping () -> Void) {
         firestoreManager.fetchEmergencyContactsForUser(userId: userId) { result in
             switch result {
             case .success(let contacts):
                 DispatchQueue.main.async {
                     self.emergencyContacts = contacts
+                    completion()
                 }
             case .failure(let error):
                 print("Error fetching emergency contacts: \(error)")
+                completion()
             }
         }
     }
     
-    func fetchYellowRedMessages(userId: String) {
+    func fetchYellowRedMessages(userId: String, completion: @escaping () -> Void) {
         firestoreManager.fetchYellowRedMessagesForUser(userId: userId) { result in
             switch result {
             case .success(let messages):
                 DispatchQueue.main.async {
                     self.yellowMessage = messages.yellowMessage
                     self.redMessage = messages.redMessage
+                    completion()
                 }
             case .failure(let error):
                 print("Error fetching messages: \(error)")
+                completion()
             }
         }
     }

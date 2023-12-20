@@ -264,6 +264,10 @@ struct YellowButtonView: View {
             }
             activateYellowButton()
         }
+        .onDisappear {
+            sendEmergencyMessageIfNeeded(message: "Yellow Button Deactivated")
+            deactivateYellowButton()
+        }
     }
     
     private func fetchAllData(userId: String) {

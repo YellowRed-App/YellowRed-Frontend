@@ -259,7 +259,6 @@ struct YellowButtonView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateYellowButton)
-        .onDisappear(perform: deactivateYellowButton)
     }
     
     private func activateYellowButton() {
@@ -394,7 +393,8 @@ struct RedButtonView: View {
                         title: Text("Are you sure you are ok and want to deactivate the red button?"),
                         primaryButton: .destructive(Text("No, I'm not ok")),
                         secondaryButton: .cancel(Text("Yes, I'm ok")) {
-                            self.redButton = false
+                            redButton = false
+                            deactivateRedButton()
                             presentationMode.wrappedValue.dismiss()
                         }
                     )
@@ -405,7 +405,6 @@ struct RedButtonView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateRedButton)
-        .onDisappear(perform: deactivateRedButton)
     }
     
     private func activateRedButton() {

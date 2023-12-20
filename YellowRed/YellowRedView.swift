@@ -422,6 +422,17 @@ struct RedButtonView: View {
         sendEmergencyMessageIfNeeded(message: "Red Button Deactivated")
     }
     
+    private func fetchAllData(userId: String) {
+        userViewModel.fetchUserData(userId: userId) {
+            userViewModel.fetchEmergencyContacts(userId: userId) {
+                userViewModel.fetchYellowRedMessages(userId: userId) {
+                    let redMessage = userViewModel.redMessage
+                    sendEmergencyMessageIfNeeded(message: redMessage)
+                }
+            }
+        }
+    }
+    
     private func sendEmergencyMessageIfNeeded(message: String) {
         guard !userViewModel.emergencyContacts.isEmpty, !userViewModel.redMessage.isEmpty else {
             print("Emergency contacts or message are not available yet.")

@@ -413,7 +413,9 @@ struct RedButtonView: View {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
         startFlashing()
-        // TODO: activate red button
+        if let userUID = Auth.auth().currentUser?.uid {
+            fetchAllData(userId: userUID)
+        }
     }
     
     private func deactivateRedButton() {

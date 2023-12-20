@@ -323,7 +323,8 @@ struct YellowButtonView: View {
     }
     
     private func deactivateYellowButton() {
-        // TODO: deactivate yellow button
+        GlobalHapticManager.shared.stopHapticEngine()
+        stopFlashing()
     }
     
     private func startFlashing() {

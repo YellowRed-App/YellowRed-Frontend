@@ -405,6 +405,7 @@ struct RedButtonView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateRedButton)
+        .onDisappear(perform: deactivateRedButton)
     }
     
     private func activateRedButton() {

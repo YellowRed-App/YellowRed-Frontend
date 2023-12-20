@@ -259,11 +259,19 @@ struct YellowButtonView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            activateYellowButton()
             if let userUID = Auth.auth().currentUser?.uid {
-                userViewModel.fetchUserData(userId: userUID)
-                userViewModel.fetchEmergencyContacts(userId: userUID)
-                userViewModel.fetchYellowRedMessages(userId: userUID)
+                fetchAllData(userId: userUID)
+            }
+            activateYellowButton()
+        }
+    }
+    
+    private func fetchAllData(userId: String) {
+        userViewModel.fetchUserData(userId: userId) {
+            userViewModel.fetchEmergencyContacts(userId: userId) {
+                userViewModel.fetchYellowRedMessages(userId: userId) {
+                    // TODO: send emergency message only if needed
+                }
             }
         }
     }
@@ -274,15 +282,6 @@ struct YellowButtonView: View {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
         startFlashing()
-
-        let emergencyContacts = userViewModel.emergencyContacts
-        let emergencyContactNames = emergencyContacts.map {
-            $0.displayName }
-        let emergencyContactNumbers = emergencyContacts.map { $0.phoneNumber }
-        
-        let yellowMessage = userViewModel.yellowMessage
-        
-        sendEmergencyMessage(contacts: emergencyContactNumbers, message: yellowMessage)
     }
     
     private func sendEmergencyMessage(contacts: [String], message: String) {

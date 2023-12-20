@@ -417,11 +417,13 @@ struct RedButtonView: View {
     }
     
     private func deactivateRedButton() {
-        // TODO: deactivate red button
+        GlobalHapticManager.shared.stopHapticEngine()
+        stopFlashing()
+        sendEmergencyMessageIfNeeded(message: "Red Button Deactivated")
     }
     
     private func sendEmergencyMessageIfNeeded(message: String) {
-        guard !userViewModel.emergencyContacts.isEmpty, !userViewModel.yellowMessage.isEmpty else {
+        guard !userViewModel.emergencyContacts.isEmpty, !userViewModel.redMessage.isEmpty else {
             print("Emergency contacts or message are not available yet.")
             return
         }

@@ -348,6 +348,8 @@ struct RedButtonView: View {
     @State private var flash: Bool = false
     @State private var alert: Bool = false
     
+    @StateObject private var userViewModel = UserViewModel()
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -416,6 +418,17 @@ struct RedButtonView: View {
     
     private func deactivateRedButton() {
         // TODO: deactivate red button
+    }
+    
+    private func sendEmergencyMessageIfNeeded(message: String) {
+        guard !userViewModel.emergencyContacts.isEmpty, !userViewModel.yellowMessage.isEmpty else {
+            print("Emergency contacts or message are not available yet.")
+            return
+        }
+        
+        let emergencyContactNumbers = userViewModel.emergencyContacts.map { $0.phoneNumber }
+        
+        sendEmergencyMessage(contacts: emergencyContactNumbers, message: message)
     }
     
     private func sendEmergencyMessage(contacts: [String], message: String) {

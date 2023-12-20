@@ -66,10 +66,19 @@ struct ProfileView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())
         .onAppear {
-            if let userUID = Auth.auth().currentUser?.uid {
-                userViewModel.fetchUserData(userId: userUID)
-                userViewModel.fetchEmergencyContacts(userId: userUID)
-                userViewModel.fetchYellowRedMessages(userId: userUID)
+            fetchAllData()
+        }
+    }
+    
+    private func fetchAllData() {
+        if let userUID = Auth.auth().currentUser?.uid {
+            userViewModel.fetchUserData(userId: userUID) {
+                userViewModel.fetchEmergencyContacts(userId: userUID) {
+                    userViewModel.fetchYellowRedMessages(userId: userUID) {
+                        // All data is fetched, and the view can be updated.
+                        // The UI will react to changes since the userViewModel properties are Published.
+                    }
+                }
             }
         }
     }

@@ -270,7 +270,8 @@ struct YellowButtonView: View {
         userViewModel.fetchUserData(userId: userId) {
             userViewModel.fetchEmergencyContacts(userId: userId) {
                 userViewModel.fetchYellowRedMessages(userId: userId) {
-                    sendEmergencyMessageIfNeeded()
+                    let yellowMessage = userViewModel.yellowMessage
+                    sendEmergencyMessageIfNeeded(message: yellowMessage)
                 }
             }
         }
@@ -284,16 +285,15 @@ struct YellowButtonView: View {
         startFlashing()
     }
     
-    private func sendEmergencyMessageIfNeeded() {
+    private func sendEmergencyMessageIfNeeded(message: String) {
         guard !userViewModel.emergencyContacts.isEmpty, !userViewModel.yellowMessage.isEmpty else {
             print("Emergency contacts or message are not available yet.")
             return
         }
         
         let emergencyContactNumbers = userViewModel.emergencyContacts.map { $0.phoneNumber }
-        let yellowMessage = userViewModel.yellowMessage
         
-        sendEmergencyMessage(contacts: emergencyContactNumbers, message: yellowMessage)
+        sendEmergencyMessage(contacts: emergencyContactNumbers, message: message)
     }
     
     private func sendEmergencyMessage(contacts: [String], message: String) {

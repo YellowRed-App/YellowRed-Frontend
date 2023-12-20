@@ -270,7 +270,7 @@ struct YellowButtonView: View {
         userViewModel.fetchUserData(userId: userId) {
             userViewModel.fetchEmergencyContacts(userId: userId) {
                 userViewModel.fetchYellowRedMessages(userId: userId) {
-                    // TODO: send emergency message only if needed
+                    sendEmergencyMessageIfNeeded()
                 }
             }
         }
@@ -282,6 +282,18 @@ struct YellowButtonView: View {
             GlobalHapticManager.shared.triggerHapticFeedback(5)
         }
         startFlashing()
+    }
+    
+    private func sendEmergencyMessageIfNeeded() {
+        guard !userViewModel.emergencyContacts.isEmpty, !userViewModel.yellowMessage.isEmpty else {
+            print("Emergency contacts or message are not available yet.")
+            return
+        }
+        
+        let emergencyContactNumbers = userViewModel.emergencyContacts.map { $0.phoneNumber }
+        let yellowMessage = userViewModel.yellowMessage
+        
+        sendEmergencyMessage(contacts: emergencyContactNumbers, message: yellowMessage)
     }
     
     private func sendEmergencyMessage(contacts: [String], message: String) {

@@ -273,7 +273,6 @@ struct YellowButtonView: View {
     }
     
     private func deactivateYellowButton() {
-        GlobalHapticManager.shared.stopHapticEngine()
         stopFlashing()
         sendEmergencyMessageIfNeeded(message: "Yellow Button Deactivated")
     }
@@ -419,7 +418,6 @@ struct RedButtonView: View {
     }
     
     private func deactivateRedButton() {
-        GlobalHapticManager.shared.stopHapticEngine()
         stopFlashing()
         sendEmergencyMessageIfNeeded(message: "Red Button Deactivated")
     }

@@ -287,8 +287,10 @@ struct YellowButtonView: View {
                         self.userViewModel.fetchYellowRedMessages(userId: userId) { yellowRedMessagesResult in
                             switch yellowRedMessagesResult {
                             case .success:
-                                let yellowMessage = userViewModel.yellowMessage
-                                sendEmergencyMessageIfNeeded(message: yellowMessage)
+                                DispatchQueue.main.async {
+                                    let yellowMessage = userViewModel.yellowMessage
+                                    sendEmergencyMessageIfNeeded(message: yellowMessage)
+                                }
                             case .failure(let error):
                                 print("Error fetching yellow message: \(error.localizedDescription)")
                             }
@@ -447,8 +449,10 @@ struct RedButtonView: View {
                         self.userViewModel.fetchYellowRedMessages(userId: userId) { yellowRedMessagesResult in
                             switch yellowRedMessagesResult {
                             case .success:
-                                let redMessage = userViewModel.redMessage
-                                sendEmergencyMessageIfNeeded(message: redMessage)
+                                DispatchQueue.main.async {
+                                    let redMessage = userViewModel.redMessage
+                                    sendEmergencyMessageIfNeeded(message: redMessage)
+                                }
                             case .failure(let error):
                                 print("Error fetching yellow message: \(error.localizedDescription)")
                             }

@@ -48,4 +48,10 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
             }
         }
     }
+    
+    func stopUpdatingLocation() {
+        locationManager?.stopUpdatingLocation()
+        locationUpdateTimer?.invalidate()
+        locationUpdateTimer = nil
+    }
 }

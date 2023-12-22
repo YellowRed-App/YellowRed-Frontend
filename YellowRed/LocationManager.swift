@@ -6,6 +6,8 @@
 //
 
 import CoreLocation
+import FirebaseAuth
+import FirebaseFirestore
 
 final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var next: Bool = false
@@ -13,6 +15,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     private var locationManager: CLLocationManager?
     private var locationUpdateTimer: Timer?
     private let locationUpdateInterval: TimeInterval = 30.0
+    private let db = Firestore.firestore()
     
     override init() {
         super.init()
@@ -67,10 +70,35 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        // TODO: store location in Firestore
+        if let userUID = Auth.auth().currentUser?.uid {
+            sendLocationUpdate(userId: userUID, location: location) { result in
+                switch result {
+                case .success():
+                    print("Location update sent successfully.")
+                case .failure(let error):
+                    print("Error sending location update: \(error)")
+                }
+            }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error updating location: \(error.localizedDescription)")
+    }
+    
+    private func sendLocationUpdate(userId: String, location: CLLocation, completion: @escaping (Result<Void, Error>) -> Void) {
+        let geoPoint = GeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let locationData: [String: Any] = [
+            "timestamp": Timestamp(date: Date()), // FieldValue.serverTimestamp() for server-side timestamp
+            "geopoint": geoPoint
+        ]
+        
+        db.collection("users").document(userId).collection("locationUpdates").addDocument(data: locationData) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
     }
 }

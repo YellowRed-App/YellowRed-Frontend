@@ -10,11 +10,15 @@ import CoreLocation
 final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var next: Bool = false
     @Published var alert: Bool = false
-    private var locationManager = CLLocationManager()
+    private var locationManager: CLLocationManager?
+    private var locationUpdateTimer: Timer?
+    private let locationUpdateInterval: TimeInterval = 30.0
     
     override init() {
         super.init()
-        self.locationManager.delegate = self
+        self.locationManager = CLLocationManager()
+        self.locationManager?.delegate = self
+        self.locationManager?.desiredAccuracy = kCLLocationAccuracyBest
     }
     
     func requestLocationPermission() {
@@ -26,7 +30,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
             }
         case .notDetermined:
             DispatchQueue.main.async {
-                self.locationManager.requestAlwaysAuthorization()
+                self.locationManager?.requestAlwaysAuthorization()
             }
         case .denied, .restricted:
             DispatchQueue.main.async {

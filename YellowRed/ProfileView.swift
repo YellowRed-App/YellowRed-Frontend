@@ -72,12 +72,28 @@ struct ProfileView: View {
     
     private func fetchAllData() {
         if let userUID = Auth.auth().currentUser?.uid {
-            userViewModel.fetchUserData(userId: userUID) {
-                userViewModel.fetchEmergencyContacts(userId: userUID) {
-                    userViewModel.fetchYellowRedMessages(userId: userUID) {
-                        // All data is fetched, and the view can be updated.
-                        // The UI will react to changes since the userViewModel properties are Published.
+            userViewModel.fetchUserData(userId: userUID) { userDataResult in
+                switch userDataResult {
+                case .success:
+                    self.userViewModel.fetchEmergencyContacts(userId: userUID) { emergencyContactsResult in
+                        switch emergencyContactsResult {
+                        case .success:
+                            self.userViewModel.fetchYellowRedMessages(userId: userUID) { yellowRedMessagesResult in
+                                switch yellowRedMessagesResult {
+                                case .success:
+                                    // All data is fetched, and the view can be updated.
+                                    // The UI will react to changes since the userViewModel properties are @Published.
+                                    print("Success fetching yellow/red messages.")
+                                case .failure(let error):
+                                    print("Error fetching yellow/red messages: \(error.localizedDescription)")
+                                }
+                            }
+                        case .failure(let error):
+                            print("Error fetching emergency contacts: \(error.localizedDescription)")
+                        }
                     }
+                case .failure(let error):
+                    print("Error fetching user data: \(error.localizedDescription)")
                 }
             }
         }
@@ -225,12 +241,13 @@ struct EditPersonalView: View {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             if phoneVerifier.isVerificationValid {
                                                 if let userUID = Auth.auth().currentUser?.uid {
-                                                    userViewModel.updateUser(userId: userUID, phoneNumber: newPhoneNumber, emailAddress: userViewModel.emailAddress) { success in
-                                                        if success {
+                                                    userViewModel.updateUser(userId: userUID, phoneNumber: newPhoneNumber, emailAddress: userViewModel.emailAddress) { result in
+                                                        switch result {
+                                                        case .success:
                                                             userViewModel.phoneNumber = newPhoneNumber
                                                             newPhoneNumber = ""
                                                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                                        } else {
+                                                        case .failure:
                                                             alert = true
                                                             alertMessage = "Failed to update phone number."
                                                         }
@@ -372,12 +389,13 @@ struct EditPersonalView: View {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             if emailVerifier.isVerificationValid {
                                                 if let userUID = Auth.auth().currentUser?.uid {
-                                                    userViewModel.updateUser(userId: userUID, phoneNumber: userViewModel.phoneNumber, emailAddress: newEmailAddress) { success in
-                                                        if success {
+                                                    userViewModel.updateUser(userId: userUID, phoneNumber: userViewModel.phoneNumber, emailAddress: newEmailAddress) { result in
+                                                        switch result {
+                                                        case .success:
                                                             userViewModel.emailAddress = newEmailAddress
                                                             newEmailAddress = ""
                                                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                                        } else {
+                                                        case .failure:
                                                             alert = true
                                                             alertMessage = "Failed to update email address."
                                                         }
@@ -574,14 +592,15 @@ struct EditEmergencyContactView: View {
                     validator.validateEmergencyContacts(userViewModel.emergencyContacts)
                     if validator.emergencyContactsSelected.count == 3 && validator.emergencyContactsDuplicated.isEmpty {
                         if let userUID = Auth.auth().currentUser?.uid {
-                            userViewModel.updateEmergencyContacts(userId: userUID, emergencyContacts: userViewModel.emergencyContacts) { success in
-                                if success {
+                            userViewModel.updateEmergencyContacts(userId: userUID, emergencyContacts: userViewModel.emergencyContacts, completion: { result in
+                                switch result {
+                                case .success:
                                     presentationMode.wrappedValue.dismiss()
-                                } else {
+                                case .failure:
                                     alert = true
                                     alertMessage = "Failed to update emergency contacts."
                                 }
-                            }
+                            })
                         }
                     } else {
                         alert = true
@@ -986,13 +1005,14 @@ struct EditYellowMessageView: View {
                         valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
                         if valid {
                             if let userUID = Auth.auth().currentUser?.uid {
-                                userViewModel.updateYellowRedMessages(userId: userUID, yellowMessage: selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage, redMessage: userViewModel.redMessage) { success in
-                                    if success {
+                                userViewModel.updateYellowRedMessages(userId: userUID, yellowMessage: selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage, redMessage: userViewModel.redMessage) { result in
+                                    switch result {
+                                    case .success:
                                         userViewModel.yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
                                         editYellowMessage = false
                                         viewLoaded = false
                                         presentationMode.wrappedValue.dismiss()
-                                    } else {
+                                    case .failure:
                                         error = true
                                         alert = true
                                         alertMessage = "Failed to update yellow message."
@@ -1200,12 +1220,13 @@ struct EditRedMessageView: View {
                         valid = selectedTemplate != nil
                         if valid {
                             if let userUID = Auth.auth().currentUser?.uid {
-                                userViewModel.updateYellowRedMessages(userId: userUID, yellowMessage: userViewModel.yellowMessage, redMessage: messageTemplates[selectedTemplate!]) { success in
-                                    if success {
+                                userViewModel.updateYellowRedMessages(userId: userUID, yellowMessage: userViewModel.yellowMessage, redMessage: messageTemplates[selectedTemplate!]) { result in
+                                    switch result {
+                                    case .success:
                                         userViewModel.redMessage = messageTemplates[selectedTemplate!]
                                         editRedMessage = false
                                         presentationMode.wrappedValue.dismiss()
-                                    } else {
+                                    case .failure:
                                         error = true
                                         alert = true
                                         alertMessage = "Failed to update red message."

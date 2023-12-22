@@ -278,12 +278,27 @@ struct YellowButtonView: View {
     }
     
     private func fetchAllData(userId: String) {
-        userViewModel.fetchUserData(userId: userId) {
-            userViewModel.fetchEmergencyContacts(userId: userId) {
-                userViewModel.fetchYellowRedMessages(userId: userId) {
-                    let yellowMessage = userViewModel.yellowMessage
-                    sendEmergencyMessageIfNeeded(message: yellowMessage)
+        self.userViewModel.fetchUserData(userId: userId) { userDataResult in
+            switch userDataResult {
+            case .success:
+                self.userViewModel.fetchEmergencyContacts(userId: userId) { emergencyContactsResult in
+                    switch emergencyContactsResult {
+                    case .success:
+                        self.userViewModel.fetchYellowRedMessages(userId: userId) { yellowRedMessagesResult in
+                            switch yellowRedMessagesResult {
+                            case .success:
+                                let yellowMessage = userViewModel.yellowMessage
+                                sendEmergencyMessageIfNeeded(message: yellowMessage)
+                            case .failure(let error):
+                                print("Error fetching yellow message: \(error.localizedDescription)")
+                            }
+                        }
+                    case .failure(let error):
+                        print("Error fetching emergency contacts: \(error.localizedDescription)")
+                    }
                 }
+            case .failure(let error):
+                print("Error fetching user data: \(error.localizedDescription)")
             }
         }
     }
@@ -423,12 +438,27 @@ struct RedButtonView: View {
     }
     
     private func fetchAllData(userId: String) {
-        userViewModel.fetchUserData(userId: userId) {
-            userViewModel.fetchEmergencyContacts(userId: userId) {
-                userViewModel.fetchYellowRedMessages(userId: userId) {
-                    let redMessage = userViewModel.redMessage
-                    sendEmergencyMessageIfNeeded(message: redMessage)
+        self.userViewModel.fetchUserData(userId: userId) { userDataResult in
+            switch userDataResult {
+            case .success:
+                self.userViewModel.fetchEmergencyContacts(userId: userId) { emergencyContactsResult in
+                    switch emergencyContactsResult {
+                    case .success:
+                        self.userViewModel.fetchYellowRedMessages(userId: userId) { yellowRedMessagesResult in
+                            switch yellowRedMessagesResult {
+                            case .success:
+                                let redMessage = userViewModel.redMessage
+                                sendEmergencyMessageIfNeeded(message: redMessage)
+                            case .failure(let error):
+                                print("Error fetching yellow message: \(error.localizedDescription)")
+                            }
+                        }
+                    case .failure(let error):
+                        print("Error fetching emergency contacts: \(error.localizedDescription)")
+                    }
                 }
+            case .failure(let error):
+                print("Error fetching user data: \(error.localizedDescription)")
             }
         }
     }

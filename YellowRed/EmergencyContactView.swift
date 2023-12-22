@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct EmergencyContactView: View {
     @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 3)
@@ -94,13 +95,15 @@ struct EmergencyContactView: View {
                         nextButtonClicked = true
                         validator.validateEmergencyContacts(emergencyContacts)
                         if validator.areEmergencyContactsValid {
-                            userViewModel.addEmergencyContacts(emergencyContacts: emergencyContacts) { success in
-                                if success {
-                                    print("Emergency contacts successfully added.")
-                                    next = true
-                                } else {
-                                    print("Error adding emergency contacts")
-                                }
+                            if let userUID = Auth.auth().currentUser?.uid {
+                                userViewModel.updateEmergencyContacts(userId: userUID, emergencyContacts: emergencyContacts, completion: { result in
+                                    switch result {
+                                    case .success:
+                                        next = true
+                                    case .failure:
+                                        print("Error adding emergency contacts")
+                                    }
+                                })
                             }
                         }
                     }) {

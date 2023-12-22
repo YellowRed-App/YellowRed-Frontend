@@ -114,12 +114,13 @@ struct GetStartedAffiliationView: View {
                     validator.validateAffiliation(affiliation, university)
                     if validator.isAffiliated {
                         if let userUID = Auth.auth().currentUser?.uid {
-                            userViewModel.createUser(userUID: userUID, fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university) { success in
-                                if success {
+                            userViewModel.createUser(userId: userUID, fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university) { result in
+                                switch result {
+                                case .success:
                                     print("User created with ID: \(userViewModel.userId ?? "")")
-                                    next = true;
-                                } else {
-                                    print("Error creating user")
+                                    next = true
+                                case .failure(let error):
+                                    print("Error creating user: \(error.localizedDescription)")
                                 }
                             }
                         }

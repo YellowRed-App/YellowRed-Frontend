@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct RedMessageView: View {
     @FocusState private var isSelecting: Bool
@@ -154,14 +155,17 @@ struct RedMessageView: View {
                     Button(action: {
                         valid = selectedTemplate != nil
                         if valid {
-                            redMessage = messageTemplates[selectedTemplate!]
-                            userViewModel.addYellowRedMessages(yellowMessage: yellowMessage, redMessage: redMessage) { success in
-                                if success {
-                                    print("YellowRed messages successfully added.")
-                                    next = true
-                                } else {
-                                    print("Error adding YellowRed messages.")
-                                    error = true
+                            if let userUID = Auth.auth().currentUser?.uid {
+                                redMessage = messageTemplates[selectedTemplate!]
+                                userViewModel.updateYellowRedMessages(userId: userUID, yellowMessage: yellowMessage, redMessage: redMessage) { result in
+                                    switch result {
+                                    case .success:
+                                        print("YellowRed messages successfully added.")
+                                        next = true
+                                    case .failure:
+                                        print("Error adding YellowRed messages.")
+                                        error = true
+                                    }
                                 }
                             }
                         } else {

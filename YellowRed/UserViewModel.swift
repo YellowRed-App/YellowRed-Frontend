@@ -19,95 +19,47 @@ class UserViewModel: ObservableObject {
     
     private let firestoreManager = FirestoreManager()
     
-    func createUser(userUID: String, fullName: String, phoneNumber: String, emailAddress: String, affiliation: String, university: String, completion: @escaping (Bool) -> Void) {
-        firestoreManager.createUser(userUID: userUID, fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university) { error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(false)
-            } else {
-                self.userId = userUID
-                completion(true)
-            }
+    func createUser(userId: String, fullName: String, phoneNumber: String, emailAddress: String, affiliation: String, university: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        firestoreManager.createUser(userId: userId, fullName: fullName, phoneNumber: phoneNumber, emailAddress: emailAddress, affiliation: affiliation, university: university) { result in
+            self.handleResult(result: result, successAction: {
+                self.userId = userId
+            }, completion: completion)
         }
     }
     
-    func updateUser(userId: String, phoneNumber: String, emailAddress: String, completion: @escaping (Bool) -> Void) {
-        firestoreManager.updateUser(userId: userId, phoneNumber: phoneNumber, emailAddress: emailAddress) { error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(false)
-            } else {
+    func updateUser(userId: String, phoneNumber: String, emailAddress: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        firestoreManager.updateUser(userId: userId, phoneNumber: phoneNumber, emailAddress: emailAddress) { result in
+            self.handleResult(result: result, successAction: {
                 DispatchQueue.main.async {
                     self.phoneNumber = phoneNumber
                     self.emailAddress = emailAddress
                 }
-                completion(true)
-            }
+            }, completion: completion)
         }
     }
     
-    func addEmergencyContacts(emergencyContacts: [EmergencyContact], completion: @escaping (Bool) -> Void) {
-        guard let userId = userId else {
-            completion(false)
-            return
-        }
-        
-        firestoreManager.addEmergencyContactsToUser(userId: userId, emergencyContacts: emergencyContacts) { error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(false)
-            } else {
-                completion(true)
-            }
-        }
-    }
-    
-    func updateEmergencyContacts(userId: String, emergencyContacts: [EmergencyContact], completion: @escaping (Bool) -> Void) {
-        firestoreManager.updateEmergencyContactsForUser(userId: userId, emergencyContacts: emergencyContacts) { error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(false)
-            } else {
+    func updateEmergencyContacts(userId: String, emergencyContacts: [EmergencyContact], completion: @escaping (Result<Void, Error>) -> Void) {
+        firestoreManager.updateEmergencyContacts(userId: userId, emergencyContacts: emergencyContacts) { result in
+            self.handleResult(result: result, successAction: {
                 DispatchQueue.main.async {
                     self.emergencyContacts = emergencyContacts
                 }
-                completion(true)
-            }
+            }, completion: completion)
         }
     }
     
-    func addYellowRedMessages(yellowMessage: String, redMessage: String, completion: @escaping (Bool) -> Void) {
-        guard let userId = userId else {
-            completion(false)
-            return
-        }
-        
-        firestoreManager.addYellowRedMessagesToUser(userId: userId, yellowMessage: yellowMessage, redMessage: redMessage) { error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(false)
-            } else {
-                completion(true)
-            }
-        }
-    }
-    
-    func updateYellowRedMessages(userId: String, yellowMessage: String, redMessage: String, completion: @escaping (Bool) -> Void) {
-        firestoreManager.updateYellowRedMessagesForUser(userId: userId, yellowMessage: yellowMessage, redMessage: redMessage) { error in
-            if let error = error {
-                print(error.localizedDescription)
-                completion(false)
-            } else {
+    func updateYellowRedMessages(userId: String, yellowMessage: String, redMessage: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        firestoreManager.updateYellowRedMessages(userId: userId, yellowMessage: yellowMessage, redMessage: redMessage) { result in
+            self.handleResult(result: result, successAction: {
                 DispatchQueue.main.async {
                     self.yellowMessage = yellowMessage
                     self.redMessage = redMessage
                 }
-                completion(true)
-            }
+            }, completion: completion)
         }
     }
     
-    func fetchUserData(userId: String, completion: @escaping () -> Void) {
+    func fetchUserData(userId: String, completion: @escaping (Result<Void, Error>) -> Void) {
         firestoreManager.fetchUserData(userId: userId) { result in
             switch result {
             case .success(let data):
@@ -115,44 +67,52 @@ class UserViewModel: ObservableObject {
                     self.fullName = data["fullName"] as? String ?? ""
                     self.phoneNumber = data["phoneNumber"] as? String ?? ""
                     self.emailAddress = data["emailAddress"] as? String ?? ""
-                    completion()
                 }
+                completion(.success(()))
             case .failure(let error):
-                print("Error fetching user data: \(error)")
-                completion()
+                completion(.failure(error))
             }
         }
     }
     
-    func fetchEmergencyContacts(userId: String, completion: @escaping () -> Void) {
-        firestoreManager.fetchEmergencyContactsForUser(userId: userId) { result in
+    func fetchEmergencyContacts(userId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        firestoreManager.fetchEmergencyContacts(userId: userId) { result in
             switch result {
             case .success(let contacts):
                 DispatchQueue.main.async {
                     self.emergencyContacts = contacts
-                    completion()
                 }
+                completion(.success(()))
             case .failure(let error):
-                print("Error fetching emergency contacts: \(error)")
-                completion()
+                completion(.failure(error))
             }
         }
     }
     
-    func fetchYellowRedMessages(userId: String, completion: @escaping () -> Void) {
-        firestoreManager.fetchYellowRedMessagesForUser(userId: userId) { result in
+    func fetchYellowRedMessages(userId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        firestoreManager.fetchYellowRedMessages(userId: userId) { result in
             switch result {
             case .success(let messages):
                 DispatchQueue.main.async {
                     self.yellowMessage = messages.yellowMessage
                     self.redMessage = messages.redMessage
-                    completion()
                 }
+                completion(.success(()))
             case .failure(let error):
-                print("Error fetching messages: \(error)")
-                completion()
+                completion(.failure(error))
             }
         }
     }
     
+    private func handleResult(result: Result<Void, Error>, successAction: @escaping () -> Void, completion: @escaping (Result<Void, Error>) -> Void) {
+        switch result {
+        case .success:
+            successAction()
+            completion(.success(()))
+        case .failure(let error):
+            NSLog("Error: \(error.localizedDescription)")
+            completion(.failure(error))
+        }
+    }
+
 }

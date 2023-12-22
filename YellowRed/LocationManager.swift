@@ -49,9 +49,19 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         }
     }
     
+    func startUpdatingLocation() {
+        locationManager?.startUpdatingLocation()
+        locationUpdateTimer = Timer.scheduledTimer(timeInterval: locationUpdateInterval, target: self, selector: #selector(updateLocation), userInfo: nil, repeats: true)
+        RunLoop.current.add(locationUpdateTimer!, forMode: .common)
+    }
+    
     func stopUpdatingLocation() {
         locationManager?.stopUpdatingLocation()
         locationUpdateTimer?.invalidate()
         locationUpdateTimer = nil
+    }
+    
+    @objc private func updateLocation() {
+        locationManager?.requestLocation()
     }
 }

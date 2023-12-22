@@ -10,11 +10,18 @@ import FirebaseAuth
 import FirebaseFirestore
 
 final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    enum ButtonState {
+        case yellow
+        case red
+        case none
+    }
+    
     @Published var next: Bool = false
     @Published var alert: Bool = false
     private var locationManager: CLLocationManager?
     private var locationUpdateTime: Date?
-    private let locationUpdateInterval: TimeInterval = 30.0
+    private var locationUpdateInterval: TimeInterval = 60.0
+    private var activeButton: ButtonState = .none
     private let db = Firestore.firestore()
     
     override init() {
@@ -53,6 +60,23 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         }
     }
     
+    func activateYellowButton() {
+        activeButton = .yellow
+        locationUpdateInterval = 60.0
+        startUpdatingLocation()
+    }
+    
+    func activateRedButton() {
+        activeButton = .red
+        locationUpdateInterval = 30.0
+        startUpdatingLocation()
+    }
+    
+    func deactivateButton() {
+        activeButton = .none
+        stopUpdatingLocation()
+    }
+    
     func startUpdatingLocation() {
         locationManager?.startUpdatingLocation()
     }
@@ -62,6 +86,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard activeButton != .none else { return }
         guard let location = locations.last else { return }
 
         // throttle the update frequency

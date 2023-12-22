@@ -273,13 +273,13 @@ struct YellowButtonView: View {
             fetchAllData(userId: userUID)
         }
         locationManager.requestLocationPermission()
-        locationManager.startUpdatingLocation()
+        locationManager.activateYellowButton()
     }
     
     private func deactivateYellowButton() {
         stopFlashing()
         sendEmergencyMessageIfNeeded(message: "Yellow Button Deactivated")
-        locationManager.stopUpdatingLocation()
+        locationManager.deactivateButton()
     }
     
     private func fetchAllData(userId: String) {
@@ -440,13 +440,13 @@ struct RedButtonView: View {
             fetchAllData(userId: userUID)
         }
         locationManager.requestLocationPermission()
-        locationManager.startUpdatingLocation()
+        locationManager.activateRedButton()
     }
     
     private func deactivateRedButton() {
         stopFlashing()
         sendEmergencyMessageIfNeeded(message: "Red Button Deactivated")
-        locationManager.stopUpdatingLocation()
+        locationManager.deactivateButton()
     }
     
     private func fetchAllData(userId: String) {

@@ -212,6 +212,8 @@ struct YellowButtonView: View {
     
     @StateObject private var userViewModel = UserViewModel()
     
+    @StateObject private var locationManager = LocationManager()
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -270,11 +272,14 @@ struct YellowButtonView: View {
         if let userUID = Auth.auth().currentUser?.uid {
             fetchAllData(userId: userUID)
         }
+        locationManager.requestLocationPermission()
+        locationManager.startUpdatingLocation()
     }
     
     private func deactivateYellowButton() {
         stopFlashing()
         sendEmergencyMessageIfNeeded(message: "Yellow Button Deactivated")
+        locationManager.stopUpdatingLocation()
     }
     
     private func fetchAllData(userId: String) {
@@ -365,6 +370,8 @@ struct RedButtonView: View {
     
     @StateObject private var userViewModel = UserViewModel()
     
+    @StateObject private var locationManager = LocationManager()
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -432,11 +439,14 @@ struct RedButtonView: View {
         if let userUID = Auth.auth().currentUser?.uid {
             fetchAllData(userId: userUID)
         }
+        locationManager.requestLocationPermission()
+        locationManager.startUpdatingLocation()
     }
     
     private func deactivateRedButton() {
         stopFlashing()
         sendEmergencyMessageIfNeeded(message: "Red Button Deactivated")
+        locationManager.stopUpdatingLocation()
     }
     
     private func fetchAllData(userId: String) {

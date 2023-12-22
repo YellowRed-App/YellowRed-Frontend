@@ -64,4 +64,13 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     @objc private func updateLocation() {
         locationManager?.requestLocation()
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        // TODO: store location in Firestore
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error updating location: \(error.localizedDescription)")
+    }
 }

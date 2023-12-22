@@ -13,7 +13,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     @Published var next: Bool = false
     @Published var alert: Bool = false
     private var locationManager: CLLocationManager?
-    private var locationUpdateTimer: Timer?
+    private var locationUpdateTime: Date?
     private let locationUpdateInterval: TimeInterval = 30.0
     private let db = Firestore.firestore()
     
@@ -22,6 +22,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         self.locationManager = CLLocationManager()
         self.locationManager?.delegate = self
         self.locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager?.distanceFilter = kCLDistanceFilterNone
     }
     
     func requestLocationPermission() {
@@ -54,29 +55,28 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     
     func startUpdatingLocation() {
         locationManager?.startUpdatingLocation()
-        locationUpdateTimer = Timer.scheduledTimer(timeInterval: locationUpdateInterval, target: self, selector: #selector(updateLocation), userInfo: nil, repeats: true)
-        RunLoop.current.add(locationUpdateTimer!, forMode: .common)
     }
     
     func stopUpdatingLocation() {
         locationManager?.stopUpdatingLocation()
-        locationUpdateTimer?.invalidate()
-        locationUpdateTimer = nil
     }
-    
-    @objc private func updateLocation() {
-        locationManager?.requestLocation()
-    }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        if let userUID = Auth.auth().currentUser?.uid {
-            sendLocationUpdate(userId: userUID, location: location) { result in
-                switch result {
-                case .success():
-                    print("Location update sent successfully.")
-                case .failure(let error):
-                    print("Error sending location update: \(error)")
+
+        // throttle the update frequency
+        let currentTime = Date().timeIntervalSince1970
+        if currentTime - (locationUpdateTime?.timeIntervalSince1970 ?? 0) >= locationUpdateInterval {
+            locationUpdateTime = Date()
+            
+            if let userUID = Auth.auth().currentUser?.uid {
+                sendLocationUpdate(userId: userUID, location: location) { result in
+                    switch result {
+                    case .success():
+                        print("\(Date()): Location update sent successfully.")
+                    case .failure(let error):
+                        print("Error sending location update: \(error)")
+                    }
                 }
             }
         }

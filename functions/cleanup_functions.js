@@ -13,21 +13,29 @@ exports.deleteLocationUpdatesForRedButton = functions.pubsub.schedule('every 24 
     const now = new Date();
     const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
 
-    db.collectionGroup('locationUpdates')
+    return db.collectionGroup('locationUpdates')
         .where('deactivationTime', '<=', sevenDaysAgo)
         .get()
         .then(snapshot => {
             console.log(`Found ${snapshot.size} location updates to delete`);
             let batch = db.batch();
-            snapshot.docs.forEach(doc => batch.delete(doc.ref));
-            return batch.commit();
-        })
-        .then(() => {
-            console.log('Successfully deleted location updates.');
-            return null;
+
+            if (snapshot.empty) {
+                console.log('No location updates found to delete.');
+                return null;
+            }
+
+            snapshot.docs.forEach(doc => {
+                console.log(`Deleting document with ID: ${doc.id}`);
+                batch.delete(doc.ref);
+            });
+
+            return batch.commit().then(() => {
+                console.log('Successfully deleted location updates.');
+            });
         })
         .catch(error => {
             console.error('Error deleting location updates:', error);
-            return null;
+            throw new Error('Error in Firestore operation');
         });
 });

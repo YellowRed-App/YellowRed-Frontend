@@ -77,6 +77,10 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
             if let userUID = Auth.auth().currentUser?.uid {
                 deleteLocationUpdatesForYellowButton(userId: userUID)
             }
+        } else if activeButton == .red {
+            if let userUID = Auth.auth().currentUser?.uid {
+                updateLocationUpdatesForRedButton(userId: userUID)
+            }
         }
         activeButton = .none
         stopUpdatingLocation()
@@ -151,6 +155,28 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                             print("Error deleting location updates: \(error)")
                         } else {
                             print("Successfully deleted location updates for yellow button")
+                        }
+                    }
+                }
+            }
+    }
+    
+    func updateLocationUpdatesForRedButton(userId: String) {
+        let deactivationTime = FieldValue.serverTimestamp()
+        db.collection("users").document(userId).collection("locationUpdates")
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error getting documents for deactivation: \(error)")
+                } else if let snapshot = snapshot {
+                    let batch = self.db.batch()
+                    snapshot.documents.forEach { doc in
+                        batch.updateData(["deactivationTime": deactivationTime], forDocument: doc.reference)
+                    }
+                    batch.commit { error in
+                        if let error = error {
+                            print("Error updating documents for deactivation: \(error)")
+                        } else {
+                            print("All documents in locationUpdates updated with deactivation time.")
                         }
                     }
                 }

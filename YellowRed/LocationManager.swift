@@ -123,7 +123,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         let locationData: [String: Any] = [
             "timestamp": Timestamp(date: Date()), // FieldValue.serverTimestamp() for server-side timestamp
             "geopoint": geoPoint,
-            "buttonState": buttonState
+            "button": buttonState
         ]
         
         db.collection("users").document(userId).collection("locationUpdates").addDocument(data: locationData) { error in
@@ -137,7 +137,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     
     private func deleteLocationUpdatesForYellowButton(userId: String) {
         db.collection("users").document(userId).collection("locationUpdates")
-            .whereField("buttonState", isEqualTo: "yellow")
+            .whereField("button", isEqualTo: "yellow")
             .getDocuments { (snapshot, error) in
                 if let error = error {
                     print("Error getting documents for deletion: \(error)")

@@ -84,21 +84,23 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     func stopUpdatingLocation() {
         locationManager?.stopUpdatingLocation()
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard activeButton != .none else { return }
         guard let location = locations.last else { return }
-
+        
+        guard activeButton != .none else { return }
+        let buttonState = activeButton == .yellow ? "yellow" : "red"
+        
         // throttle the update frequency
         let currentTime = Date().timeIntervalSince1970
         if currentTime - (locationUpdateTime?.timeIntervalSince1970 ?? 0) >= locationUpdateInterval {
             locationUpdateTime = Date()
             
             if let userUID = Auth.auth().currentUser?.uid {
-                sendLocationUpdate(userId: userUID, location: location) { result in
+                sendLocationUpdate(userId: userUID, location: location, buttonState: buttonState) { result in
                     switch result {
                     case .success():
-                        print("\(Date()): Location update sent successfully.")
+                        print("\(Date()): Location update for \(buttonState) button sent successfully.")
                     case .failure(let error):
                         print("Error sending location update: \(error)")
                     }
@@ -111,11 +113,12 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         print("Error updating location: \(error.localizedDescription)")
     }
     
-    private func sendLocationUpdate(userId: String, location: CLLocation, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func sendLocationUpdate(userId: String, location: CLLocation, buttonState: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let geoPoint = GeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let locationData: [String: Any] = [
             "timestamp": Timestamp(date: Date()), // FieldValue.serverTimestamp() for server-side timestamp
-            "geopoint": geoPoint
+            "geopoint": geoPoint,
+            "buttonState": buttonState
         ]
         
         db.collection("users").document(userId).collection("locationUpdates").addDocument(data: locationData) { error in

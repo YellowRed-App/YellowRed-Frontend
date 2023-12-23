@@ -73,6 +73,11 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     }
     
     func deactivateButton() {
+        if activeButton == .yellow {
+            if let userUID = Auth.auth().currentUser?.uid {
+                deleteLocationUpdatesForYellowButton(userId: userUID)
+            }
+        }
         activeButton = .none
         stopUpdatingLocation()
     }
@@ -128,5 +133,27 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                 completion(.success(()))
             }
         }
+    }
+    
+    private func deleteLocationUpdatesForYellowButton(userId: String) {
+        db.collection("users").document(userId).collection("locationUpdates")
+            .whereField("buttonState", isEqualTo: "yellow")
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error getting documents for deletion: \(error)")
+                } else {
+                    let batch = self.db.batch()
+                    snapshot?.documents.forEach { doc in
+                        batch.deleteDocument(doc.reference)
+                    }
+                    batch.commit { error in
+                        if let error = error {
+                            print("Error deleting location updates: \(error)")
+                        } else {
+                            print("Successfully deleted location updates for yellow button")
+                        }
+                    }
+                }
+            }
     }
 }

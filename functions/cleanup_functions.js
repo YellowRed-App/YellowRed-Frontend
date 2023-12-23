@@ -9,8 +9,9 @@ exports.deleteLocationUpdatesForRedButton = functions.pubsub.schedule('every 24 
     console.log("Scheduled cleanup function triggered");
 
     const db = admin.firestore();
-    const sevenDaysAgo = admin.firestore.Timestamp.now().toDate();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
 
     db.collectionGroup('locationUpdates')
         .where('deactivationTime', '<=', sevenDaysAgo)

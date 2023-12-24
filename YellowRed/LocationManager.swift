@@ -65,8 +65,8 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         return sessionId
     }
     
-    func activateButton(button buttonState: ButtonState) {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
+    func activateButton(button buttonState: ButtonState, completion: @escaping (String?) -> Void) {
+        guard let userUID = Auth.auth().currentUser?.uid else { completion(nil); return }
         
         let newSessionId = UUID().uuidString
         sessionId = newSessionId
@@ -78,11 +78,13 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         ]) { [weak self] error in
             if let error = error {
                 print("Error starting session: \(error)")
+                completion(nil)
             } else {
                 print("Session started with ID: \(newSessionId)")
                 self?.activeButton = buttonState
                 self?.locationUpdateInterval = buttonState == .yellow ? 60.0 : 30.0
                 self?.startUpdatingLocation()
+                completion(newSessionId)
             }
         }
     }

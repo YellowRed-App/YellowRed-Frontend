@@ -31,7 +31,6 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         self.locationManager?.delegate = self
         self.locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager?.distanceFilter = kCLDistanceFilterNone
-        self.locationManager?.allowsBackgroundLocationUpdates = true
     }
     
     func requestLocationPermission() {

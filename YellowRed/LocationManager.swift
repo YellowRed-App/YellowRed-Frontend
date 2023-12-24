@@ -61,6 +61,10 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         }
     }
     
+    func getCurrentSessionId() -> String? {
+        return sessionId
+    }
+    
     func activateButton(button buttonState: ButtonState) {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
         

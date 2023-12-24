@@ -11,12 +11,65 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+let userFullName = '';
+
 function getSessionIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get('session');
 }
 
+function getUserIdFromSessionId(sessionId) {
+    return db.collectionGroup('sessions')
+        .where(db.FieldPath.documentId(), '==', sessionId)
+        .get()
+        .then(snapshot => {
+            if (!snapshot.empty) {
+                const sessionDoc = snapshot.docs[0];
+                return sessionDoc.ref.parent.parent.id;
+            } else {
+                throw new Error('Session not found');
+            }
+        })
+        .catch(error => {
+            console.error("Error finding user for session:", error);
+            throw error;
+        });
+}
+
+function getUserFullNameFromUserId(userId) {
+    return db.collection('users').doc(userId).get()
+        .then(userDoc => {
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                return userData.fullName || 'No name available';
+            } else {
+                throw new Error('User not found');
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching user's full name:", error);
+            throw error;
+        });
+}
+
 function listenToSessionUpdates(sessionId) {
+    getUserIdFromSessionId(sessionId)
+        .then(userId => {
+            getUserFullNameFromUserId(userId)
+                .then(fullName => {
+                    userFullName = fullName;
+                    listenForLocationUpdates(sessionId);
+                })
+                .catch(error => {
+                    console.error("Error fetching user's full name:", error);
+                });
+        })
+        .catch(error => {
+            console.error("Error finding user for session:", error);
+        });
+}
+
+function listenForLocationUpdates(sessionId) {
     db.collectionGroup('sessions')
         .where(db.FieldPath.documentId(), '==', sessionId)
         .onSnapshot(sessionSnapshot => {

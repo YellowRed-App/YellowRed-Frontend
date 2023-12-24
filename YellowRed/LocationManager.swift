@@ -158,7 +158,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         if Date().timeIntervalSince(locationUpdateTime ?? Date.distantPast) >= locationUpdateInterval {
             locationUpdateTime = Date()
             if let userUID = Auth.auth().currentUser?.uid {
-                sendLocationUpdate(userId: userUID, sessionId: currentSessionId, location: location, buttonState: buttonState) { result in
+                sendLocationUpdate(userId: userUID, sessionId: currentSessionId, location: location) { result in
                     switch result {
                     case .success():
                         print("\(Date()): Location update for \(buttonState) button sent successfully.")
@@ -174,12 +174,11 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         print("Error updating location: \(error.localizedDescription)")
     }
     
-    private func sendLocationUpdate(userId: String, sessionId: String, location: CLLocation, buttonState: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func sendLocationUpdate(userId: String, sessionId: String, location: CLLocation, completion: @escaping (Result<Void, Error>) -> Void) {
         let geoPoint = GeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let locationData: [String: Any] = [
             "timestamp": Timestamp(date: Date()),
             "geopoint": geoPoint,
-            "button": buttonState
         ]
         
         db.collection("users").document(userId).collection("sessions").document(sessionId).collection("locationUpdates").addDocument(data: locationData) { error in

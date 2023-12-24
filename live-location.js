@@ -20,7 +20,7 @@ function getSessionIdFromUrl() {
 
 function getUserIdFromSessionId(sessionId) {
     return db.collectionGroup('sessions')
-        .where(db.FieldPath.documentId(), '==', sessionId)
+        .where(firebase.firestore.FieldPath.documentId(), '==', sessionId)
         .get()
         .then(snapshot => {
             if (!snapshot.empty) {
@@ -71,7 +71,7 @@ function listenToSessionUpdates(sessionId) {
 
 function listenForLocationUpdates(sessionId) {
     db.collectionGroup('sessions')
-        .where(db.FieldPath.documentId(), '==', sessionId)
+        .where(firebase.firestore.FieldPath.documentId(), '==', sessionId)
         .onSnapshot(sessionSnapshot => {
             sessionSnapshot.forEach(sessionDoc => {
                 sessionDoc.ref.collection('locationUpdates')

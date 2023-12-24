@@ -11,79 +11,25 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let userFullName = '';
-
-function getSessionIdFromUrl() {
+function getParamsFromUrl() {
     const params = new URLSearchParams(window.location.search);
-    return params.get('session');
+    return {
+        userId: params.get('user'),
+        sessionId: params.get('session')
+    };
 }
 
-function getUserIdFromSessionId(sessionId) {
-    return db.collectionGroup('sessions')
-        .where(firebase.firestore.FieldPath.documentId(), '==', sessionId)
-        .get()
-        .then(snapshot => {
-            if (!snapshot.empty) {
-                const sessionDoc = snapshot.docs[0];
-                return sessionDoc.ref.parent.parent.id;
-            } else {
-                throw new Error('Session not found');
-            }
-        })
-        .catch(error => {
-            console.error("Error finding user for session:", error);
-            throw error;
-        });
-}
-
-function getUserFullNameFromUserId(userId) {
-    return db.collection('users').doc(userId).get()
-        .then(userDoc => {
-            if (userDoc.exists) {
-                const userData = userDoc.data();
-                return userData.fullName || 'No name available';
-            } else {
-                throw new Error('User not found');
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching user's full name:", error);
-            throw error;
-        });
-}
-
-function listenToSessionUpdates(sessionId) {
-    getUserIdFromSessionId(sessionId)
-        .then(userId => {
-            getUserFullNameFromUserId(userId)
-                .then(fullName => {
-                    userFullName = fullName;
-                    listenForLocationUpdates(sessionId);
-                })
-                .catch(error => {
-                    console.error("Error fetching user's full name:", error);
-                });
-        })
-        .catch(error => {
-            console.error("Error finding user for session:", error);
-        });
-}
-
-function listenForLocationUpdates(sessionId) {
-    db.collectionGroup('sessions')
-        .where(firebase.firestore.FieldPath.documentId(), '==', sessionId)
-        .onSnapshot(sessionSnapshot => {
-            sessionSnapshot.forEach(sessionDoc => {
-                sessionDoc.ref.collection('locationUpdates')
-                    .orderBy('timestamp', 'desc')
-                    .onSnapshot(locationUpdateSnapshot => {
-                        locationUpdateSnapshot.docChanges().forEach(change => {
-                            if (change.type === 'added') {
-                                const locationData = change.doc.data();
-                                printLocationData(locationData);
-                            }
-                        });
-                    });
+function listenToSessionUpdates(userId, sessionId) {
+    db.collection('users').doc(userId)
+        .collection('sessions').doc(sessionId)
+        .collection('locationUpdates')
+        .orderBy('timestamp', 'desc')
+        .onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                if (change.type === 'added') {
+                    const locationData = change.doc.data();
+                    printLocationData(locationData);
+                }
             });
         });
 }
@@ -95,9 +41,9 @@ function printLocationData(locationData) {
     updatesDiv.appendChild(updateElement);
 }
 
-const sessionId = getSessionIdFromUrl();
-if (sessionId) {
-    listenToSessionUpdates(sessionId);
+const {userId, sessionId} = getParamsFromUrl();
+if (userId && sessionId) {
+    listenToSessionUpdates(userId, sessionId);
 } else {
-    console.error('Session ID is missing from the URL');
+    console.error('User ID or Session ID is missing from the URL');
 }

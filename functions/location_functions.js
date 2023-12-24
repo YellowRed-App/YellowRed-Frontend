@@ -5,6 +5,16 @@ if (admin.apps.length === 0) {
     admin.initializeApp();
 }
 
+// Firestore trigger for when a new location update is added
+exports.onNewLocationUpdate = functions.firestore
+    .document('users/{userId}/sessions/{sessionId}/locationUpdates/{locationUpdateId}')
+    .onCreate(async (snapshot, context) => {
+        const {userId, sessionId, locationUpdateId} = context.params;
+
+        const locationUpdate = snapshot.data();
+        console.log(`New location update for session ${sessionId}:`, locationUpdate);
+    });
+
 // function to get active sessions
 exports.fetchActiveSessions = functions.https.onRequest(async (req, res) => {
     console.log("Function triggered to get active sessions.");

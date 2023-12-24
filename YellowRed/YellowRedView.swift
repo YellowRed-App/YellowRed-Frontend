@@ -480,12 +480,12 @@ struct RedButtonView: View {
                             switch yellowRedMessagesResult {
                             case .success:
                                 DispatchQueue.main.async {
-                                    let yellowMessage = userViewModel.yellowMessage
-                                    sendEmergencyMessageIfNeeded(message: yellowMessage)
+                                    let redMessage = userViewModel.yellowMessage
+                                    sendEmergencyMessageIfNeeded(message: redMessage)
                                     completion()
                                 }
                             case .failure(let error):
-                                print("Error fetching yellow message: \(error.localizedDescription)")
+                                print("Error fetching red message: \(error.localizedDescription)")
                                 completion()
                             }
                         }

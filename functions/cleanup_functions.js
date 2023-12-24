@@ -1,5 +1,5 @@
-const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const functions = require('firebase-functions');
 
 if (admin.apps.length === 0) {
     admin.initializeApp();
@@ -14,7 +14,7 @@ exports.deleteOldRedButtonSessions = functions.pubsub.schedule('every 24 hours')
     const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
 
     return db.collectionGroup('sessions')
-        .where('deactivationTime', '<=', sevenDaysAgo)
+        .where('endTime', '<=', sevenDaysAgo)
         .get()
         .then(snapshot => {
             console.log(`Found ${snapshot.size} sessions to delete`);

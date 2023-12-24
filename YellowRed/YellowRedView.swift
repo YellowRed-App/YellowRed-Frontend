@@ -270,10 +270,18 @@ struct YellowButtonView: View {
         }
         startFlashing()
         if let userUID = Auth.auth().currentUser?.uid {
-            fetchAllData(userId: userUID)
+            fetchAllData(userId: userUID) {
+                self.locationManager.requestLocationPermission()
+                self.locationManager.activateButton(button: .yellow) { sessionId in
+                    if let sessionId = sessionId {
+                        let liveLocationLink = "https://yellowred.app/live-location?user=\(userUID)&session=\(sessionId)"
+                        self.sendEmergencyMessageIfNeeded(message: liveLocationLink)
+                    } else {
+                        print("Could not retrieve session ID.")
+                    }
+                }
+            }
         }
-        locationManager.requestLocationPermission()
-        locationManager.activateButton(button: .yellow)
     }
     
     private func deactivateYellowButton() {
@@ -282,7 +290,7 @@ struct YellowButtonView: View {
         locationManager.deactivateButton()
     }
     
-    private func fetchAllData(userId: String) {
+    private func fetchAllData(userId: String, completion: @escaping () -> Void) {
         self.userViewModel.fetchUserData(userId: userId) { userDataResult in
             switch userDataResult {
             case .success:
@@ -295,17 +303,21 @@ struct YellowButtonView: View {
                                 DispatchQueue.main.async {
                                     let yellowMessage = userViewModel.yellowMessage
                                     sendEmergencyMessageIfNeeded(message: yellowMessage)
+                                    completion()
                                 }
                             case .failure(let error):
                                 print("Error fetching yellow message: \(error.localizedDescription)")
+                                completion()
                             }
                         }
                     case .failure(let error):
                         print("Error fetching emergency contacts: \(error.localizedDescription)")
+                        completion()
                     }
                 }
             case .failure(let error):
                 print("Error fetching user data: \(error.localizedDescription)")
+                completion()
             }
         }
     }
@@ -437,10 +449,18 @@ struct RedButtonView: View {
         }
         startFlashing()
         if let userUID = Auth.auth().currentUser?.uid {
-            fetchAllData(userId: userUID)
+            fetchAllData(userId: userUID) {
+                self.locationManager.requestLocationPermission()
+                self.locationManager.activateButton(button: .red) { sessionId in
+                    if let sessionId = sessionId {
+                        let liveLocationLink = "https://yellowred.app/live-location?user=\(userUID)&session=\(sessionId)"
+                        self.sendEmergencyMessageIfNeeded(message: liveLocationLink)
+                    } else {
+                        print("Could not retrieve session ID.")
+                    }
+                }
+            }
         }
-        locationManager.requestLocationPermission()
-        locationManager.activateButton(button: .red)
     }
     
     private func deactivateRedButton() {
@@ -449,7 +469,7 @@ struct RedButtonView: View {
         locationManager.deactivateButton()
     }
     
-    private func fetchAllData(userId: String) {
+    private func fetchAllData(userId: String, completion: @escaping () -> Void) {
         self.userViewModel.fetchUserData(userId: userId) { userDataResult in
             switch userDataResult {
             case .success:
@@ -460,19 +480,23 @@ struct RedButtonView: View {
                             switch yellowRedMessagesResult {
                             case .success:
                                 DispatchQueue.main.async {
-                                    let redMessage = userViewModel.redMessage
-                                    sendEmergencyMessageIfNeeded(message: redMessage)
+                                    let yellowMessage = userViewModel.yellowMessage
+                                    sendEmergencyMessageIfNeeded(message: yellowMessage)
+                                    completion()
                                 }
                             case .failure(let error):
                                 print("Error fetching yellow message: \(error.localizedDescription)")
+                                completion()
                             }
                         }
                     case .failure(let error):
                         print("Error fetching emergency contacts: \(error.localizedDescription)")
+                        completion()
                     }
                 }
             case .failure(let error):
                 print("Error fetching user data: \(error.localizedDescription)")
+                completion()
             }
         }
     }

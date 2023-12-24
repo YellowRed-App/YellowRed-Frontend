@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseFirestore
 
 final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-    enum ButtonState {
+    enum ButtonState: String {
         case yellow
         case red
         case none
@@ -22,6 +22,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     private var locationUpdateTime: Date?
     private var locationUpdateInterval: TimeInterval = 60.0
     private var activeButton: ButtonState = .none
+    private var sessionId: String?
     private let db = Firestore.firestore()
     
     override init() {
@@ -60,30 +61,84 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         }
     }
     
-    func activateYellowButton() {
-        activeButton = .yellow
-        locationUpdateInterval = 60.0
-        startUpdatingLocation()
-    }
-    
-    func activateRedButton() {
-        activeButton = .red
-        locationUpdateInterval = 30.0
-        startUpdatingLocation()
+    func activateButton(button buttonState: ButtonState) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        
+        let newSessionId = UUID().uuidString
+        sessionId = newSessionId
+        
+        db.collection("users").document(userUID).collection("sessions").document(newSessionId).setData([
+            "active": true,
+            "button": buttonState.rawValue,
+            "startTime": Timestamp(date: Date())
+        ]) { [weak self] error in
+            if let error = error {
+                print("Error starting session: \(error)")
+            } else {
+                print("Session started with ID: \(newSessionId)")
+                self?.activeButton = buttonState
+                self?.locationUpdateInterval = buttonState == .yellow ? 60.0 : 30.0
+                self?.startUpdatingLocation()
+            }
+        }
     }
     
     func deactivateButton() {
+        guard let userUID = Auth.auth().currentUser?.uid, let currentSessionId = sessionId else { return }
+        
         if activeButton == .yellow {
-            if let userUID = Auth.auth().currentUser?.uid {
-                deleteLocationUpdatesForYellowButton(userId: userUID)
-            }
+            deleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId)
         } else if activeButton == .red {
-            if let userUID = Auth.auth().currentUser?.uid {
-                updateLocationUpdatesForRedButton(userId: userUID)
-            }
+            markDeleteSessionForRedButton(userUID: userUID, sessionId: currentSessionId)
         }
+        
+        sessionId = nil
         activeButton = .none
         stopUpdatingLocation()
+    }
+    
+    private func deleteSessionForYellowButton(userUID: String, sessionId: String) {
+        let sessionRef = db.collection("users").document(userUID).collection("sessions").document(sessionId)
+        
+        sessionRef.collection("locationUpdates").getDocuments { (snapshot, error) in
+            guard let snapshot = snapshot else {
+                print("Error fetching sub-collection documents: \(error?.localizedDescription ?? "Unknown Error")")
+                return
+            }
+            
+            let batch = self.db.batch()
+            
+            snapshot.documents.forEach { document in
+                batch.deleteDocument(document.reference)
+            }
+            
+            batch.commit { [weak self] batchError in
+                if let batchError = batchError {
+                    print("Error deleting location updates: \(batchError.localizedDescription)")
+                } else {
+                    self?.db.collection("users").document(userUID).collection("sessions").document(sessionId).delete { sessionError in
+                        if let sessionError = sessionError {
+                            print("Error deleting session document: \(sessionError.localizedDescription)")
+                        } else {
+                            print("Session document and all related location updates deleted successfully.")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func markDeleteSessionForRedButton(userUID: String, sessionId: String) {
+        db.collection("users").document(userUID).collection("sessions").document(sessionId).updateData([
+            "active": false,
+            "endTime": Timestamp(date: Date())
+        ]) { error in
+            if let error = error {
+                print("Error marking delete session for red button: \(error)")
+            } else {
+                print("Session for red button marked for deletion successfully.")
+            }
+        }
     }
     
     func startUpdatingLocation() {
@@ -95,23 +150,20 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
+        guard let location = locations.last, let currentSessionId = sessionId else { return }
         
-        guard activeButton != .none else { return }
-        let buttonState = activeButton == .yellow ? "yellow" : "red"
+        let buttonState = activeButton.rawValue
         
         // throttle the update frequency
-        let currentTime = Date().timeIntervalSince1970
-        if currentTime - (locationUpdateTime?.timeIntervalSince1970 ?? 0) >= locationUpdateInterval {
+        if Date().timeIntervalSince(locationUpdateTime ?? Date.distantPast) >= locationUpdateInterval {
             locationUpdateTime = Date()
-            
             if let userUID = Auth.auth().currentUser?.uid {
-                sendLocationUpdate(userId: userUID, location: location, buttonState: buttonState) { result in
+                sendLocationUpdate(userId: userUID, sessionId: currentSessionId, location: location, buttonState: buttonState) { result in
                     switch result {
                     case .success():
                         print("\(Date()): Location update for \(buttonState) button sent successfully.")
                     case .failure(let error):
-                        print("Error sending location update: \(error)")
+                        print("Error sending location update: \(error.localizedDescription)")
                     }
                 }
             }
@@ -122,64 +174,20 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         print("Error updating location: \(error.localizedDescription)")
     }
     
-    private func sendLocationUpdate(userId: String, location: CLLocation, buttonState: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func sendLocationUpdate(userId: String, sessionId: String, location: CLLocation, buttonState: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let geoPoint = GeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let locationData: [String: Any] = [
-            "timestamp": Timestamp(date: Date()), // FieldValue.serverTimestamp() for server-side timestamp
+            "timestamp": Timestamp(date: Date()),
             "geopoint": geoPoint,
             "button": buttonState
         ]
         
-        db.collection("users").document(userId).collection("locationUpdates").addDocument(data: locationData) { error in
+        db.collection("users").document(userId).collection("sessions").document(sessionId).collection("locationUpdates").addDocument(data: locationData) { error in
             if let error = error {
                 completion(.failure(error))
             } else {
                 completion(.success(()))
             }
         }
-    }
-    
-    private func deleteLocationUpdatesForYellowButton(userId: String) {
-        db.collection("users").document(userId).collection("locationUpdates")
-            .whereField("button", isEqualTo: "yellow")
-            .getDocuments { (snapshot, error) in
-                if let error = error {
-                    print("Error getting documents for deletion: \(error)")
-                } else {
-                    let batch = self.db.batch()
-                    snapshot?.documents.forEach { doc in
-                        batch.deleteDocument(doc.reference)
-                    }
-                    batch.commit { error in
-                        if let error = error {
-                            print("Error deleting location updates: \(error)")
-                        } else {
-                            print("Successfully deleted location updates for yellow button")
-                        }
-                    }
-                }
-            }
-    }
-    
-    func updateLocationUpdatesForRedButton(userId: String) {
-        let deactivationTime = FieldValue.serverTimestamp()
-        db.collection("users").document(userId).collection("locationUpdates")
-            .getDocuments { (snapshot, error) in
-                if let error = error {
-                    print("Error getting documents for deactivation: \(error)")
-                } else if let snapshot = snapshot {
-                    let batch = self.db.batch()
-                    snapshot.documents.forEach { doc in
-                        batch.updateData(["deactivationTime": deactivationTime], forDocument: doc.reference)
-                    }
-                    batch.commit { error in
-                        if let error = error {
-                            print("Error updating documents for deactivation: \(error)")
-                        } else {
-                            print("All documents in locationUpdates updated with deactivation time.")
-                        }
-                    }
-                }
-            }
     }
 }

@@ -273,7 +273,7 @@ struct YellowButtonView: View {
             fetchAllData(userId: userUID)
         }
         locationManager.requestLocationPermission()
-        locationManager.activateYellowButton()
+        locationManager.activateButton(button: .yellow)
     }
     
     private func deactivateYellowButton() {
@@ -440,7 +440,7 @@ struct RedButtonView: View {
             fetchAllData(userId: userUID)
         }
         locationManager.requestLocationPermission()
-        locationManager.activateRedButton()
+        locationManager.activateButton(button: .red)
     }
     
     private func deactivateRedButton() {

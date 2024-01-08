@@ -93,7 +93,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         guard let userUID = Auth.auth().currentUser?.uid, let currentSessionId = sessionId else { return }
         
         if activeButton == .yellow {
-            deleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId)
+            markDeleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId)
         } else if activeButton == .red {
             markDeleteSessionForRedButton(userUID: userUID, sessionId: currentSessionId)
         }
@@ -103,30 +103,35 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         stopUpdatingLocation()
     }
     
-    private func deleteSessionForYellowButton(userUID: String, sessionId: String) {
+    private func markDeleteSessionForYellowButton(userUID: String, sessionId: String) {
         let sessionRef = db.collection("users").document(userUID).collection("sessions").document(sessionId)
         
-        sessionRef.collection("locationUpdates").getDocuments { (snapshot, error) in
-            guard let snapshot = snapshot else {
-                print("Error fetching sub-collection documents: \(error?.localizedDescription ?? "Unknown Error")")
-                return
-            }
-            
-            let batch = self.db.batch()
-            
-            snapshot.documents.forEach { document in
-                batch.deleteDocument(document.reference)
-            }
-            
-            batch.commit { [weak self] batchError in
-                if let batchError = batchError {
-                    print("Error deleting location updates: \(batchError.localizedDescription)")
-                } else {
-                    self?.db.collection("users").document(userUID).collection("sessions").document(sessionId).delete { sessionError in
-                        if let sessionError = sessionError {
-                            print("Error deleting session document: \(sessionError.localizedDescription)")
+        sessionRef.updateData([
+            "active": false,
+            "endTime": Timestamp(date: Date())
+        ]) { [weak self] error in
+            if let error = error {
+                print("Error updating session document: \(error)")
+            } else {
+                print("Session document updated successfully.")
+                
+                sessionRef.collection("locationUpdates").getDocuments { (snapshot, error) in
+                    guard let snapshot = snapshot else {
+                        print("Error fetching sub-collection documents: \(error?.localizedDescription ?? "Unknown Error")")
+                        return
+                    }
+
+                    let batch = self?.db.batch()
+                    
+                    snapshot.documents.forEach { document in
+                        batch?.deleteDocument(document.reference)
+                    }
+                    
+                    batch?.commit { batchError in
+                        if let batchError = batchError {
+                            print("Error deleting location updates: \(batchError.localizedDescription)")
                         } else {
-                            print("Session document and all related location updates deleted successfully.")
+                            print("Location updates deleted successfully.")
                         }
                     }
                 }

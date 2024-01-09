@@ -22,6 +22,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     private var locationUpdateTime: Date?
     private var locationUpdateInterval: TimeInterval = 60.0
     private var activeButton: ButtonState = .none
+    private var deactivationTimer: Timer?
     private var sessionId: String?
     private let db = Firestore.firestore()
     
@@ -85,11 +86,19 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                 self?.locationUpdateInterval = buttonState == .yellow ? 60.0 : 30.0
                 self?.startUpdatingLocation()
                 completion(newSessionId)
+
+                self?.deactivationTimer?.invalidate()
+                self?.deactivationTimer = Timer.scheduledTimer(withTimeInterval: 3600, repeats: false) { [weak self] _ in
+                    self?.deactivateButton()
+                }
             }
         }
     }
     
     func deactivateButton() {
+        deactivationTimer?.invalidate()
+        deactivationTimer = nil
+
         guard let userUID = Auth.auth().currentUser?.uid, let currentSessionId = sessionId else { return }
         
         if activeButton == .yellow {

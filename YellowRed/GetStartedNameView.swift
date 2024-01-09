@@ -1,0 +1,105 @@
+//
+//  GetStartedNameView.swift
+//  YellowRed
+//
+//  Created by Krish Mehta on 26/5/23.
+//
+
+import SwiftUI
+
+struct GetStartedNameView: View {
+    @State private var fullName: String = ""
+    
+    @State private var next: Bool = false
+    
+    @ObservedObject private var validator = InputValidator()
+    
+    var body: some View {
+        NavigationView {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [.yellow, .red]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .edgesIgnoringSafeArea(.all)
+                
+                VStack(spacing: 20) {
+                    Text("Get Started")
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    
+                    Text("Enter Full Name")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    
+                    ZStack(alignment: .leading) {
+                        if fullName.isEmpty {
+                            Text("John Smith")
+                                .opacity(0.5)
+                        }
+                        
+                        TextField("", text: $fullName)
+                            .autocapitalization(.words)
+                        //                            .keyboardType(.alphabet)
+                    }
+                    .font(.title3)
+                    .foregroundColor(.black)
+                    .padding(12.5)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(.white))
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.black, lineWidth: validator.isFullNameValid ? 0 : 2.5)
+                    )
+                    
+                    if !validator.isFullNameValid {
+                        Text("Please enter a valid name!")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                    }
+                    
+                    Button(action: {
+                        validator.validateFullName(fullName)
+                        if validator.isFullNameValid {
+                            next = true
+                        }
+                    }) {
+                        HStack {
+                            Text("Next")
+                            Image(systemName: "arrow.right.circle.fill")
+                        }
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.black)
+                        .padding(12.5)
+                        .frame(maxWidth: .infinity)
+                        .background(.white)
+                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    }
+                    .background(
+                        NavigationLink(
+                            destination: GetStartedNumberView(fullName: fullName),
+                            isActive: $next,
+                            label: { EmptyView() }
+                        )
+                    )
+                }
+                .padding(.horizontal, 40)
+            }
+            .endEditingOnTap()
+        }
+        .navigationBarBackButtonHidden()
+    }
+}
+
+struct GetStartedNameView_Previews: PreviewProvider {
+    static var previews: some View {
+        GetStartedNameView()
+    }
+}

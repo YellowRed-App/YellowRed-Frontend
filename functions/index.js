@@ -1,9 +1,11 @@
 const {sendEmergencySMS} = require('./twilio_functions');
-const {deleteOldRedButtonSessions} = require('./cleanup_functions');
-const {fetchActiveSessions, fetchLocationUpdates, onNewLocationUpdate} = require('./location_functions');
+const {onNewLocationUpdate, fetchActiveSessions, fetchLocationUpdates} = require('./location_functions');
+
+const {deleteOldRedButtonLocationUpdates} = require('./cleanup_functions');
 
 exports.sendEmergencySMS = sendEmergencySMS;
-exports.deleteOldRedButtonSessions = deleteOldRedButtonSessions;
+exports.onNewLocationUpdate = onNewLocationUpdate;
 exports.fetchActiveSessions = fetchActiveSessions;
 exports.fetchLocationUpdates = fetchLocationUpdates;
-exports.onNewLocationUpdate = onNewLocationUpdate;
+
+exports.deleteOldRedButtonLocationUpdates = deleteOldRedButtonLocationUpdates;

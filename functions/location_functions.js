@@ -34,8 +34,7 @@ exports.fetchActiveSessions = functions.https.onRequest(async (req, res) => {
             .get();
 
         const activeSessions = snapshot.docs.map(doc => ({
-            sessionId: doc.id,
-            ...doc.data()
+            sessionId: doc.id, ...doc.data()
         }));
 
         console.log("Active sessions:", activeSessions);

@@ -18,6 +18,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     
     @Published var next: Bool = false
     @Published var alert: Bool = false
+    private var notificationManager = NotificationManager()
     private var locationManager: CLLocationManager?
     private var locationUpdateTime: Date?
     private var locationUpdateInterval: TimeInterval = 60.0
@@ -67,7 +68,10 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     }
     
     func activateButton(button buttonState: ButtonState, completion: @escaping (String?) -> Void) {
-        guard let userUID = Auth.auth().currentUser?.uid else { completion(nil); return }
+        guard let userUID = Auth.auth().currentUser?.uid else {
+            completion(nil);
+            return
+        }
         
         let newSessionId = UUID().uuidString
         sessionId = newSessionId
@@ -86,7 +90,9 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                 self?.locationUpdateInterval = buttonState == .yellow ? 60.0 : 30.0
                 self?.startUpdatingLocation()
                 completion(newSessionId)
-
+                
+                self?.notificationManager.scheduleNotification(button: buttonState.rawValue)
+                
                 self?.deactivationTimer?.invalidate()
                 self?.deactivationTimer = Timer.scheduledTimer(withTimeInterval: 3600, repeats: false) { [weak self] _ in
                     self?.deactivateButton()
@@ -98,7 +104,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     func deactivateButton() {
         deactivationTimer?.invalidate()
         deactivationTimer = nil
-
+        
         guard let userUID = Auth.auth().currentUser?.uid, let currentSessionId = sessionId else { return }
         
         if activeButton == .yellow {
@@ -129,7 +135,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                         print("Error fetching sub-collection documents: \(error?.localizedDescription ?? "Unknown Error")")
                         return
                     }
-
+                    
                     let batch = self?.db.batch()
                     
                     snapshot.documents.forEach { document in

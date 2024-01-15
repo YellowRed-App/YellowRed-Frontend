@@ -25,15 +25,15 @@ final class NotificationManager: NSObject, ObservableObject, UNUserNotificationC
     
     func scheduleNotification(button buttonState: String) {
         let content = UNMutableNotificationContent()
-        content.title = "⚠️ Alert ⚠️"
-        content.body = "\(buttonState.capitalized) Button Activated."
+        content.title = "⚠️ \(buttonState.capitalized) Button Alert ⚠️"
+        content.body = "The \(buttonState.capitalized) Button will be automatically deactivated in 15 minutes. To keep the \(buttonState.capitalized) Button activated, launch the app and click the extend button."
         content.sound = .default
         
         if #available(iOS 15.0, *) {
             content.interruptionLevel = .timeSensitive
         }
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2700, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in

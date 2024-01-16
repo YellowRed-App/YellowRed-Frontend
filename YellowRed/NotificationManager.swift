@@ -29,7 +29,7 @@ final class NotificationManager: NSObject, ObservableObject, UNUserNotificationC
     
     func scheduleNotification(button buttonState: String, sessionId: String) {
         db.collection("users").document(Auth.auth().currentUser?.uid ?? "").collection("sessions").document(sessionId).getDocument { [weak self] (document, error) in
-            guard let self = self, let document = document, document.exists, let data = document.data(), let isActive = data["active"] as? Bool, isActive else {
+            guard let _ = self, let document = document, document.exists, let data = document.data(), let isActive = data["active"] as? Bool, isActive else {
                 print("Session is not active: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }

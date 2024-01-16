@@ -91,7 +91,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                 self?.startUpdatingLocation()
                 completion(newSessionId)
                 
-                self?.notificationManager.scheduleNotification(button: buttonState.rawValue)
+                self?.notificationManager.scheduleNotification(button: buttonState.rawValue, sessionId: newSessionId)
                 
                 self?.deactivationTimer?.invalidate()
                 self?.deactivationTimer = Timer.scheduledTimer(withTimeInterval: 3600, repeats: false) { [weak self] _ in

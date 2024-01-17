@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Live Location Tracking</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQp_oLkx1l0fc8jFdZA5NfftqB-mU04Bw&callback=initMap"
+            async defer></script>
     <script src="live-location.js"></script>
 </head>
 <body>
 <h1>Live Location Updates</h1>
+<div id="map"></div>
 <div id="locationUpdates"></div>
 </body>
 </html>

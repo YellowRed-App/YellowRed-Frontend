@@ -11,6 +11,14 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+let map;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: {lat: 38.0293, lng: 78.4767}, zoom: 8
+    });
+}
+
 function getParamsFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -28,17 +36,18 @@ function listenToSessionUpdates(userId, sessionId) {
             snapshot.docChanges().forEach(change => {
                 if (change.type === 'added') {
                     const locationData = change.doc.data();
-                    printLocationData(locationData);
+                    updateMapWithLocation(locationData);
                 }
             });
         });
 }
 
-function printLocationData(locationData) {
-    const updatesDiv = document.getElementById('locationUpdates');
-    const updateElement = document.createElement('p');
-    updateElement.textContent = `Timestamp: ${locationData.timestamp.toDate().toString()}, Latitude: ${locationData.geopoint.latitude}, Longitude: ${locationData.geopoint.longitude}`;
-    updatesDiv.appendChild(updateElement);
+function updateMapWithLocation(locationData) {
+    const latLng = new google.maps.LatLng(locationData.geopoint.latitude, locationData.geopoint.longitude);
+    const marker = new google.maps.Marker({
+        position: latLng, map: map
+    });
+    map.setCenter(latLng);
 }
 
 const {userId, sessionId} = getParamsFromUrl();

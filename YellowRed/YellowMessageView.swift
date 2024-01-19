@@ -10,9 +10,9 @@ import SwiftUI
 struct YellowMessageView: View {
     @FocusState private var isEditing: Bool
     @State private var messageTemplates: [String] = [
-        "I'm heading out and would feel safer if someone kept an eye on my journey. Would you mind monitoring my live location?",
-        "I'm about to take a trip that I'm not entirely comfortable with. Could you accompany me virtually by keeping tabs on my live location?",
-        "Just letting you know, I'm out alone right now and it would put me at ease if you could check up on me periodically. You've been sent my live location.",
+        "I’m heading out and would appreciate it if you kept a watchful eye on me during my trip. Please monitor my live location until I reach my destination.",
+        "I’m about to go on a commute that I’m not entirely comfortable with. If you could accompany me virtually by monitoring my live location, that’d be great.",
+        "Just letting you know that I’m walking home alone from a night out. I’d appreciate it if you could monitor my live location to make sure I reach my destination safely."
     ]
     @State private var editingTemplate: Int?
     @State private var selectedTemplate: Int?

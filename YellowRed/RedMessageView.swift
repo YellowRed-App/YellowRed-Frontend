@@ -11,9 +11,9 @@ import FirebaseAuth
 struct RedMessageView: View {
     @FocusState private var isSelecting: Bool
     @State private var messageTemplates: [String] = [
-        "URGENT: I am in an immediate crisis and need your assistance. Please contact authorities or come help me. My live location has been sent to you.",
-        "EMERGENCY ALERT: I am in serious danger and unable to call 911. Please, notify local authorities immediately. Check my live location for my whereabouts.",
-        "CRISIS ALERT: I am in a high-risk situation and unable to reach out to the police. I need immediate assistance. Please, contact the authorities and come help. My live location is shared with you.",
+        "URGENT: I am in a high risk situation and need your personal assistance. I have activated this button discreetly, so avoid contacting me unless absolutely necessary. Please locate me via my live location.",
+        "EMERGENCY: I am in serious danger and need you to contact the authorities by calling 911. I have activated this message discreetly, so avoid contacting me directly as it may pose further risk to my safety. My live location is attached to inform the operators of my whereabouts.",
+        "CRISIS ALERT: I am in immediate danger and am unable to contact the police myself. Please call 911 for me and provide them with my live location.",
     ]
     @State private var selectedTemplate: Int?
     @State private var selectingTemplate: Int?

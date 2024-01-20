@@ -274,8 +274,16 @@ struct YellowButtonView: View {
                 self.locationManager.requestLocationPermission()
                 self.locationManager.activateButton(button: .yellow) { sessionId in
                     if let sessionId = sessionId {
+                        let firstName = userViewModel.fullName.components(separatedBy: " ").first ?? ""
+                        let yellowMessage = userViewModel.yellowMessage
                         let liveLocationLink = "https://yellowred.app/live-location?user=\(userUID)&session=\(sessionId)"
-                        self.sendEmergencyMessageIfNeeded(message: liveLocationLink)
+                        self.sendEmergencyMessageIfNeeded(message: """
+                                                          YellowRed: \(firstName) has activated the Yellow Button:
+                                                          \(yellowMessage)
+                                                          \(liveLocationLink)
+                                                          
+                                                          YellowRed is a safety tool allowing users to communicate directly with emergency contacts, providing them with a user's preselected message and live location when the user activates a button. Please follow the instructions within the message and monitor \(firstName)'s location until \(firstName) has deactivated the Yellow Button.
+                                                          """)
                     } else {
                         print("Could not retrieve session ID.")
                     }
@@ -286,7 +294,10 @@ struct YellowButtonView: View {
     
     private func deactivateYellowButton() {
         stopFlashing()
-        sendEmergencyMessageIfNeeded(message: "Yellow Button Deactivated")
+        let firstName = userViewModel.fullName.components(separatedBy: " ").first ?? ""
+        sendEmergencyMessageIfNeeded(message: """
+                                     \(firstName) has deactivated the Yellow Button, indicating they have arrived safely at their destination. No further action is necessary. For more information on YellowRed, visit the YellowRed website at https://yellowred.app.
+                                     """)
         locationManager.deactivateButton()
     }
     
@@ -300,11 +311,7 @@ struct YellowButtonView: View {
                         self.userViewModel.fetchYellowRedMessages(userId: userId) { yellowRedMessagesResult in
                             switch yellowRedMessagesResult {
                             case .success:
-                                DispatchQueue.main.async {
-                                    let yellowMessage = userViewModel.yellowMessage
-                                    sendEmergencyMessageIfNeeded(message: yellowMessage)
-                                    completion()
-                                }
+                                completion()
                             case .failure(let error):
                                 print("Error fetching yellow message: \(error.localizedDescription)")
                                 completion()
@@ -453,8 +460,16 @@ struct RedButtonView: View {
                 self.locationManager.requestLocationPermission()
                 self.locationManager.activateButton(button: .red) { sessionId in
                     if let sessionId = sessionId {
+                        let firstName = userViewModel.fullName.components(separatedBy: " ").first ?? ""
+                        let redMessage = userViewModel.redMessage
                         let liveLocationLink = "https://yellowred.app/live-location?user=\(userUID)&session=\(sessionId)"
-                        self.sendEmergencyMessageIfNeeded(message: liveLocationLink)
+                        self.sendEmergencyMessageIfNeeded(message: """
+                                                          YellowRed: \(firstName) has activated the Red Button:
+                                                          \(redMessage)
+                                                          \(liveLocationLink)
+                                                          
+                                                          YellowRed is a safety tool allowing users to communicate directly with emergency contacts, providing them with a user's preselected message and live location when the user activates a button. Please follow the instructions within the message and monitor \(firstName)'s location until \(firstName) has deactivated the Yellow Button.
+                                                          """)
                     } else {
                         print("Could not retrieve session ID.")
                     }
@@ -465,7 +480,10 @@ struct RedButtonView: View {
     
     private func deactivateRedButton() {
         stopFlashing()
-        sendEmergencyMessageIfNeeded(message: "Red Button Deactivated")
+        let firstName = userViewModel.fullName.components(separatedBy: " ").first ?? ""
+        sendEmergencyMessageIfNeeded(message: """
+                                     \(firstName) has deactivated the Red Button, indicating they are no longer in need of assistance. Please ensure with \(firstName) that no further action is necessary. For more information on YellowRed, visit the YellowRed website at https://yellowred.app.
+                                     """)
         locationManager.deactivateButton()
     }
     
@@ -479,11 +497,7 @@ struct RedButtonView: View {
                         self.userViewModel.fetchYellowRedMessages(userId: userId) { yellowRedMessagesResult in
                             switch yellowRedMessagesResult {
                             case .success:
-                                DispatchQueue.main.async {
-                                    let redMessage = userViewModel.yellowMessage
-                                    sendEmergencyMessageIfNeeded(message: redMessage)
-                                    completion()
-                                }
+                                completion()
                             case .failure(let error):
                                 print("Error fetching red message: \(error.localizedDescription)")
                                 completion()

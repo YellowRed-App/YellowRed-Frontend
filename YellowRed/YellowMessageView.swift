@@ -25,6 +25,7 @@ struct YellowMessageView: View {
     @State private var error: Bool = false
     
     @State private var next: Bool = false
+    @State private var sheet: Bool = true
     
     @EnvironmentObject var userViewModel: UserViewModel
     
@@ -232,9 +233,65 @@ struct YellowMessageView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 40)
             }
+            .sheet(isPresented: $sheet){
+                YellowMessageNoteView(sheet: $sheet)
+            }
         }
         .navigationBarBackButtonHidden(true)
         .endEditingOnTap()
+    }
+}
+
+struct YellowMessageNoteView: View {
+    @Environment (\.dismiss) var dismiss
+    
+    @Binding var sheet: Bool
+    
+    var body: some View{
+        NavigationView {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [.yellow, .red]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    Text("Yellow Messages are sent during times of discomfort to your emergency contacts.")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 25)
+                    
+                    Text("This could be walking home from the library, getting in a ride share, or being out on the town alone.")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 25)
+                    
+                    Button {
+                        sheet = false
+                        dismiss()
+                    } label: {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 75, height: 50)
+                            .foregroundColor(.blue)
+                            .overlay(
+                                Text("OK")
+                                    .font(.system(size: 25))
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                            )
+                    }
+                }
+                .padding(.horizontal, 25)
+            }
+        }
     }
 }
 

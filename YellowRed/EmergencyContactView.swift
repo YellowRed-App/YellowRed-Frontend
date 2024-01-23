@@ -14,6 +14,8 @@ struct EmergencyContactView: View {
     @State private var nextButtonClicked: Bool = false
     @State private var next: Bool = false
     
+    @State private var sheet: Bool = true
+    
     @ObservedObject private var validator = InputValidator()
     
     @EnvironmentObject var userViewModel: UserViewModel
@@ -132,8 +134,64 @@ struct EmergencyContactView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 40)
             }
+            .sheet(isPresented: $sheet){
+                EmergencyContactNoteView(sheet: $sheet)
+            }
         }
         .navigationBarBackButtonHidden(true)
+    }
+}
+
+struct EmergencyContactNoteView: View {
+    @Environment (\.dismiss) var dismiss
+    
+    @Binding var sheet: Bool
+    
+    var body: some View{
+        NavigationView {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [.yellow, .red]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    Text("YellowRed allows you to communicate with three emergency contacts.")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 25)
+                    
+                    Text("These should be close friends and family that you can trust will help when you need it most.")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 25)
+                    
+                    Button {
+                        sheet = false
+                        dismiss()
+                    } label: {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 75, height: 50)
+                            .foregroundColor(.blue)
+                            .overlay(
+                                Text("OK")
+                                    .font(.system(size: 25))
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                            )
+                    }
+                }
+                .padding(.horizontal, 25)
+            }
+        }
     }
 }
 

@@ -23,6 +23,7 @@ struct RedMessageView: View {
     @State private var error: Bool = false
     
     @State private var next: Bool = false
+    @State private var sheet: Bool = true
     
     @EnvironmentObject var userViewModel: UserViewModel
     
@@ -198,8 +199,72 @@ struct RedMessageView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 40)
         }
+        .sheet(isPresented: $sheet){
+            RedMessageNoteView(sheet: $sheet)
+        }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())
+    }
+}
+
+struct RedMessageNoteView: View {
+    @Environment (\.dismiss) var dismiss
+    
+    @Binding var sheet: Bool
+    
+    var body: some View{
+        NavigationView {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [.yellow, .red]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    Text("Red Messages are sent during times of crisis to your emergency contacts.")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 25)
+                    
+                    Text("These cannot be changed.")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .underline()
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                    
+                    Text("The Red Message templates are generalized to help you in as many situations as possible.")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 25)
+                    
+                    Button {
+                        sheet = false
+                        dismiss()
+                    } label: {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 75, height: 50)
+                            .foregroundColor(.blue)
+                            .overlay(
+                                Text("OK")
+                                    .font(.system(size: 25))
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                            )
+                    }
+                }
+                .padding(.horizontal, 25)
+            }
+        }
     }
 }
 

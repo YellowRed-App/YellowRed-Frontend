@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3FAA46762B5F254A00C8AE51 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAA46752B5F254A00C8AE51 /* TutorialView.swift */; };
 		710C70492A5809DC00118F32 /* PhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710C70482A5809DC00118F32 /* PhoneNumberFormatter.swift */; };
 		710C704B2A58116300118F32 /* EditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710C704A2A58116300118F32 /* EditingView.swift */; };
 		710EE5272A57ECA30022DD97 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710EE5262A57ECA30022DD97 /* LocationManager.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3FAA46752B5F254A00C8AE51 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		710C70482A5809DC00118F32 /* PhoneNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberFormatter.swift; sourceTree = "<group>"; };
 		710C704A2A58116300118F32 /* EditingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingView.swift; sourceTree = "<group>"; };
 		710EE5262A57ECA30022DD97 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				715D5CE32A4870D3001701AA /* RedMessageView.swift */,
 				715086362A2E1DC700841F44 /* NotificationView.swift */,
 				717F74CF2A31E7BB00C55AC8 /* LocationView.swift */,
+				3FAA46752B5F254A00C8AE51 /* TutorialView.swift */,
 				713F803E2A488D7D00A03D29 /* YellowRedView.swift */,
 				71255CF62A5415B600C70A5B /* ProfileView.swift */,
 				71567E942A20B93300A2BB2D /* Assets.xcassets */,
@@ -250,6 +253,7 @@
 			files = (
 				717B156C2A2605A300096580 /* GetStartedAffiliationView.swift in Sources */,
 				710C70492A5809DC00118F32 /* PhoneNumberFormatter.swift in Sources */,
+				3FAA46762B5F254A00C8AE51 /* TutorialView.swift in Sources */,
 				71255CF52A54102500C70A5B /* GlobalHapticManager.swift in Sources */,
 				717F74D02A31E7BB00C55AC8 /* LocationView.swift in Sources */,
 				71255CF32A540EC600C70A5B /* EmergencyContactManager.swift in Sources */,

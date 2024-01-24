@@ -12,11 +12,19 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 let map;
+let poly;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         center: {lat: 38.0293, lng: 78.4767}, zoom: 8
     });
+
+    poly = new google.maps.Polyline({
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 3
+    });
+    poly.setMap(map);
 }
 
 function getParamsFromUrl() {
@@ -44,6 +52,10 @@ function listenToSessionUpdates(userId, sessionId) {
 
 function updateMapWithLocation(locationData) {
     const latLng = new google.maps.LatLng(locationData.geopoint.latitude, locationData.geopoint.longitude);
+    const path = poly.getPath();
+
+    path.push(latLng);
+
     const marker = new google.maps.Marker({
         position: latLng, map: map
     });

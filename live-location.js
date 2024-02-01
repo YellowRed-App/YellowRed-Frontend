@@ -55,8 +55,7 @@ function updateMapWithLocation(locationData) {
     const path = poly.getPath();
 
     path.push(latLng);
-
-    const marker = new google.maps.Marker({
+    new google.maps.Marker({
         position: latLng, map: map
     });
     map.setCenter(latLng);

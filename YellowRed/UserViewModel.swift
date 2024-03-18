@@ -67,8 +67,8 @@ class UserViewModel: ObservableObject {
                     self.fullName = data["fullName"] as? String ?? ""
                     self.phoneNumber = data["phoneNumber"] as? String ?? ""
                     self.emailAddress = data["emailAddress"] as? String ?? ""
+                    completion(.success(()))
                 }
-                completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -81,8 +81,8 @@ class UserViewModel: ObservableObject {
             case .success(let contacts):
                 DispatchQueue.main.async {
                     self.emergencyContacts = contacts
+                    completion(.success(()))
                 }
-                completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -96,8 +96,8 @@ class UserViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.yellowMessage = messages.yellowMessage
                     self.redMessage = messages.redMessage
+                    completion(.success(()))
                 }
-                completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
             }

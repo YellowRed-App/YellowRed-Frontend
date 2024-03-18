@@ -17,6 +17,8 @@ class UserViewModel: ObservableObject {
     @Published var yellowMessage: String = ""
     @Published var redMessage: String = ""
     
+    @Published var button: String = ""
+    
     private let firestoreManager = FirestoreManager()
     
     func createUser(userId: String, fullName: String, phoneNumber: String, emailAddress: String, affiliation: String, university: String, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -96,6 +98,20 @@ class UserViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.yellowMessage = messages.yellowMessage
                     self.redMessage = messages.redMessage
+                    completion(.success(()))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func fetchButtonData(userId: String, sessionId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        firestoreManager.fetchButtonData(userId: userId, sessionId: sessionId) { result in
+            switch result {
+            case .success(let button):
+                DispatchQueue.main.async {
+                    self.button = button
                     completion(.success(()))
                 }
             case .failure(let error):

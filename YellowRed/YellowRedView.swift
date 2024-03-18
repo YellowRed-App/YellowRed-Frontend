@@ -329,43 +329,6 @@ struct YellowButtonView: View {
         }
     }
     
-    private func sendEmergencyMessageIfNeeded(message: String) {
-        guard !userViewModel.emergencyContacts.isEmpty, !userViewModel.yellowMessage.isEmpty else {
-            print("Emergency contacts or message are not available yet.")
-            return
-        }
-        
-        let emergencyContactNumbers = userViewModel.emergencyContacts.map { $0.phoneNumber }
-        
-        sendEmergencyMessage(contacts: emergencyContactNumbers, message: message)
-    }
-    
-    private func sendEmergencyMessage(contacts: [String], message: String) {
-        guard let url = URL(string: "https://us-central1-yellowred-app.cloudfunctions.net/sendEmergencySMS") else { return }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let payload: [String: Any] = ["contacts": contacts, "message": message]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: payload)
-        
-        print("Sending payload: \(payload)")
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error sending SMS: \(error.localizedDescription)")
-                return
-            }
-            if let httpResponse = response as? HTTPURLResponse {
-                print("HTTP Response Status code: \(httpResponse.statusCode)")
-            }
-            if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                print("Response data: \(dataString)")
-            }
-        }.resume()
-    }
-    
     private func startFlashing() {
         Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
             withAnimation {
@@ -513,43 +476,6 @@ struct RedButtonView: View {
                 completion()
             }
         }
-    }
-    
-    private func sendEmergencyMessageIfNeeded(message: String) {
-        guard !userViewModel.emergencyContacts.isEmpty, !userViewModel.redMessage.isEmpty else {
-            print("Emergency contacts or message are not available yet.")
-            return
-        }
-        
-        let emergencyContactNumbers = userViewModel.emergencyContacts.map { $0.phoneNumber }
-        
-        sendEmergencyMessage(contacts: emergencyContactNumbers, message: message)
-    }
-    
-    private func sendEmergencyMessage(contacts: [String], message: String) {
-        guard let url = URL(string: "https://us-central1-yellowred-app.cloudfunctions.net/sendEmergencySMS") else { return }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let payload: [String: Any] = ["contacts": contacts, "message": message]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: payload)
-        
-        print("Sending payload: \(payload)")
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error sending SMS: \(error.localizedDescription)")
-                return
-            }
-            if let httpResponse = response as? HTTPURLResponse {
-                print("HTTP Response Status code: \(httpResponse.statusCode)")
-            }
-            if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                print("Response data: \(dataString)")
-            }
-        }.resume()
     }
     
     private func startFlashing() {

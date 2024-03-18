@@ -18,6 +18,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     
     @Published var next: Bool = false
     @Published var alert: Bool = false
+    private var userViewModel = UserViewModel()
     private var notificationManager = NotificationManager()
     private var locationManager: CLLocationManager?
     private var locationUpdateTime: Date?
@@ -29,10 +30,44 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     
     override init() {
         super.init()
-        self.locationManager = CLLocationManager()
-        self.locationManager?.delegate = self
-        self.locationManager?.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager?.distanceFilter = kCLDistanceFilterNone
+        locationManager = CLLocationManager()
+        locationManager?.delegate = self
+        locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager?.distanceFilter = kCLDistanceFilterNone
+    }
+    
+    func fetchData(completion: @escaping () -> Void) {
+        guard let userUID = Auth.auth().currentUser?.uid else {
+            completion()
+            return
+        }
+        
+        userViewModel.fetchUserData(userId: userUID) { [weak self] result in
+            switch result {
+            case .success():
+                self?.userViewModel.fetchEmergencyContacts(userId: userUID) { result in
+                    switch result {
+                    case .success():
+                        self?.userViewModel.fetchYellowRedMessages(userId: userUID) { result in
+                            switch result {
+                            case .success():
+                                print("Successfully fetched all necessary data")
+                                completion()
+                            case .failure(let error):
+                                print("Error fetching messages: \(error.localizedDescription)")
+                                completion()
+                            }
+                        }
+                    case .failure(let error):
+                        print("Error fetching emergency contacts: \(error.localizedDescription)")
+                        completion()
+                    }
+                }
+            case .failure(let error):
+                print("Error fetching user data: \(error.localizedDescription)")
+                completion()
+            }
+        }
     }
     
     func requestLocationPermission() {

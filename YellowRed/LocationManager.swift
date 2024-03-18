@@ -114,55 +114,88 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         return sessionId
     }
     
-    func activateButton(button buttonState: ButtonState, completion: @escaping (String?) -> Void) {
-        guard let userUID = Auth.auth().currentUser?.uid else {
-            completion(nil);
-            return
-        }
-        
-        let newSessionId = UUID().uuidString
-        sessionId = newSessionId
-        
-        db.collection("users").document(userUID).collection("sessions").document(newSessionId).setData([
-            "active": true,
-            "button": buttonState.rawValue,
-            "startTime": Timestamp(date: Date())
-        ]) { [weak self] error in
-            if let error = error {
-                print("Error starting session: \(error)")
-                completion(nil)
-            } else {
-                print("Session started with ID: \(newSessionId)")
-                self?.activeButton = buttonState
-                self?.locationUpdateInterval = buttonState == .yellow ? 60.0 : 30.0
-                self?.startUpdatingLocation()
-                completion(newSessionId)
-                
-                self?.notificationManager.scheduleNotification(button: buttonState.rawValue, sessionId: newSessionId)
-                
-                self?.deactivationTimer?.invalidate()
-                self?.deactivationTimer = Timer.scheduledTimer(withTimeInterval: 3600, repeats: false) { [weak self] _ in
-                    self?.deactivateButton()
+    func activateButton(userId: String, button buttonState: ButtonState, completion: @escaping () -> Void) {
+        fetchData {
+            guard let userUID = Auth.auth().currentUser?.uid else {
+                print("Data is not ready!")
+                completion()
+                return
+            }
+            
+            let newSessionId = UUID().uuidString
+            self.sessionId = newSessionId
+            
+            let firstName = self.userViewModel.fullName.components(separatedBy: " ").first ?? ""
+            let button = buttonState == .yellow ? "Yellow" : "Red"
+            let message = buttonState == .yellow ? self.userViewModel.yellowMessage : self.userViewModel.redMessage
+            let liveLocationLink = "https://yellowred.app/live-location?user=\(userUID)&session=\(newSessionId)"
+            
+            self.sendEmergencyMessageIfNeeded(message: """
+                                                              YellowRed: \(firstName) has activated the \(button) Button:
+                                                              \(message)
+                                                              \(liveLocationLink)
+                                                              
+                                                              YellowRed is a safety tool allowing users to communicate directly with emergency contacts, providing them with a user's preselected message and live location when the user activates a button. Please follow the instructions within the message and monitor \(firstName)'s location until \(firstName) has deactivated the \(button) Button.
+                                                              """)
+            
+            UserDefaults.standard.set(newSessionId, forKey: "currentSessionId")
+            
+            self.db.collection("users").document(userId).collection("sessions").document(newSessionId).setData([
+                "active": true,
+                "button": buttonState.rawValue,
+                "startTime": Timestamp(date: Date())
+            ]) { [weak self] error in
+                if let error = error {
+                    print("Error starting session: \(error)")
+                } else {
+                    print("Session started with ID: \(newSessionId)")
+                    self?.activeButton = buttonState
+                    self?.locationUpdateInterval = buttonState == .yellow ? 60.0 : 30.0
+                    self?.startUpdatingLocation()
+                    
+                    if buttonState == .yellow {
+                        UserDefaults.standard.set(true, forKey: "YellowButtonActivated")
+                    } else if buttonState == .red {
+                        UserDefaults.standard.set(true, forKey: "RedButtonActivated")
+                    }
+                    
+                    self?.notificationManager.scheduleNotification(button: buttonState.rawValue, sessionId: newSessionId)
+                    
+                    self?.deactivationTimer?.invalidate()
+                    self?.deactivationTimer = Timer.scheduledTimer(withTimeInterval: 3600, repeats: false) { [weak self] _ in
+                        self?.deactivateButton()
+                    }
                 }
+                completion()
             }
         }
     }
     
     func deactivateButton() {
-        deactivationTimer?.invalidate()
-        deactivationTimer = nil
-        
-        guard let userUID = Auth.auth().currentUser?.uid, let currentSessionId = sessionId else { return }
-        
-        if activeButton == .yellow {
-            markDeleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId)
-        } else if activeButton == .red {
-            markDeleteSessionForRedButton(userUID: userUID, sessionId: currentSessionId)
+        fetchData {
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            
+            let currentSessionId = UserDefaults.standard.string(forKey: "currentSessionId")
+            
+            let firstName = self.userViewModel.fullName.components(separatedBy: " ").first ?? ""
+            
+            self.sendEmergencyMessageIfNeeded(message: """
+                                             \(firstName) has deactivated the \(self.activeButton.rawValue.capitalized) Button, indicating they have arrived safely at their destination. No further action is necessary. For more information on YellowRed, visit the YellowRed website at https://yellowred.app.
+                                             """)
+            
+            self.markDeleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId!)
+            self.markDeleteSessionForRedButton(userUID: userUID, sessionId: currentSessionId!)
+            UserDefaults.standard.set(false, forKey: "YellowButtonActivated")
+            UserDefaults.standard.set(false, forKey: "RedButtonActivated")
+            UserDefaults.standard.removeObject(forKey: "currentSessionId")
+            
+            self.deactivationTimer?.invalidate()
+            self.deactivationTimer = nil
+            
+            self.sessionId = nil
+            self.activeButton = .none
+            self.stopUpdatingLocation()
         }
-        
-        sessionId = nil
-        activeButton = .none
-        stopUpdatingLocation()
     }
     
     private func markDeleteSessionForYellowButton(userUID: String, sessionId: String) {

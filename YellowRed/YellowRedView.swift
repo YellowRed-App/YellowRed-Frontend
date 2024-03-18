@@ -25,6 +25,11 @@ struct YellowRedView: View {
     @State private var isPressingYellowButton: Bool = false
     @State private var isPressingRedButton: Bool = false
     
+    @State private var navigateToYellowButtonView = UserDefaults.standard.bool(forKey: "YellowButtonActivated")
+    @State private var navigateToRedButtonView = UserDefaults.standard.bool(forKey: "RedButtonActivated")
+    
+    @StateObject private var locationManager = LocationManager()
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -198,7 +203,16 @@ struct YellowRedView: View {
                 }
             }
         }
-        .onAppear(perform: GlobalHapticManager.shared.startHapticEngine)
+        .onAppear {
+            locationManager.fetchData() {
+                if navigateToYellowButtonView {
+                    yellowButton = true
+                } else if navigateToRedButtonView {
+                    redButton = true
+                }
+                GlobalHapticManager.shared.startHapticEngine()
+            }
+        }
         .navigationBarBackButtonHidden(true)
     }
 }
@@ -264,28 +278,18 @@ struct YellowButtonView: View {
     }
     
     private func activateYellowButton() {
-        GlobalHapticManager.shared.startHapticEngine()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            GlobalHapticManager.shared.triggerHapticFeedback(5)
-        }
         startFlashing()
-        if let userUID = Auth.auth().currentUser?.uid {
-            fetchAllData(userId: userUID) {
-                self.locationManager.requestLocationPermission()
-                self.locationManager.activateButton(button: .yellow) { sessionId in
-                    if let sessionId = sessionId {
-                        let firstName = userViewModel.fullName.components(separatedBy: " ").first ?? ""
-                        let yellowMessage = userViewModel.yellowMessage
-                        let liveLocationLink = "https://yellowred.app/live-location?user=\(userUID)&session=\(sessionId)"
-                        self.sendEmergencyMessageIfNeeded(message: """
-                                                          YellowRed: \(firstName) has activated the Yellow Button:
-                                                          \(yellowMessage)
-                                                          \(liveLocationLink)
-                                                          
-                                                          YellowRed is a safety tool allowing users to communicate directly with emergency contacts, providing them with a user's preselected message and live location when the user activates a button. Please follow the instructions within the message and monitor \(firstName)'s location until \(firstName) has deactivated the Yellow Button.
-                                                          """)
-                    } else {
-                        print("Could not retrieve session ID.")
+        let currentSessionId = UserDefaults.standard.string(forKey: "currentSessionId")
+        if currentSessionId == nil {
+            GlobalHapticManager.shared.startHapticEngine()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                GlobalHapticManager.shared.triggerHapticFeedback(5)
+            }
+            if let userUID = Auth.auth().currentUser?.uid {
+                fetchAllData(userId: userUID) {
+                    locationManager.requestLocationPermission()
+                    locationManager.activateButton(userId: userUID, button: .yellow) {
+                        print("Yellow Button Activated")
                     }
                 }
             }
@@ -294,10 +298,6 @@ struct YellowButtonView: View {
     
     private func deactivateYellowButton() {
         stopFlashing()
-        let firstName = userViewModel.fullName.components(separatedBy: " ").first ?? ""
-        sendEmergencyMessageIfNeeded(message: """
-                                     \(firstName) has deactivated the Yellow Button, indicating they have arrived safely at their destination. No further action is necessary. For more information on YellowRed, visit the YellowRed website at https://yellowred.app.
-                                     """)
         locationManager.deactivateButton()
     }
     
@@ -413,28 +413,18 @@ struct RedButtonView: View {
     }
     
     private func activateRedButton() {
-        GlobalHapticManager.shared.startHapticEngine()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            GlobalHapticManager.shared.triggerHapticFeedback(5)
-        }
         startFlashing()
-        if let userUID = Auth.auth().currentUser?.uid {
-            fetchAllData(userId: userUID) {
-                self.locationManager.requestLocationPermission()
-                self.locationManager.activateButton(button: .red) { sessionId in
-                    if let sessionId = sessionId {
-                        let firstName = userViewModel.fullName.components(separatedBy: " ").first ?? ""
-                        let redMessage = userViewModel.redMessage
-                        let liveLocationLink = "https://yellowred.app/live-location?user=\(userUID)&session=\(sessionId)"
-                        self.sendEmergencyMessageIfNeeded(message: """
-                                                          YellowRed: \(firstName) has activated the Red Button:
-                                                          \(redMessage)
-                                                          \(liveLocationLink)
-                                                          
-                                                          YellowRed is a safety tool allowing users to communicate directly with emergency contacts, providing them with a user's preselected message and live location when the user activates a button. Please follow the instructions within the message and monitor \(firstName)'s location until \(firstName) has deactivated the Yellow Button.
-                                                          """)
-                    } else {
-                        print("Could not retrieve session ID.")
+        let currentSessionId = UserDefaults.standard.string(forKey: "currentSessionId")
+        if currentSessionId == nil {
+            GlobalHapticManager.shared.startHapticEngine()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                GlobalHapticManager.shared.triggerHapticFeedback(5)
+            }
+            if let userUID = Auth.auth().currentUser?.uid {
+                fetchAllData(userId: userUID) {
+                    locationManager.requestLocationPermission()
+                    locationManager.activateButton(userId: userUID, button: .red){
+                        print("Red Button Activated")
                     }
                 }
             }
@@ -443,10 +433,6 @@ struct RedButtonView: View {
     
     private func deactivateRedButton() {
         stopFlashing()
-        let firstName = userViewModel.fullName.components(separatedBy: " ").first ?? ""
-        sendEmergencyMessageIfNeeded(message: """
-                                     \(firstName) has deactivated the Red Button, indicating they are no longer in need of assistance. Please ensure with \(firstName) that no further action is necessary. For more information on YellowRed, visit the YellowRed website at https://yellowred.app.
-                                     """)
         locationManager.deactivateButton()
     }
     

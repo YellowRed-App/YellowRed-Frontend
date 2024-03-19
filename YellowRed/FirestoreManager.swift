@@ -121,20 +121,6 @@ class FirestoreManager {
         }
     }
     
-    func fetchButtonData(userId: String, sessionId: String, completion: @escaping (Result<String, Error>) -> Void) {
-        db.collection("users").document(userId).collection("sessions").document(sessionId).getDocument { document, error in
-            if let error = error {
-                completion(.failure(error))
-            } else if let document = document, document.exists {
-                let data = document.data() ?? [:]
-                let button = data["button"] as? String ?? ""
-                completion(.success(button))
-            } else {
-                self.handleNonExistentDocument(completion: completion)
-            }
-        }
-    }
-    
     private func handleCompletion<T>(_ error: Error?, completion: @escaping (Result<T, Error>) -> Void) {
         if let error = error {
             NSLog("Error: \(error.localizedDescription)")

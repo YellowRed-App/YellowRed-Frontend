@@ -138,6 +138,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                                                               YellowRed is a safety tool allowing users to communicate directly with emergency contacts, providing them with a user's preselected message and live location when the user activates a button. Please follow the instructions within the message and monitor \(firstName)'s location until \(firstName) has deactivated the \(button) Button.
                                                               """)
             
+            UserDefaults.standard.set(button, forKey: "button")
             UserDefaults.standard.set(newSessionId, forKey: "currentSessionId")
             
             self.db.collection("users").document(userId).collection("sessions").document(newSessionId).setData([
@@ -175,18 +176,23 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         fetchData {
             guard let userUID = Auth.auth().currentUser?.uid else { return }
             
+            let button = UserDefaults.standard.string(forKey: "button") ?? ""
             let currentSessionId = UserDefaults.standard.string(forKey: "currentSessionId")
             
             let firstName = self.userViewModel.fullName.components(separatedBy: " ").first ?? ""
             
             self.sendEmergencyMessageIfNeeded(message: """
-                                             \(firstName) has deactivated the \(self.activeButton.rawValue.capitalized) Button, indicating they have arrived safely at their destination. No further action is necessary. For more information on YellowRed, visit the YellowRed website at https://yellowred.app.
+                                             \(firstName) has deactivated the \(button) Button, indicating they have arrived safely at their destination. No further action is necessary. For more information on YellowRed, visit the YellowRed website at https://yellowred.app.
                                              """)
             
-            self.markDeleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId!)
-            self.markDeleteSessionForRedButton(userUID: userUID, sessionId: currentSessionId!)
-            UserDefaults.standard.set(false, forKey: "YellowButtonActivated")
-            UserDefaults.standard.set(false, forKey: "RedButtonActivated")
+            if button == "Yellow" {
+                self.markDeleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId!)
+                UserDefaults.standard.set(false, forKey: "YellowButtonActivated")
+            } else if button == "Red" {
+                self.markDeleteSessionForRedButton(userUID: userUID, sessionId: currentSessionId!)
+                UserDefaults.standard.set(false, forKey: "RedButtonActivated")
+            }
+            UserDefaults.standard.removeObject(forKey: "button")
             UserDefaults.standard.removeObject(forKey: "currentSessionId")
             
             self.deactivationTimer?.invalidate()

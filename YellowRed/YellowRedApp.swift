@@ -36,7 +36,9 @@ struct YellowRedApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if userAuth.isUserAuthenticated && userAuth.isUserDataComplete {
+            if userAuth.isLoading {
+                LoadingView()
+            } else if userAuth.isUserAuthenticated && userAuth.isUserDataComplete {
                 YellowRedView()
             } else {
                 HomeScreenView()

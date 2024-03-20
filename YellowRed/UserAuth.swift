@@ -12,6 +12,7 @@ import FirebaseFirestore
 class UserAuth: ObservableObject {
     @Published var isUserAuthenticated: Bool = false
     @Published var isUserDataComplete: Bool = false
+    @Published var isLoading: Bool = true
     
     private var firestoreManager = FirestoreManager()
     
@@ -20,6 +21,7 @@ class UserAuth: ObservableObject {
     }
     
     func updateAuthenticationStatus() {
+        isLoading = true
         if let user = Auth.auth().currentUser {
             print("User is logged in: \(user.uid)")
             isUserAuthenticated = true
@@ -28,6 +30,7 @@ class UserAuth: ObservableObject {
             print("No user is logged in.")
             isUserAuthenticated = false
             isUserDataComplete = false
+            isLoading = false
         }
     }
     
@@ -36,6 +39,7 @@ class UserAuth: ObservableObject {
             switch result {
             case .success(let data):
                 let emailAddress = data["emailAddress"] as? String ?? ""
+                let hasEmailAddress = !emailAddress.isEmpty
                 self?.firestoreManager.fetchEmergencyContacts(userId: userID) { result in
                     switch result {
                     case .success(let contacts):
@@ -45,23 +49,27 @@ class UserAuth: ObservableObject {
                             case .success(let messages):
                                 let hasMessages = !messages.yellowMessage.isEmpty && !messages.redMessage.isEmpty
                                 DispatchQueue.main.async {
-                                    self?.isUserDataComplete = !emailAddress.isEmpty && hasContacts && hasMessages
+                                    self?.isUserDataComplete = hasEmailAddress && hasContacts && hasMessages
+                                    self?.isLoading = false
                                 }
                             case .failure:
                                 DispatchQueue.main.async {
                                     self?.isUserDataComplete = false
+                                    self?.isLoading = false
                                 }
                             }
                         }
                     case .failure:
                         DispatchQueue.main.async {
                             self?.isUserDataComplete = false
+                            self?.isLoading = false
                         }
                     }
                 }
             case .failure:
                 DispatchQueue.main.async {
                     self?.isUserDataComplete = false
+                    self?.isLoading = false
                 }
             }
         }

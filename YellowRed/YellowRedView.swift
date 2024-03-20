@@ -13,6 +13,7 @@ struct YellowRedView: View {
     
     @State private var yellowButton: Bool = false
     @State private var redButton: Bool = false
+    @State private var activeButton: ActiveButton = .none
     
     @State private var yellowCountdown: Int = 3
     @State private var redCountdown: Int = 5
@@ -29,6 +30,12 @@ struct YellowRedView: View {
     @State private var navigateToRedButtonView = UserDefaults.standard.bool(forKey: "RedButtonActivated")
     
     @StateObject private var locationManager = LocationManager()
+    
+    enum ActiveButton {
+        case none
+        case yellow
+        case red
+    }
     
     var body: some View {
         NavigationView {
@@ -55,42 +62,22 @@ struct YellowRedView: View {
                             .fill(.yellow)
                             .frame(width: 200, height: 200)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .opacity(activeButton == .red ? 0 : 1)
+                            .disabled(activeButton == .red)
                             .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                                guard activeButton != .red else { return }
                                 isPressingYellowButton = pressing
                                 if pressing {
-                                    self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                                        if self.yellowCountdown > 1 {
-                                            self.yellowCountdown -= 1
-                                            GlobalHapticManager.shared.triggerHapticFeedback(0.25)
-                                        } else {
-                                            self.countdownTimer?.invalidate()
-                                            self.countdownTimer = nil
-                                            self.yellowButton.toggle()
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                self.isPressingYellowButton = false
-                                            }
-                                            UIView.setAnimationsEnabled(false)
-                                        }
-                                    }
+                                    startCountdown(button: .yellow)
                                 } else {
-                                    self.countdownTimer?.invalidate()
-                                    self.countdownTimer = nil
-                                    self.yellowCountdown = 3
-                                    if self.yellowCountdown > 1 {
-                                        self.yellowHint = true
-                                        self.redHint = false
-                                        self.hintTimer?.invalidate()
-                                        self.hintTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-                                            self.yellowHint = false
-                                        }
-                                    }
+                                    endCountdown()
                                 }
                             }, perform: { })
                             .fullScreenCover(isPresented: $yellowButton) {
                                 YellowButtonView(yellowButton: $yellowButton)
                             }
                         
-                        if isPressingYellowButton && yellowCountdown <= 3 {
+                        if isPressingYellowButton {
                             Text("\(yellowCountdown)")
                                 .font(.system(size: 125))
                                 .minimumScaleFactor(0.01)
@@ -100,50 +87,28 @@ struct YellowRedView: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    .opacity(isPressingRedButton ? 0 : 1)
-                    .disabled(isPressingRedButton)
                     
                     ZStack {
                         Circle()
                             .fill(.red)
                             .frame(width: 200, height: 200)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .opacity(activeButton == .yellow ? 0 : 1)
+                            .disabled(activeButton == .yellow)
                             .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                                guard activeButton != .yellow else { return }
                                 isPressingRedButton = pressing
                                 if pressing {
-                                    self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                                        if self.redCountdown > 1 {
-                                            self.redCountdown -= 1
-                                            GlobalHapticManager.shared.triggerHapticFeedback(0.25)
-                                        } else {
-                                            self.countdownTimer?.invalidate()
-                                            self.countdownTimer = nil
-                                            self.redButton.toggle()
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                self.isPressingRedButton = false
-                                            }
-                                            UIView.setAnimationsEnabled(false)
-                                        }
-                                    }
+                                    startCountdown(button: .red)
                                 } else {
-                                    self.countdownTimer?.invalidate()
-                                    self.countdownTimer = nil
-                                    self.redCountdown = 5
-                                    if self.redCountdown > 1 {
-                                        self.redHint = true
-                                        self.yellowHint = false
-                                        self.hintTimer?.invalidate()
-                                        self.hintTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-                                            self.redHint = false
-                                        }
-                                    }
+                                    endCountdown()
                                 }
                             }, perform: { })
                             .fullScreenCover(isPresented: $redButton) {
                                 RedButtonView(redButton: $redButton)
                             }
                         
-                        if isPressingRedButton && redCountdown <= 5 {
+                        if isPressingRedButton {
                             Text("\(redCountdown)")
                                 .font(.system(size: 125))
                                 .minimumScaleFactor(0.01)
@@ -153,8 +118,6 @@ struct YellowRedView: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    .opacity(isPressingYellowButton ? 0 : 1)
-                    .disabled(isPressingYellowButton)
                     
                     Spacer()
                     
@@ -214,6 +177,54 @@ struct YellowRedView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+    }
+    
+    private func startCountdown(button: ActiveButton) {
+        activeButton = button
+        
+        countdownTimer?.invalidate()
+        let updateCountdown: () -> Void = {
+            switch activeButton {
+            case .yellow:
+                if yellowCountdown > 1 {
+                    yellowCountdown -= 1
+                    GlobalHapticManager.shared.triggerHapticFeedback(0.25)
+                } else {
+                    yellowButton = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        endCountdown()
+                    }
+                }
+            case .red:
+                if redCountdown > 1 {
+                    redCountdown -= 1
+                    GlobalHapticManager.shared.triggerHapticFeedback(0.25)
+                } else {
+                    redButton = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        endCountdown()
+                    }
+                }
+            case .none:
+                break
+            }
+        }
+        
+        if button != .none {
+            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                updateCountdown()
+            }
+        }
+    }
+    
+    private func endCountdown() {
+        countdownTimer?.invalidate()
+        countdownTimer = nil
+        yellowCountdown = 3
+        redCountdown = 5
+        yellowHint = activeButton == .yellow
+        redHint = activeButton == .red
+        activeButton = .none
     }
 }
 

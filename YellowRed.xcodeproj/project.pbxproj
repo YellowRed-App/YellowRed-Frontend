@@ -36,6 +36,7 @@
 		7172CA2B2BA23E0C0053C600 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7172CA2A2BA23E0C0053C600 /* FirebaseFirestoreSwift */; };
 		7172CA2D2BA23E0C0053C600 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 7172CA2C2BA23E0C0053C600 /* FirebaseFunctions */; };
 		717B156C2A2605A300096580 /* GetStartedAffiliationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717B156B2A2605A300096580 /* GetStartedAffiliationView.swift */; };
+		717DFD692BA9BC620051A3D8 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717DFD682BA9BC620051A3D8 /* LoadingView.swift */; };
 		717F74D02A31E7BB00C55AC8 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F74CF2A31E7BB00C55AC8 /* LocationView.swift */; };
 		719F93BA2B303FCA00150A16 /* UserAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F93B92B303FCA00150A16 /* UserAuth.swift */; };
 		71B7B5902A5AD96E003CD5C8 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */; };
@@ -72,6 +73,7 @@
 		7171C17D2A3DC34200CC8F9B /* EmergencyContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyContactView.swift; sourceTree = "<group>"; };
 		7171C17F2A3F26E200CC8F9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		717B156B2A2605A300096580 /* GetStartedAffiliationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedAffiliationView.swift; sourceTree = "<group>"; };
+		717DFD682BA9BC620051A3D8 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		717F74CF2A31E7BB00C55AC8 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		719F93B92B303FCA00150A16 /* UserAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuth.swift; sourceTree = "<group>"; };
 		71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				710EE5262A57ECA30022DD97 /* LocationManager.swift */,
 				71255CF42A54102500C70A5B /* GlobalHapticManager.swift */,
 				714716172AF701CE00C825AE /* FirestoreManager.swift */,
+				717DFD682BA9BC620051A3D8 /* LoadingView.swift */,
 			);
 			path = YellowRed;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				3FAA46762B5F254A00C8AE51 /* TutorialView.swift in Sources */,
 				71255CF52A54102500C70A5B /* GlobalHapticManager.swift in Sources */,
 				717F74D02A31E7BB00C55AC8 /* LocationView.swift in Sources */,
+				717DFD692BA9BC620051A3D8 /* LoadingView.swift in Sources */,
 				71255CF32A540EC600C70A5B /* EmergencyContactManager.swift in Sources */,
 				71FB82152A558472005E53DE /* InfoSectionView.swift in Sources */,
 				719F93BA2B303FCA00150A16 /* UserAuth.swift in Sources */,

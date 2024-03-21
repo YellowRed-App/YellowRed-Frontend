@@ -185,6 +185,8 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                                              \(firstName) has deactivated the \(button) Button, indicating they have arrived safely at their destination. No further action is necessary. For more information on YellowRed, visit the YellowRed website at https://yellowred.app.
                                              """)
             
+            self.notificationManager.cancelNotification(sessionId: currentSessionId)
+            
             if button == "Yellow" {
                 self.markDeleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId)
                 UserDefaults.standard.set(false, forKey: "YellowButtonActivated")

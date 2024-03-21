@@ -43,8 +43,11 @@ final class NotificationManager: NSObject, ObservableObject, UNUserNotificationC
                 content.interruptionLevel = .timeSensitive
             }
             
+            let notificationIdentifier = UUID().uuidString
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2700, repeats: false)
-            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+            let request = UNNotificationRequest(identifier: notificationIdentifier, content: content, trigger: trigger)
+            
+            UserDefaults.standard.set(notificationIdentifier, forKey: "notificationIdentifierForSession_\(sessionId)")
             
             UNUserNotificationCenter.current().add(request) { error in
                 if let error = error {

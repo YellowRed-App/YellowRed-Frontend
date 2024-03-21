@@ -177,7 +177,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
             guard let userUID = Auth.auth().currentUser?.uid else { return }
             
             let button = UserDefaults.standard.string(forKey: "button") ?? ""
-            let currentSessionId = UserDefaults.standard.string(forKey: "currentSessionId")
+            let currentSessionId = UserDefaults.standard.string(forKey: "currentSessionId") ?? ""
             
             let firstName = self.userViewModel.fullName.components(separatedBy: " ").first ?? ""
             
@@ -186,12 +186,13 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                                              """)
             
             if button == "Yellow" {
-                self.markDeleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId!)
+                self.markDeleteSessionForYellowButton(userUID: userUID, sessionId: currentSessionId)
                 UserDefaults.standard.set(false, forKey: "YellowButtonActivated")
             } else if button == "Red" {
-                self.markDeleteSessionForRedButton(userUID: userUID, sessionId: currentSessionId!)
+                self.markDeleteSessionForRedButton(userUID: userUID, sessionId: currentSessionId)
                 UserDefaults.standard.set(false, forKey: "RedButtonActivated")
             }
+            
             UserDefaults.standard.removeObject(forKey: "button")
             UserDefaults.standard.removeObject(forKey: "currentSessionId")
             

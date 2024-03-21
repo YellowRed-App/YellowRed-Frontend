@@ -59,6 +59,12 @@ final class NotificationManager: NSObject, ObservableObject, UNUserNotificationC
         }
     }
     
+    func cancelNotification(sessionId: String) {
+        if let notificationIdentifier = UserDefaults.standard.string(forKey: "notificationIdentifierForSession_\(sessionId)") {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notificationIdentifier])
+        }
+    }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .badge, .sound])

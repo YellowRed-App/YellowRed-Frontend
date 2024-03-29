@@ -945,54 +945,67 @@ struct EditYellowMessageView: View {
                                     .opacity(0.5)
                             }
                             
-                            TextField("", text: Binding(
-                                get: { self.customMessage },
-                                set: { newValue in
-                                    self.customMessage = newValue
-                                    self.previousCustomMessage = customMessage
-                                    self.selectedTemplate = nil
-                                    self.previousSelectedTemplate = nil
-                                }
-                            ))
-                            .onAppear() {
-                                if !viewLoaded {
-                                    customMessage = userViewModel.yellowMessage
-                                    viewLoaded = true
-                                }
-                            }
-                        }
-                        .font(.body)
-                        .fontWeight(.regular)
-                        .foregroundColor(.black)
-                        .padding(12.5)
-                        .frame(maxWidth: .infinity)
-                        .background(!customMessage.isEmpty ? .white.opacity(0.5) : .white)
-                        .cornerRadius(15)
-                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(
-                                    LinearGradient(
-                                        colors: [.yellow, .red],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    ), lineWidth: !customMessage.isEmpty ? 2.5 : 0
-                                )
-                        )
-                    }
-                    
-                    if !isEditing && editingTemplate == nil {
-                        if error {
-                            Text("Please choose a template or create your own!")
-                                .font(.subheadline)
-                                .foregroundColor(.red)
-                                .multilineTextAlignment(.center)
-                                .fixedSize(horizontal: false, vertical: true)
-                                .onAppear {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                                        error = false
+                            HStack {
+                                TextField("", text: Binding(
+                                    get: { self.customMessage },
+                                    set: { newValue in
+                                        self.customMessage = newValue
+                                        self.previousCustomMessage = customMessage
+                                        self.selectedTemplate = nil
+                                        self.previousSelectedTemplate = nil
+                                    }
+                                ))
+                                .onAppear() {
+                                    if !viewLoaded {
+                                        customMessage = userViewModel.yellowMessage
+                                        viewLoaded = true
                                     }
                                 }
+                                .font(.body)
+                                .fontWeight(.regular)
+                                .foregroundColor(.black)
+                                .padding(12.5)
+                                .frame(maxWidth: .infinity)
+                                
+                                if !customMessage.isEmpty {
+                                    Button(action: {
+                                        self.customMessage = ""
+                                        self.selectedTemplate = self.previousSelectedTemplate
+                                    }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.gray)
+                                    }
+                                    .padding(.trailing, 8)
+                                }
+                            }
+                            .background(customMessage.isEmpty ? .white : .white.opacity(0.5))
+                            .cornerRadius(15)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(
+                                        LinearGradient(
+                                            colors: [.yellow, .red],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ), lineWidth: !customMessage.isEmpty ? 2.5 : 0
+                                    )
+                            )
+                        }
+                        
+                        if !isEditing && editingTemplate == nil {
+                            if error {
+                                Text("Please choose a template or create your own!")
+                                    .font(.subheadline)
+                                    .foregroundColor(.red)
+                                    .multilineTextAlignment(.center)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .onAppear {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                            error = false
+                                        }
+                                    }
+                            }
                         }
                     }
                 }

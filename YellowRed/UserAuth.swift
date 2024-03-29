@@ -47,9 +47,8 @@ class UserAuth: ObservableObject {
                         self?.firestoreManager.fetchYellowRedMessages(userId: userID) { result in
                             switch result {
                             case .success(let messages):
-                                let hasMessages = !messages.yellowMessage.isEmpty && !messages.redMessage.isEmpty
                                 DispatchQueue.main.async {
-                                    self?.isUserDataComplete = hasEmailAddress && hasContacts && hasMessages
+                                    self?.isUserDataComplete = hasEmailAddress && hasContacts
                                     self?.isLoading = false
                                 }
                             case .failure:

@@ -222,9 +222,30 @@ struct YellowRedView: View {
         countdownTimer = nil
         yellowCountdown = 3
         redCountdown = 5
-        yellowHint = activeButton == .yellow
-        redHint = activeButton == .red
+        if activeButton == .yellow {
+            yellowHint = true
+            redHint = false
+            restartHintTimer(button: .yellow)
+        } else if activeButton == .red {
+            redHint = true
+            yellowHint = false
+            restartHintTimer(button: .red)
+        } else {
+            yellowHint = false
+            redHint = false
+        }
         activeButton = .none
+    }
+    
+    private func restartHintTimer(button: ActiveButton) {
+        hintTimer?.invalidate()
+        hintTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
+            if button == .yellow {
+                yellowHint = false
+            } else if button == .red {
+                redHint = false
+            }
+        }
     }
 }
 

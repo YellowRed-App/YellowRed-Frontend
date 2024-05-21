@@ -50,7 +50,13 @@ final class InputValidator: ObservableObject {
         emergencyContactsSelected = Set(emergencyContacts.indices.filter({ emergencyContacts[$0].isSelected }))
         emergencyContactsDuplicated = []
         
-        if emergencyContactsSelected.count == emergencyContacts.count {
+        for (index, contact) in emergencyContacts.enumerated() {
+            if contact.displayName.isEmpty || contact.phoneNumber.isEmpty {
+                emergencyContactsDuplicated.insert(index)
+            }
+        }
+        
+        if emergencyContactsSelected.count == emergencyContacts.count && emergencyContactsDuplicated.isEmpty {
             let phoneNumbers = emergencyContacts.map({ $0.phoneNumber })
             let duplicatePhoneNumbers = phoneNumbers.duplicates()
             
@@ -60,6 +66,7 @@ final class InputValidator: ObservableObject {
                 }
             }
         }
+        
         if emergencyContactsSelected.count == emergencyContacts.count && emergencyContactsDuplicated.isEmpty {
             areEmergencyContactsValid = true
         }
@@ -68,11 +75,16 @@ final class InputValidator: ObservableObject {
 }
 
 extension Array where Element: Hashable {
-    func duplicates() -> Array {
-        var counts = [Element: Int]()
+    func duplicates() -> [Element] {
+        var seen = Set<Element>()
+        var duplicates = Set<Element>()
         for element in self {
-            counts[element, default: 0] += 1
+            if seen.contains(element) {
+                duplicates.insert(element)
+            } else {
+                seen.insert(element)
+            }
         }
-        return counts.filter({ $0.value > 1 }).map({ $0.key })
+        return Array(duplicates)
     }
 }

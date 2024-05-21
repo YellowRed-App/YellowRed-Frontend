@@ -96,7 +96,16 @@ struct EmergencyContactPickerView: UIViewControllerRepresentable {
             } else if phoneNumbers.count > 1 {
                 parent.phoneNumbers = phoneNumbers.map { $0.value }
                 parent.showPhoneNumberSelection = true
+            } else {
+                parent.contact.phoneNumber = ""
+                parent.contact.isSelected = false
             }
+        }
+        
+        func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+            parent.contact.isSelected = false
+            parent.contact.displayName = ""
+            parent.contact.phoneNumber = ""
         }
     }
 }

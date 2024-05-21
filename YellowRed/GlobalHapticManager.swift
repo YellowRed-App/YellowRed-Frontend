@@ -15,6 +15,8 @@ final class GlobalHapticManager: ObservableObject {
     @Published var engine: CHHapticEngine?
     private var startEngine: Bool = true
     
+    private var player: CHHapticPatternPlayer?
+
     private init() {
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -80,10 +82,19 @@ final class GlobalHapticManager: ObservableObject {
         
         do {
             let pattern = try CHHapticPattern(events: [event], parameters: [])
-            let player = try engine.makePlayer(with: pattern)
-            try player.start(atTime: 0)
+            player = try engine.makePlayer(with: pattern)
+            try player?.start(atTime: 0)
         } catch {
             print("Failed to play haptic feedback: \(error.localizedDescription)")
+        }
+    }
+    
+    public func stopHapticFeedback() {
+        do {
+            try player?.stop(atTime: 0)
+            print("Haptic feedback stopped")
+        } catch {
+            print("Failed to stop haptic feedback: \(error.localizedDescription)")
         }
     }
     

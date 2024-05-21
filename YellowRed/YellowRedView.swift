@@ -331,6 +331,7 @@ struct YellowButtonView: View {
     private func deactivateYellowButton() {
         stopFlashing()
         locationManager.deactivateButton()
+        GlobalHapticManager.shared.stopHapticFeedback()
     }
     
     private func fetchAllData(userId: String, completion: @escaping () -> Void) {
@@ -466,6 +467,7 @@ struct RedButtonView: View {
     private func deactivateRedButton() {
         stopFlashing()
         locationManager.deactivateButton()
+        GlobalHapticManager.shared.stopHapticFeedback()
     }
     
     private func fetchAllData(userId: String, completion: @escaping () -> Void) {

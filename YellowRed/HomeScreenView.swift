@@ -23,7 +23,7 @@ struct HomeScreenView: View {
                 VStack(spacing: 20) {
                     Spacer()
                     
-                    Image("AppLogo-01")
+                    Image("AppLogo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 150, height: 150)

@@ -83,7 +83,7 @@ struct EmergencyContactView: View {
                             .padding(.horizontal, 20)
                     }
                     
-                    if !validator.emergencyContactsDuplicated.isEmpty {
+                    if validator.emergencyContactsSelected.count == emergencyContacts.count && !validator.emergencyContactsDuplicated.isEmpty {
                         Text("Please choose three unique emergency contacts!")
                             .font(.subheadline)
                             .foregroundColor(.white)

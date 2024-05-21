@@ -6,35 +6,73 @@
 //
 
 import CoreHaptics
+import Combine
+import UIKit
 
 final class GlobalHapticManager: ObservableObject {
     static let shared = GlobalHapticManager()
+    
     @Published var engine: CHHapticEngine?
+    private var startEngine: Bool = true
     
     private init() {
-        startHapticEngine()
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        setupHapticEngine()
     }
     
     deinit {
+        NotificationCenter.default.removeObserver(self)
         stopHapticEngine()
     }
     
-    public func startHapticEngine() {
+    private func setupHapticEngine() {
         do {
             self.engine = try CHHapticEngine()
-            try engine?.start()
+            self.engine?.stoppedHandler = { reason in
+                print("Haptic engine stopped: \(reason.rawValue)")
+                self.startEngine = true
+            }
+            self.engine?.resetHandler = {
+                print("Haptic engine reset")
+                self.startEngine = true
+                self.startHapticEngine()
+            }
         } catch {
-            print("Failed to start haptic engine: \(error.localizedDescription)")
+            print("Failed to set up haptic engine: \(error.localizedDescription)")
+        }
+    }
+    
+    public func startHapticEngine() {
+        guard let engine = engine else { return }
+        if startEngine {
+            do {
+                try engine.start()
+                startEngine = false
+                print("Haptic engine started")
+            } catch {
+                print("Failed to start haptic engine: \(error.localizedDescription)")
+            }
         }
     }
     
     public func stopHapticEngine() {
-        engine?.stop(completionHandler: nil)
-        engine = nil
+        guard let engine = engine else { return }
+        engine.stop(completionHandler: { error in
+            if let error = error {
+                print("Failed to stop haptic engine: \(error.localizedDescription)")
+            } else {
+                print("Haptic engine stopped")
+            }
+        })
+        startEngine = true
     }
     
     public func triggerHapticFeedback(_ duration: Double) {
-        guard let engine = engine else { return }
+        guard let engine = engine else {
+            print("Haptic engine is not initialized.")
+            return
+        }
         
         let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0)
         let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1.0)
@@ -47,5 +85,13 @@ final class GlobalHapticManager: ObservableObject {
         } catch {
             print("Failed to play haptic feedback: \(error.localizedDescription)")
         }
+    }
+    
+    @objc private func didEnterBackground() {
+        stopHapticEngine()
+    }
+    
+    @objc private func willEnterForeground() {
+        startHapticEngine()
     }
 }

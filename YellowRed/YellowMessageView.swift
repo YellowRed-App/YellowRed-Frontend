@@ -23,6 +23,7 @@ struct YellowMessageView: View {
     
     @State private var valid: Bool = true
     @State private var error: Bool = false
+    @State private var alert: Bool = false
     
     @State private var next: Bool = false
     @State private var sheet: Bool = true
@@ -202,7 +203,12 @@ struct YellowMessageView: View {
                             valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
                             if valid {
                                 yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
-                                next = true
+                                if containsLink(yellowMessage) {
+                                    customMessage = ""
+                                    alert = true
+                                } else {
+                                    next = true
+                                }
                             } else {
                                 error = true
                             }
@@ -219,6 +225,13 @@ struct YellowMessageView: View {
                             .background(.white)
                             .cornerRadius(15)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        }
+                        .alert(isPresented: $alert) {
+                            Alert(
+                                title: Text("Invalid Message"),
+                                message: Text("The yellow message should not contain a link."),
+                                dismissButton: .default(Text("OK"))
+                            )
                         }
                         .background(
                             NavigationLink(
@@ -239,6 +252,12 @@ struct YellowMessageView: View {
         }
         .navigationBarBackButtonHidden(true)
         .endEditingOnTap()
+    }
+    
+    private func containsLink(_ text: String) -> Bool {
+        let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+        let matches = detector?.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) ?? []
+        return !matches.isEmpty
     }
 }
 

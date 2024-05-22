@@ -55,7 +55,15 @@ struct EmergencyContactPicker: View {
             .actionSheet(isPresented: $showPhoneNumberSelection) {
                 ActionSheet(title: Text("Select a Phone Number"), buttons: phoneNumbers.map { phoneNumber in
                         .default(Text(phoneNumber.stringValue)) {
-                            contact.phoneNumber = phoneNumber.stringValue
+                            if isValidUSPhoneNumber(phoneNumber.stringValue) {
+                                contact.phoneNumber = phoneNumber.stringValue
+                            } else {
+                                contact.isSelected = false
+                                contact.displayName = ""
+                                contact.phoneNumber = ""
+                                alertMessage = "The selected contact does not have a valid phone number. Please select a contact with a US phone number."
+                                alert = true
+                            }
                             showPhoneNumberSelection = false
                         }
                 })
@@ -64,6 +72,11 @@ struct EmergencyContactPicker: View {
                 Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
         }
+    }
+    
+    private func isValidUSPhoneNumber(_ phoneNumber: String) -> Bool {
+        let usPhoneNumberRegex = "^(?:\\+1|1)?[-.\\s]?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}$"
+        return phoneNumber.range(of: usPhoneNumberRegex, options: .regularExpression) != nil
     }
 }
 

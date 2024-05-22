@@ -55,8 +55,9 @@ struct EmergencyContactPicker: View {
             .actionSheet(isPresented: $showPhoneNumberSelection) {
                 ActionSheet(title: Text("Select a Phone Number"), buttons: phoneNumbers.map { phoneNumber in
                         .default(Text(phoneNumber.stringValue)) {
-                            let formattedNumber = PhoneNumberFormatter.format(phone: phoneNumber.stringValue) ?? ""
-                            if isValidUSPhoneNumber(formattedNumber) {
+                            contact.phoneNumber = phoneNumber.stringValue
+                            if isValidUSPhoneNumber(phoneNumber.stringValue) {
+                                let formattedNumber = PhoneNumberFormatter.format(phone: phoneNumber.stringValue) ?? ""
                                 contact.phoneNumber = formattedNumber
                             } else {
                                 contact.isSelected = false
@@ -120,8 +121,8 @@ struct EmergencyContactPickerView: UIViewControllerRepresentable {
             let phoneNumbers = contact.phoneNumbers
             if phoneNumbers.count == 1 {
                 let phoneNumber = phoneNumbers.first?.value.stringValue ?? ""
-                let formattedNumber = PhoneNumberFormatter.format(phone: phoneNumber) ?? ""
-                if isValidUSPhoneNumber(formattedNumber) {
+                if isValidUSPhoneNumber(phoneNumber) {
+                    let formattedNumber = PhoneNumberFormatter.format(phone: phoneNumber) ?? ""
                     parent.contact.phoneNumber = formattedNumber
                 } else {
                     parent.contact.displayName = ""

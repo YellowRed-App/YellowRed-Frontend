@@ -1015,10 +1015,10 @@ struct EditYellowMessageView: View {
                 
                 if !isEditing && editingTemplate == nil {
                     Button(action: {
-                        valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
+                        valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) || !customMessage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                         if valid {
                             if let userUID = Auth.auth().currentUser?.uid {
-                                let yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
+                                let yellowMessage = (selectedTemplate != nil ? messageTemplates[selectedTemplate!].trimmingCharacters(in: .whitespacesAndNewlines) : customMessage).trimmingCharacters(in: .whitespacesAndNewlines)
                                 if containsLink(yellowMessage) {
                                     customMessage = ""
                                     alert = true

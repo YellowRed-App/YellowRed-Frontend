@@ -55,8 +55,9 @@ struct EmergencyContactPicker: View {
             .actionSheet(isPresented: $showPhoneNumberSelection) {
                 ActionSheet(title: Text("Select a Phone Number"), buttons: phoneNumbers.map { phoneNumber in
                         .default(Text(phoneNumber.stringValue)) {
-                            if isValidUSPhoneNumber(phoneNumber.stringValue) {
-                                contact.phoneNumber = phoneNumber.stringValue
+                            let formattedNumber = PhoneNumberFormatter.format(phone: phoneNumber.stringValue) ?? ""
+                            if isValidUSPhoneNumber(formattedNumber) {
+                                contact.phoneNumber = formattedNumber
                             } else {
                                 contact.isSelected = false
                                 contact.displayName = ""
@@ -118,11 +119,22 @@ struct EmergencyContactPickerView: UIViewControllerRepresentable {
             
             let phoneNumbers = contact.phoneNumbers
             if phoneNumbers.count == 1 {
-                parent.contact.phoneNumber = phoneNumbers.first?.value.stringValue ?? ""
+                let phoneNumber = phoneNumbers.first?.value.stringValue ?? ""
+                let formattedNumber = PhoneNumberFormatter.format(phone: phoneNumber) ?? ""
+                if isValidUSPhoneNumber(formattedNumber) {
+                    parent.contact.phoneNumber = formattedNumber
+                } else {
+                    parent.contact.displayName = ""
+                    parent.contact.phoneNumber = ""
+                    parent.contact.isSelected = false
+                    parent.alertMessage = "The selected contact does not have a valid phone number. Please select a contact with a US phone number."
+                    parent.alert = true
+                }
             } else if phoneNumbers.count > 1 {
                 parent.phoneNumbers = phoneNumbers.map { $0.value }
                 parent.showPhoneNumberSelection = true
             } else {
+                parent.contact.displayName = ""
                 parent.contact.phoneNumber = ""
                 parent.contact.isSelected = false
                 parent.alertMessage = "The selected contact does not have a phone number. Please select a contact with a phone number."
@@ -134,6 +146,11 @@ struct EmergencyContactPickerView: UIViewControllerRepresentable {
             parent.contact.isSelected = false
             parent.contact.displayName = ""
             parent.contact.phoneNumber = ""
+        }
+        
+        private func isValidUSPhoneNumber(_ phoneNumber: String) -> Bool {
+            let usPhoneNumberRegex = "^(?:\\+1|1)?[-.\\s]?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}$"
+            return phoneNumber.range(of: usPhoneNumberRegex, options: .regularExpression) != nil
         }
     }
 }

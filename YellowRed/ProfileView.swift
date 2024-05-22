@@ -1018,17 +1018,24 @@ struct EditYellowMessageView: View {
                         valid = (selectedTemplate != nil && !messageTemplates[selectedTemplate!].isEmpty) || !customMessage.isEmpty
                         if valid {
                             if let userUID = Auth.auth().currentUser?.uid {
-                                userViewModel.updateYellowRedMessages(userId: userUID, yellowMessage: selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage, redMessage: userViewModel.redMessage) { result in
-                                    switch result {
-                                    case .success:
-                                        userViewModel.yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
-                                        editYellowMessage = false
-                                        viewLoaded = false
-                                        presentationMode.wrappedValue.dismiss()
-                                    case .failure:
-                                        error = true
-                                        alert = true
-                                        alertMessage = "Failed to update yellow message."
+                                let yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
+                                if containsLink(yellowMessage) {
+                                    customMessage = ""
+                                    alert = true
+                                    alertMessage = "The yellow message should not contain a link."
+                                } else {
+                                    userViewModel.updateYellowRedMessages(userId: userUID, yellowMessage: yellowMessage, redMessage: userViewModel.redMessage) { result in
+                                        switch result {
+                                        case .success:
+                                            userViewModel.yellowMessage = selectedTemplate != nil ? messageTemplates[selectedTemplate!] : customMessage
+                                            editYellowMessage = false
+                                            viewLoaded = false
+                                            presentationMode.wrappedValue.dismiss()
+                                        case .failure:
+                                            error = true
+                                            alert = true
+                                            alertMessage = "Failed to update yellow message."
+                                        }
                                     }
                                 }
                             }
@@ -1062,6 +1069,12 @@ struct EditYellowMessageView: View {
         }
         .navigationBarBackButtonHidden(true)
         .endEditingOnTap()
+    }
+    
+    private func containsLink(_ text: String) -> Bool {
+        let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+        let matches = detector?.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) ?? []
+        return !matches.isEmpty
     }
 }
 

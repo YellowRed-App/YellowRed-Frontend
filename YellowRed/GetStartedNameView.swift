@@ -64,8 +64,10 @@ struct GetStartedNameView: View {
                     }
                     
                     Button(action: {
-                        validator.validateFullName(fullName)
+                        let trimmedName = fullName.trimmingCharacters(in: .whitespacesAndNewlines)
+                        validator.validateFullName(trimmedName)
                         if validator.isFullNameValid {
+                            fullName = trimmedName
                             next = true
                         }
                     }) {

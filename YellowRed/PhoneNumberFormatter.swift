@@ -9,13 +9,19 @@ import Foundation
 
 final class PhoneNumberFormatter {
     static func format(phone: String) -> String? {
-        let numbers = phone.components(separatedBy: CharacterSet.decimalDigits.inverted)
-        let pureNumber = numbers.joined()
+        var pureNumber = phone.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        
+        if pureNumber.hasPrefix("1") {
+            pureNumber.removeFirst()
+        }
         
         var finalText = ""
         var index = 0
         
         for char in pureNumber {
+            if index == 0 {
+                finalText += "("
+            }
             if index == 3 {
                 finalText += ") "
             }

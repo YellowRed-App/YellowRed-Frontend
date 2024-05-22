@@ -231,7 +231,7 @@ struct RedMessageNoteView: View {
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 25)
                     
-                    Text("These cannot be changed.")
+                    Text("These cannot be customized.")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)

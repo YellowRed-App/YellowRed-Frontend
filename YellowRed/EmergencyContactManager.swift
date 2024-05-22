@@ -24,6 +24,8 @@ struct EmergencyContactPicker: View {
     @State private var isContactPickerPresented = false
     @State private var showPhoneNumberSelection = false
     @State private var phoneNumbers: [CNPhoneNumber] = []
+    @State private var alert = false
+    @State private var alertMessage = ""
     @Binding var contact: EmergencyContact
     
     var body: some View {
@@ -42,7 +44,7 @@ struct EmergencyContactPicker: View {
             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
             .sheet(isPresented: $isContactPickerPresented) {
                 NavigationView {
-                    EmergencyContactPickerView(showPhoneNumberSelection: $showPhoneNumberSelection, phoneNumbers: $phoneNumbers, contact: $contact)
+                    EmergencyContactPickerView(showPhoneNumberSelection: $showPhoneNumberSelection, phoneNumbers: $phoneNumbers, contact: $contact, alert: $alert, alertMessage: $alertMessage)
                         .navigationBarItems(
                             leading: Button("Cancel") {
                                 isContactPickerPresented = false
@@ -58,6 +60,9 @@ struct EmergencyContactPicker: View {
                         }
                 })
             }
+            .alert(isPresented: $alert) {
+                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
         }
     }
 }
@@ -66,6 +71,8 @@ struct EmergencyContactPickerView: UIViewControllerRepresentable {
     @Binding var showPhoneNumberSelection: Bool
     @Binding var phoneNumbers: [CNPhoneNumber]
     @Binding var contact: EmergencyContact
+    @Binding var alert: Bool
+    @Binding var alertMessage: String
     
     func makeUIViewController(context: Context) -> some UIViewController {
         let contactPicker = CNContactPickerViewController()
@@ -87,7 +94,13 @@ struct EmergencyContactPickerView: UIViewControllerRepresentable {
         }
         
         func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
-            parent.contact.displayName = CNContactFormatter.string(from: contact, style: .fullName) ?? ""
+            guard let displayName = CNContactFormatter.string(from: contact, style: .fullName), !displayName.isEmpty else {
+                parent.alertMessage = "The selected contact does not have a display name. Please select a contact with a display name."
+                parent.alert = true
+                return
+            }
+            
+            parent.contact.displayName = displayName
             parent.contact.isSelected = true
             
             let phoneNumbers = contact.phoneNumbers
@@ -99,6 +112,8 @@ struct EmergencyContactPickerView: UIViewControllerRepresentable {
             } else {
                 parent.contact.phoneNumber = ""
                 parent.contact.isSelected = false
+                parent.alertMessage = "The selected contact does not have a phone number. Please select a contact with a phone number."
+                parent.alert = true
             }
         }
         

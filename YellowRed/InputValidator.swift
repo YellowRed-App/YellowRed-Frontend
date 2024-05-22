@@ -19,7 +19,7 @@ final class InputValidator: ObservableObject {
     @Published var areEmergencyContactsValid: Bool = false
     
     func validateFullName(_ fullName: String) {
-        let nameRegex = "^[a-zA-Z\\.\\'\\-]{2,50}(?: [a-zA-Z\\.\\'\\-]{2,50})+$"
+        let nameRegex = "^[a-zA-Z\\.\\,\\'\\u2019\\-]{2,50}(?: [a-zA-Z\\.\\,\\'\\u2019\\-]{2,50})+$"
         let namePredicate = NSPredicate(format: "SELF MATCHES %@", nameRegex)
         isFullNameValid = namePredicate.evaluate(with: fullName)
     }
@@ -31,7 +31,7 @@ final class InputValidator: ObservableObject {
     }
     
     func validateEmailAddress(_ emailAddress: String) {
-        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailRegex = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         isEmailAddressValid = emailPredicate.evaluate(with: emailAddress)
     }

@@ -20,9 +20,9 @@ final class NotificationManager: NSObject, ObservableObject, UNUserNotificationC
     }
     
     func requestNotificationPermission() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {_,_ in
             DispatchQueue.main.async {
-                self.next = granted
+                self.next = true
             }
         }
     }

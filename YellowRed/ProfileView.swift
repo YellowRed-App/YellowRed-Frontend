@@ -10,6 +10,7 @@ import SwiftUI
 import FirebaseAuth
 
 struct ProfileView: View {
+    @Environment(\.presentationMode) var presentationMode
     @StateObject private var userViewModel = UserViewModel()
     
     var body: some View {
@@ -62,6 +63,7 @@ struct ProfileView: View {
                 }
             }
             .background(.white)
+            .gesture(dragToDismissGesture())
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())
@@ -97,6 +99,15 @@ struct ProfileView: View {
                 }
             }
         }
+    }
+    
+    private func dragToDismissGesture() -> some Gesture {
+        DragGesture()
+            .onChanged { value in
+                if value.translation.width > 100 && value.startLocation.x < 20 {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+            }
     }
 }
 

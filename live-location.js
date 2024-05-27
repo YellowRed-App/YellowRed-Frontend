@@ -13,6 +13,7 @@ const db = firebase.firestore();
 
 let map;
 let poly;
+let currentMarker = null;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
@@ -55,7 +56,12 @@ function updateMapWithLocation(locationData) {
     const path = poly.getPath();
 
     path.push(latLng);
-    new google.maps.Marker({
+
+    if (currentMarker) {
+        currentMarker.setMap(null);
+    }
+
+    currentMarker = new google.maps.Marker({
         position: latLng, map: map
     });
     map.setCenter(latLng);

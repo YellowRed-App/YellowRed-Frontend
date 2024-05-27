@@ -16,7 +16,7 @@ let poly;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
-        center: {lat: 38.0293, lng: -78.4767}, zoom: 16
+        center: {lat: 38.0360, lng: -78.5030}, zoom: 16
     });
 
     poly = new google.maps.Polyline({

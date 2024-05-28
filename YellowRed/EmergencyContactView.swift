@@ -56,7 +56,7 @@ struct EmergencyContactView: View {
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     
-                    Text("Please get started by choosing 1-3 emergency contacts. You will be able to change this later.")
+                    Text("Please get started by choosing up to three emergency contacts. You will be able to change this later.")
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
@@ -183,7 +183,7 @@ struct EmergencyContactNoteView: View {
                 .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    Text("YellowRed allows you to communicate with three emergency contacts.")
+                    Text("YellowRed allows you to communicate with up to three emergency contacts.")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)

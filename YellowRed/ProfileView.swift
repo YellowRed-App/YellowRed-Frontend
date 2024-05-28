@@ -561,47 +561,77 @@ struct EditEmergencyContactView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
                 VStack(spacing: 15) {
-                    ForEach(0..<3, id: \.self) { index in
-                        EmergencyContactPicker(contact: $userViewModel.emergencyContacts[index])
-                            .font(.title3)
-                            .background(.white)
-                            .cornerRadius(10)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(
-                                        LinearGradient(
-                                            colors: [.yellow, .red],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        ), lineWidth: 2.5)
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.red, lineWidth: saveButtonClicked && (!validator.emergencyContactsSelected.contains(index) || validator.emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
-                            )
-                            .padding(.vertical, 5)
+                    ForEach($userViewModel.emergencyContacts.indices, id: \.self) { index in
+                        HStack {
+                            EmergencyContactPicker(contact: $userViewModel.emergencyContacts[index])
+                                .font(.title3)
+                                .background(.white)
+                                .cornerRadius(10)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(
+                                            LinearGradient(
+                                                colors: [.yellow, .red],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            ), lineWidth: 2.5)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.red, lineWidth: saveButtonClicked && (!validator.emergencyContactsSelected.contains(index) || validator.emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
+                                )
+                                .padding(.vertical, 5)
+                            
+                            Button(action: {
+                                if userViewModel.emergencyContacts.count > 1 {
+                                    userViewModel.emergencyContacts.remove(at: index)
+                                }
+                            }) {
+                                Image(systemName: "minus.circle.fill")
+                                    .foregroundColor(.red)
+                                    .font(.title)
+                            }
+                            .disabled(userViewModel.emergencyContacts.count <= 1)
+                        }
                     }
                 }
+                .padding(.horizontal, 20)
                 
-                if saveButtonClicked && validator.emergencyContactsSelected.count != 3 {
-                    Text("Please choose three emergency contacts!")
+                if saveButtonClicked && (validator.emergencyContactsSelected.count < 1 || validator.emergencyContactsSelected.count > 3) {
+                    Text("Please choose one to three emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20)
                 }
                 
-                if validator.emergencyContactsSelected.count == 3 && !validator.emergencyContactsDuplicated.isEmpty {
-                    Text("Please choose three unique emergency contacts!")
+                if validator.emergencyContactsSelected.count >= 1 && validator.emergencyContactsSelected.count <= 3 && !validator.emergencyContactsDuplicated.isEmpty {
+                    Text("Please choose one to three unique emergency contacts!")
                         .font(.subheadline)
                         .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20)
                 }
+                
+                Button(action: {
+                    if userViewModel.emergencyContacts.count < 3 {
+                        userViewModel.emergencyContacts.append(EmergencyContact())
+                    }
+                }) {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.green)
+                        .font(.title)
+                }
+                .disabled(userViewModel.emergencyContacts.count >= 3)
+                .opacity(userViewModel.emergencyContacts.count >= 3 ? 0 : 1)
                 
                 Spacer()
                 
                 Button(action: {
                     saveButtonClicked = true
                     validator.validateEmergencyContacts(userViewModel.emergencyContacts)
-                    if validator.emergencyContactsSelected.count == 3 && validator.emergencyContactsDuplicated.isEmpty {
+                    if validator.areEmergencyContactsValid {
                         if let userUID = Auth.auth().currentUser?.uid {
                             userViewModel.updateEmergencyContacts(userId: userUID, emergencyContacts: userViewModel.emergencyContacts, completion: { result in
                                 switch result {
@@ -615,11 +645,11 @@ struct EditEmergencyContactView: View {
                         }
                     } else {
                         alert = true
-                        if validator.emergencyContactsSelected.count != 3 {
-                            alertMessage = "You have not chosen three emergency contacts!"
+                        if validator.emergencyContactsSelected.count < 1 || validator.emergencyContactsSelected.count > 3 {
+                            alertMessage = "You have not chosen one to three emergency contacts!"
                         }
                         if !validator.emergencyContactsDuplicated.isEmpty {
-                            alertMessage = "You have not chosen three unique emergency contacts!"
+                            alertMessage = "You have not chosen one to three unique emergency contacts!"
                         }
                     }
                 }) {

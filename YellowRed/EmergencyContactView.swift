@@ -56,7 +56,7 @@ struct EmergencyContactView: View {
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                     
-                    Text("Please get started by choosing three emergency contacts. You will be able to change this later.")
+                    Text("Please get started by choosing 1-3 emergency contacts. You will be able to change this later.")
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
@@ -65,32 +65,57 @@ struct EmergencyContactView: View {
                         .padding(.horizontal, 20)
                     
                     VStack(spacing: 15) {
-                        ForEach(0..<3, id: \.self) { index in
-                            EmergencyContactPicker(contact: $emergencyContacts[index])
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(.black, lineWidth: nextButtonClicked && (!validator.emergencyContactsSelected.contains(index) || validator.emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
-                                )
+                        ForEach($emergencyContacts.indices, id: \.self) { index in
+                            HStack {
+                                EmergencyContactPicker(contact: $emergencyContacts[index])
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(.black, lineWidth: nextButtonClicked && (!validator.emergencyContactsSelected.contains(index) || validator.emergencyContactsDuplicated.contains(index)) ? 2.5 : 0)
+                                    )
+                                
+                                Button(action: {
+                                    if emergencyContacts.count > 1 {
+                                        emergencyContacts.remove(at: index)
+                                    }
+                                }) {
+                                    Image(systemName: "minus.circle.fill")
+                                        .foregroundColor(.white)
+                                        .font(.title)
+                                }
+                                .disabled(emergencyContacts.count <= 1)
+                            }
                         }
                     }
                     .padding(.horizontal, 20)
                     
-                    if nextButtonClicked && validator.emergencyContactsSelected.count != emergencyContacts.count {
-                        Text("Please choose three emergency contacts!")
+                    if nextButtonClicked && (validator.emergencyContactsSelected.count < 1 || validator.emergencyContactsSelected.count > 3) {
+                        Text("Please choose one to three emergency contacts!")
                             .font(.subheadline)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 20)
                     }
                     
-                    if validator.emergencyContactsSelected.count == emergencyContacts.count && !validator.emergencyContactsDuplicated.isEmpty {
-                        Text("Please choose three unique emergency contacts!")
+                    if validator.emergencyContactsSelected.count >= 1 && validator.emergencyContactsSelected.count <= 3 && !validator.emergencyContactsDuplicated.isEmpty {
+                        Text("Please choose one to three unique emergency contacts!")
                             .font(.subheadline)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 20)
                     }
                     
+                    Button(action: {
+                        if emergencyContacts.count < 3 {
+                            emergencyContacts.append(EmergencyContact())
+                        }
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundColor(.white)
+                            .font(.title)
+                    }
+                    .disabled(emergencyContacts.count >= 3)
+                    .opacity(emergencyContacts.count >= 3 ? 0 : 1)
+
                     Spacer()
                     
                     Button(action: {

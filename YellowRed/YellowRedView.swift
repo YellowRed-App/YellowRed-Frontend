@@ -254,7 +254,11 @@ struct YellowButtonView: View {
     
     @Binding var yellowButton: Bool
     
+    @State private var extendButton: Bool = false
+    
     @State private var flash: Bool = false
+    
+    @State private var alert = false
     
     @StateObject private var userViewModel = UserViewModel()
     
@@ -284,11 +288,42 @@ struct YellowButtonView: View {
                 Spacer()
                 
                 Button(action: {
+                    extendYellowButton()
+                    alert = true
+                    extendButton = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1800) {
+                        extendButton = true
+                    }
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(.white)
+                            .frame(width: 150, height: 150)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        Text("Extend")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.red)
+                    }
+                }
+                .alert(isPresented: $alert) {
+                    Alert(
+                        title: Text("Extension Confirmed"),
+                        message: Text("The Yellow Button's active period has been extended by 60 minutes."),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
+                .opacity(extendButton ? 1 : 0)
+                .disabled(extendButton ? false : true)
+                
+                Spacer()
+                
+                Button(action: {
                     yellowButton = false
                     deactivateYellowButton()
                     presentationMode.wrappedValue.dismiss()
                 }) {
-                    Text("Deactivate Yellow Button")
+                    Text("Deactivate")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -299,14 +334,19 @@ struct YellowButtonView: View {
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
-                        .padding(.bottom, 100)
+                        .padding(.bottom, 50)
                 }
             }
             .padding(.horizontal, 50)
             .padding(.bottom, 50)
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear(perform: activateYellowButton)
+        .onAppear {
+            activateYellowButton()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1800) {
+                extendButton = true
+            }
+        }
     }
     
     private func activateYellowButton() {
@@ -332,6 +372,11 @@ struct YellowButtonView: View {
         stopFlashing()
         locationManager.deactivateButton()
         GlobalHapticManager.shared.stopHapticFeedback()
+    }
+    
+    private func extendYellowButton() {
+        locationManager.extendDeactivationTimer()
+        GlobalHapticManager.shared.triggerHapticFeedback(3)
     }
     
     private func fetchAllData(userId: String, completion: @escaping () -> Void) {

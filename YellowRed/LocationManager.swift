@@ -256,6 +256,17 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         }
     }
     
+    private func beginBackgroundUpdateTask() {
+        bgTask = UIApplication.shared.beginBackgroundTask {
+            self.endBackgroundUpdateTask()
+        }
+    }
+    
+    private func endBackgroundUpdateTask() {
+        UIApplication.shared.endBackgroundTask(self.bgTask)
+        self.bgTask = .invalid
+    }
+    
     func startUpdatingLocation() {
         locationManager?.startUpdatingLocation()
     }

@@ -616,14 +616,9 @@ struct RedButtonView: View {
 }
 
 struct YellowRedView_Previews: PreviewProvider {
-    @State static var yellowButton = false
-    @State static var redButton = false
     static var previews: some View {
-        YellowRedView()
-            .environmentObject(GlobalHapticManager.shared)
-        YellowButtonView()
-            .environmentObject(GlobalHapticManager.shared)
-        RedButtonView()
-            .environmentObject(GlobalHapticManager.shared)
+        YellowRedView().environmentObject(GlobalHapticManager.shared)
+        YellowButtonView().environmentObject(GlobalHapticManager.shared)
+        RedButtonView().environmentObject(GlobalHapticManager.shared)
     }
 }

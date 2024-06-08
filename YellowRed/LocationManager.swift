@@ -215,6 +215,13 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         }
     }
     
+    func extendDeactivationTimer() {
+        deactivationTimer?.invalidate()
+        deactivationTimer = Timer.scheduledTimer(withTimeInterval: 3600, repeats: false) { [weak self] _ in
+            self?.deactivateButton()
+        }
+    }
+    
     private func markDeleteSessionForYellowButton(userUID: String, sessionId: String) {
         let sessionRef = db.collection("users").document(userUID).collection("sessions").document(sessionId)
         

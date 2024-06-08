@@ -260,11 +260,7 @@ struct YellowButtonView: View {
     
     @AppStorage("YellowButtonActivated") var yellowButtonActivated: Bool = false
     
-    @State private var extendButton: Bool = false
-    
     @State private var flash: Bool = false
-    
-    @State private var alert = false
     
     @StateObject private var userViewModel = UserViewModel()
     
@@ -294,41 +290,9 @@ struct YellowButtonView: View {
                 Spacer()
                 
                 Button(action: {
-                    extendYellowButton()
-                    alert = true
-                    extendButton = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1800) {
-                        extendButton = true
-                    }
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 150, height: 150)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                        Text("Extend")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.red)
-                    }
-                }
-                .alert(isPresented: $alert) {
-                    Alert(
-                        title: Text("Extension Confirmed"),
-                        message: Text("The Yellow Button's active period has been extended by 60 minutes."),
-                        dismissButton: .default(Text("OK"))
-                    )
-                }
-                .opacity(extendButton ? 1 : 0)
-                .disabled(extendButton ? false : true)
-                
-                Spacer()
-                
-                Button(action: {
-                    yellowButton = false
                     deactivateYellowButton()
                 }) {
-                    Text("Deactivate")
+                    Text("Deactivate Yellow Button")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -339,19 +303,14 @@ struct YellowButtonView: View {
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 100)
                 }
             }
             .padding(.horizontal, 50)
             .padding(.bottom, 50)
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-            activateYellowButton()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1800) {
-                extendButton = true
-            }
-        }
+        .onAppear(perform: activateYellowButton)
         .onChange(of: yellowButtonActivated) { isActive in
             if !isActive {
                 presentationMode.wrappedValue.dismiss()
@@ -383,11 +342,6 @@ struct YellowButtonView: View {
         locationManager.deactivateButton()
         GlobalHapticManager.shared.stopHapticFeedback()
         yellowButtonActivated = false
-    }
-    
-    private func extendYellowButton() {
-        locationManager.extendDeactivationTimer()
-        GlobalHapticManager.shared.triggerHapticFeedback(3)
     }
     
     private func fetchAllData(userId: String, completion: @escaping () -> Void) {
@@ -436,12 +390,8 @@ struct RedButtonView: View {
     
     @AppStorage("RedButtonActivated") var redButtonActivated: Bool = false
     
-    @State private var extendButton: Bool = false
-    
     @State private var flash: Bool = false
-    
-    @State private var extendAlert: Bool = false
-    @State private var deactivateAlert: Bool = false
+    @State private var alert: Bool = false
     
     @StateObject private var userViewModel = UserViewModel()
     
@@ -469,42 +419,11 @@ struct RedButtonView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 
                 Spacer()
-
-                Button(action: {
-                    extendRedButton()
-                    extendAlert = true
-                    extendButton = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1800) {
-                        extendButton = true
-                    }
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 150, height: 150)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                        Text("Extend")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.yellow)
-                    }
-                }
-                .alert(isPresented: $extendAlert) {
-                    Alert(
-                        title: Text("Extension Confirmed"),
-                        message: Text("The Red Button's active period has been extended by 60 minutes."),
-                        dismissButton: .default(Text("OK"))
-                    )
-                }
-                .opacity(extendButton ? 1 : 0)
-                .disabled(extendButton ? false : true)
-                
-                Spacer()
                 
                 Button(action: {
-                    deactivateAlert = true
+                    alert = true
                 }) {
-                    Text("Deactivate")
+                    Text("Deactivate Red Button")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -515,9 +434,9 @@ struct RedButtonView: View {
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 100)
                 }
-                .alert(isPresented: $deactivateAlert) {
+                .alert(isPresented: $alert) {
                     Alert(
                         title: Text("Are you sure you are ok and want to deactivate the red button?"),
                         primaryButton: .destructive(Text("No, I'm not ok")),
@@ -531,12 +450,7 @@ struct RedButtonView: View {
             .padding(.bottom, 50)
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-            activateRedButton()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1800) {
-                extendButton = true
-            }
-        }
+        .onAppear(perform: activateRedButton)
         .onChange(of: redButtonActivated) { isActive in
             if !isActive {
                 presentationMode.wrappedValue.dismiss()
@@ -568,11 +482,6 @@ struct RedButtonView: View {
         locationManager.deactivateButton()
         GlobalHapticManager.shared.stopHapticFeedback()
         redButtonActivated = false
-    }
-    
-    private func extendRedButton() {
-        locationManager.extendDeactivationTimer()
-        GlobalHapticManager.shared.triggerHapticFeedback(3)
     }
     
     private func fetchAllData(userId: String, completion: @escaping () -> Void) {

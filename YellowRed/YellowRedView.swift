@@ -325,6 +325,7 @@ struct YellowButtonView: View {
                 Spacer()
                 
                 Button(action: {
+                    yellowButton = false
                     deactivateYellowButton()
                 }) {
                     Text("Deactivate")

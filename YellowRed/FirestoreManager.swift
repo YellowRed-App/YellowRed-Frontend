@@ -39,7 +39,6 @@ class FirestoreManager {
         let contactsRef = db.collection("users").document(userId).collection("emergencyContacts")
         contactsRef.getDocuments { snapshot, error in
             if let error = error {
-                print("Error")
                 completion(.failure(error))
                 return
             }

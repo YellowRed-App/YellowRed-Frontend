@@ -26,6 +26,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     private var activeButton: ButtonState = .none
     private var deactivationTimer: Timer?
     private var sessionId: String?
+    private var bgTask: UIBackgroundTaskIdentifier = .invalid
     private let db = Firestore.firestore()
     
     override init() {
@@ -34,6 +35,9 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         locationManager?.delegate = self
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         locationManager?.distanceFilter = kCLDistanceFilterNone
+        locationManager?.allowsBackgroundLocationUpdates = true
+        locationManager?.showsBackgroundLocationIndicator = true
+        locationManager?.pausesLocationUpdatesAutomatically = false
     }
     
     func fetchData(completion: @escaping () -> Void) {
@@ -115,9 +119,11 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     }
     
     func activateButton(userId: String, button buttonState: ButtonState, completion: @escaping () -> Void) {
+        beginBackgroundUpdateTask()
         fetchData {
             guard let userUID = Auth.auth().currentUser?.uid else {
                 print("Data is not ready!")
+                self.endBackgroundUpdateTask()
                 completion()
                 return
             }
@@ -148,6 +154,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
             ]) { [weak self] error in
                 if let error = error {
                     print("Error starting session: \(error)")
+                    self?.endBackgroundUpdateTask()
                 } else {
                     print("Session started with ID: \(newSessionId)")
                     self?.activeButton = buttonState
@@ -173,6 +180,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     }
     
     func deactivateButton() {
+        endBackgroundUpdateTask()
         fetchData {
             guard let userUID = Auth.auth().currentUser?.uid else { return }
             
@@ -254,6 +262,17 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                 print("Session for red button marked for deletion successfully.")
             }
         }
+    }
+    
+    private func beginBackgroundUpdateTask() {
+        bgTask = UIApplication.shared.beginBackgroundTask {
+            self.endBackgroundUpdateTask()
+        }
+    }
+    
+    private func endBackgroundUpdateTask() {
+        UIApplication.shared.endBackgroundTask(self.bgTask)
+        self.bgTask = .invalid
     }
     
     func startUpdatingLocation() {

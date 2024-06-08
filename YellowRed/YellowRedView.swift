@@ -26,8 +26,8 @@ struct YellowRedView: View {
     @State private var isPressingYellowButton: Bool = false
     @State private var isPressingRedButton: Bool = false
     
-    @State private var navigateToYellowButtonView = UserDefaults.standard.bool(forKey: "YellowButtonActivated")
-    @State private var navigateToRedButtonView = UserDefaults.standard.bool(forKey: "RedButtonActivated")
+    @AppStorage("YellowButtonActivated") var navigateToYellowButtonView: Bool = false
+    @AppStorage("RedButtonActivated") var navigateToRedButtonView: Bool = false
     
     @StateObject private var locationManager = LocationManager()
     
@@ -74,7 +74,7 @@ struct YellowRedView: View {
                                 }
                             }, perform: { })
                             .fullScreenCover(isPresented: $yellowButton) {
-                                YellowButtonView(yellowButton: $yellowButton)
+                                YellowButtonView()
                             }
                         
                         if isPressingYellowButton {
@@ -105,7 +105,7 @@ struct YellowRedView: View {
                                 }
                             }, perform: { })
                             .fullScreenCover(isPresented: $redButton) {
-                                RedButtonView(redButton: $redButton)
+                                RedButtonView()
                             }
                         
                         if isPressingRedButton {
@@ -175,6 +175,12 @@ struct YellowRedView: View {
                 }
                 GlobalHapticManager.shared.startHapticEngine()
             }
+        }
+        .onChange(of: navigateToYellowButtonView) { newValue in
+            yellowButton = newValue
+        }
+        .onChange(of: navigateToRedButtonView) { newValue in
+            redButton = newValue
         }
         .navigationBarBackButtonHidden(true)
     }
@@ -252,7 +258,7 @@ struct YellowRedView: View {
 struct YellowButtonView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    @Binding var yellowButton: Bool
+    @AppStorage("YellowButtonActivated") var yellowButtonActivated: Bool = false
     
     @State private var flash: Bool = false
     
@@ -284,9 +290,7 @@ struct YellowButtonView: View {
                 Spacer()
                 
                 Button(action: {
-                    yellowButton = false
                     deactivateYellowButton()
-                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Deactivate Yellow Button")
                         .font(.title2)
@@ -307,6 +311,11 @@ struct YellowButtonView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateYellowButton)
+        .onChange(of: yellowButtonActivated) { isActive in
+            if !isActive {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
     
     private func activateYellowButton() {
@@ -332,6 +341,7 @@ struct YellowButtonView: View {
         stopFlashing()
         locationManager.deactivateButton()
         GlobalHapticManager.shared.stopHapticFeedback()
+        yellowButtonActivated = false
     }
     
     private func fetchAllData(userId: String, completion: @escaping () -> Void) {
@@ -378,7 +388,7 @@ struct YellowButtonView: View {
 struct RedButtonView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    @Binding var redButton: Bool
+    @AppStorage("RedButtonActivated") var redButtonActivated: Bool = false
     
     @State private var flash: Bool = false
     @State private var alert: Bool = false
@@ -431,9 +441,7 @@ struct RedButtonView: View {
                         title: Text("Are you sure you are ok and want to deactivate the red button?"),
                         primaryButton: .destructive(Text("No, I'm not ok")),
                         secondaryButton: .cancel(Text("Yes, I'm ok")) {
-                            redButton = false
                             deactivateRedButton()
-                            presentationMode.wrappedValue.dismiss()
                         }
                     )
                 }
@@ -443,6 +451,11 @@ struct RedButtonView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: activateRedButton)
+        .onChange(of: redButtonActivated) { isActive in
+            if !isActive {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
     
     private func activateRedButton() {
@@ -468,6 +481,7 @@ struct RedButtonView: View {
         stopFlashing()
         locationManager.deactivateButton()
         GlobalHapticManager.shared.stopHapticFeedback()
+        redButtonActivated = false
     }
     
     private func fetchAllData(userId: String, completion: @escaping () -> Void) {
@@ -517,9 +531,9 @@ struct YellowRedView_Previews: PreviewProvider {
     static var previews: some View {
         YellowRedView()
             .environmentObject(GlobalHapticManager.shared)
-        YellowButtonView(yellowButton: $yellowButton)
+        YellowButtonView()
             .environmentObject(GlobalHapticManager.shared)
-        RedButtonView(redButton: $redButton)
+        RedButtonView()
             .environmentObject(GlobalHapticManager.shared)
     }
 }

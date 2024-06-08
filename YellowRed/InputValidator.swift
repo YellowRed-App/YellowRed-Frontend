@@ -50,7 +50,9 @@ final class InputValidator: ObservableObject {
         emergencyContactsSelected = Set(emergencyContacts.indices.filter({ emergencyContacts[$0].isSelected }))
         emergencyContactsDuplicated = []
         
-        if emergencyContactsSelected.count == emergencyContacts.count && emergencyContactsDuplicated.isEmpty {
+        let allPickersSelected = emergencyContacts.count >= 1 && emergencyContacts.count <= 3 && emergencyContacts.allSatisfy { $0.isSelected && !$0.phoneNumber.isEmpty }
+
+        if allPickersSelected {
             let phoneNumbers = emergencyContacts.map({ $0.phoneNumber })
             let duplicatePhoneNumbers = phoneNumbers.duplicates()
             
@@ -61,7 +63,7 @@ final class InputValidator: ObservableObject {
             }
         }
         
-        if emergencyContactsSelected.count == emergencyContacts.count && emergencyContactsDuplicated.isEmpty {
+        if allPickersSelected && emergencyContactsDuplicated.isEmpty {
             areEmergencyContactsValid = true
         }
     }

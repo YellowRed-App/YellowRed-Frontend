@@ -40,7 +40,6 @@
 		717F74D02A31E7BB00C55AC8 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F74CF2A31E7BB00C55AC8 /* LocationView.swift */; };
 		719F93BA2B303FCA00150A16 /* UserAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F93B92B303FCA00150A16 /* UserAuth.swift */; };
 		71A44D942C15E981001F51BC /* YellowRedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A44D932C15E981001F51BC /* YellowRedApp.swift */; };
-		71A44D962C15E981001F51BC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A44D952C15E981001F51BC /* ContentView.swift */; };
 		71A44D982C15E982001F51BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71A44D972C15E982001F51BC /* Assets.xcassets */; };
 		71A44D9B2C15E982001F51BC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71A44D9A2C15E982001F51BC /* Preview Assets.xcassets */; };
 		71B7B5902A5AD96E003CD5C8 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */; };
@@ -82,7 +81,6 @@
 		719F93B92B303FCA00150A16 /* UserAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuth.swift; sourceTree = "<group>"; };
 		71A44D912C15E981001F51BC /* YellowRed Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "YellowRed Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A44D932C15E981001F51BC /* YellowRedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowRedApp.swift; sourceTree = "<group>"; };
-		71A44D952C15E981001F51BC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		71A44D972C15E982001F51BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71A44D9A2C15E982001F51BC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -187,7 +185,6 @@
 			isa = PBXGroup;
 			children = (
 				71A44D932C15E981001F51BC /* YellowRedApp.swift */,
-				71A44D952C15E981001F51BC /* ContentView.swift */,
 				71A44D972C15E982001F51BC /* Assets.xcassets */,
 				71A44D992C15E982001F51BC /* Preview Content */,
 			);
@@ -356,7 +353,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71A44D962C15E981001F51BC /* ContentView.swift in Sources */,
 				71A44D942C15E981001F51BC /* YellowRedApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

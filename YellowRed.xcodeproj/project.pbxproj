@@ -39,6 +39,10 @@
 		717DFD692BA9BC620051A3D8 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717DFD682BA9BC620051A3D8 /* LoadingView.swift */; };
 		717F74D02A31E7BB00C55AC8 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717F74CF2A31E7BB00C55AC8 /* LocationView.swift */; };
 		719F93BA2B303FCA00150A16 /* UserAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719F93B92B303FCA00150A16 /* UserAuth.swift */; };
+		71A44D942C15E981001F51BC /* YellowRedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A44D932C15E981001F51BC /* YellowRedApp.swift */; };
+		71A44D962C15E981001F51BC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A44D952C15E981001F51BC /* ContentView.swift */; };
+		71A44D982C15E982001F51BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71A44D972C15E982001F51BC /* Assets.xcassets */; };
+		71A44D9B2C15E982001F51BC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71A44D9A2C15E982001F51BC /* Preview Assets.xcassets */; };
 		71B7B5902A5AD96E003CD5C8 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */; };
 		71CF77C92A24D8BC001D81E0 /* GetStartedNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */; };
 		71CF77CB2A25EA81001D81E0 /* GetStartedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */; };
@@ -76,6 +80,11 @@
 		717DFD682BA9BC620051A3D8 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		717F74CF2A31E7BB00C55AC8 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		719F93B92B303FCA00150A16 /* UserAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuth.swift; sourceTree = "<group>"; };
+		71A44D912C15E981001F51BC /* YellowRed Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "YellowRed Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		71A44D932C15E981001F51BC /* YellowRedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YellowRedApp.swift; sourceTree = "<group>"; };
+		71A44D952C15E981001F51BC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		71A44D972C15E982001F51BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		71A44D9A2C15E982001F51BC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		71B7B58F2A5AD96E003CD5C8 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		71CF77C82A24D8BC001D81E0 /* GetStartedNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedNumberView.swift; sourceTree = "<group>"; };
 		71CF77CA2A25EA81001D81E0 /* GetStartedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedEmailView.swift; sourceTree = "<group>"; };
@@ -97,6 +106,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		71A44D8E2C15E981001F51BC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -104,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				71567E8F2A20B92E00A2BB2D /* YellowRed */,
+				71A44D922C15E981001F51BC /* YellowRed Watch App */,
 				71567E8E2A20B92E00A2BB2D /* Products */,
 				71F91B1D2A654F5E008F9209 /* Frameworks */,
 			);
@@ -113,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				71567E8D2A20B92E00A2BB2D /* YellowRed.app */,
+				71A44D912C15E981001F51BC /* YellowRed Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,6 +183,25 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		71A44D922C15E981001F51BC /* YellowRed Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				71A44D932C15E981001F51BC /* YellowRedApp.swift */,
+				71A44D952C15E981001F51BC /* ContentView.swift */,
+				71A44D972C15E982001F51BC /* Assets.xcassets */,
+				71A44D992C15E982001F51BC /* Preview Content */,
+			);
+			path = "YellowRed Watch App";
+			sourceTree = "<group>";
+		};
+		71A44D992C15E982001F51BC /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				71A44D9A2C15E982001F51BC /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		71F91B1D2A654F5E008F9209 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +237,23 @@
 			productReference = 71567E8D2A20B92E00A2BB2D /* YellowRed.app */;
 			productType = "com.apple.product-type.application";
 		};
+		71A44D902C15E981001F51BC /* YellowRed Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 71A44D9E2C15E982001F51BC /* Build configuration list for PBXNativeTarget "YellowRed Watch App" */;
+			buildPhases = (
+				71A44D8D2C15E981001F51BC /* Sources */,
+				71A44D8E2C15E981001F51BC /* Frameworks */,
+				71A44D8F2C15E981001F51BC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "YellowRed Watch App";
+			productName = "YellowRed Watch App";
+			productReference = 71A44D912C15E981001F51BC /* YellowRed Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -207,11 +261,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					71567E8C2A20B92E00A2BB2D = {
 						CreatedOnToolsVersion = 14.2;
+					};
+					71A44D902C15E981001F51BC = {
+						CreatedOnToolsVersion = 15.4;
 					};
 				};
 			};
@@ -232,6 +289,7 @@
 			projectRoot = "";
 			targets = (
 				71567E8C2A20B92E00A2BB2D /* YellowRed */,
+				71A44D902C15E981001F51BC /* YellowRed Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -244,6 +302,15 @@
 				71567E982A20B93300A2BB2D /* Preview Assets.xcassets in Resources */,
 				71567E952A20B93300A2BB2D /* Assets.xcassets in Resources */,
 				71F91AAE2A652F63008F9209 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71A44D8F2C15E981001F51BC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71A44D9B2C15E982001F51BC /* Preview Assets.xcassets in Resources */,
+				71A44D982C15E982001F51BC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +349,15 @@
 				715086372A2E1DC700841F44 /* NotificationView.swift in Sources */,
 				7147161A2AF7175800C825AE /* UserViewModel.swift in Sources */,
 				71B7B5902A5AD96E003CD5C8 /* NotificationManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71A44D8D2C15E981001F51BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71A44D962C15E981001F51BC /* ContentView.swift in Sources */,
+				71A44D942C15E981001F51BC /* YellowRedApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,6 +564,73 @@
 			};
 			name = Release;
 		};
+		71A44D9C2C15E982001F51BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"YellowRed Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 2S5BRVK49V;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = YellowRed;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Debug;
+		};
+		71A44D9D2C15E982001F51BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"YellowRed Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 2S5BRVK49V;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = YellowRed;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -505,6 +648,15 @@
 			buildConfigurations = (
 				71567E9C2A20B93300A2BB2D /* Debug */,
 				71567E9D2A20B93300A2BB2D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		71A44D9E2C15E982001F51BC /* Build configuration list for PBXNativeTarget "YellowRed Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				71A44D9C2C15E982001F51BC /* Debug */,
+				71A44D9D2C15E982001F51BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

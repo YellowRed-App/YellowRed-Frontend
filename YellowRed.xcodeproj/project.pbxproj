@@ -119,7 +119,7 @@
 		71567E842A20B92E00A2BB2D = {
 			isa = PBXGroup;
 			children = (
-				71567E8F2A20B92E00A2BB2D /* YellowRed */,
+				71567E8F2A20B92E00A2BB2D /* YellowRed iOS App */,
 				71A44D922C15E981001F51BC /* YellowRed Watch App */,
 				71567E8E2A20B92E00A2BB2D /* Products */,
 				71F91B1D2A654F5E008F9209 /* Frameworks */,
@@ -135,7 +135,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		71567E8F2A20B92E00A2BB2D /* YellowRed */ = {
+		71567E8F2A20B92E00A2BB2D /* YellowRed iOS App */ = {
 			isa = PBXGroup;
 			children = (
 				715189EF2AA6C2880074B620 /* YellowRed.entitlements */,
@@ -172,7 +172,7 @@
 				71255CF42A54102500C70A5B /* GlobalHapticManager.swift */,
 				714716172AF701CE00C825AE /* FirestoreManager.swift */,
 			);
-			path = YellowRed;
+			path = "YellowRed iOS App";
 			sourceTree = "<group>";
 		};
 		71567E962A20B93300A2BB2D /* Preview Content */ = {

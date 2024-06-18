@@ -85,14 +85,17 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         case .authorizedWhenInUse, .notDetermined:
             DispatchQueue.main.async {
                 self.locationManager?.requestAlwaysAuthorization()
+                self.next = true
             }
         case .denied, .restricted:
             DispatchQueue.main.async {
                 self.alert = true
+                self.next = true
             }
         default:
             break
         }
+        self.next = true
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

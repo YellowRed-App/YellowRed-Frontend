@@ -84,6 +84,7 @@ struct ProfileView: View {
                                         userViewModel.deleteUser(userId: userUID) { result in
                                             switch result {
                                             case .success:
+                                                presentationMode.wrappedValue.dismiss()
                                                 home = true
                                             case .failure(let error):
                                                 print("Error deleting account: \(error.localizedDescription)")

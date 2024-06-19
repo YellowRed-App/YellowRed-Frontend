@@ -74,7 +74,6 @@ struct HomeScreenView: View {
                 .padding(.bottom, 40)
             }
         }
-        .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
     }
 }

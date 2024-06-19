@@ -12,6 +12,8 @@ import FirebaseAuth
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @StateObject private var userViewModel = UserViewModel()
+    @State private var home = false
+    @State private var alert = false
     
     var body: some View {
         NavigationView {
@@ -57,6 +59,45 @@ struct ProfileView: View {
                             InfoView(title: "Yellow\t", value: userViewModel.yellowMessage)
                             InfoView(title: "Red\t", value: userViewModel.redMessage)
                         }, destinationView: AnyView(EditButtonMessageView(userViewModel: userViewModel)))
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            alert = true
+                        }) {
+                            Text("Delete Account")
+                                .font(.headline)
+                                .foregroundColor(.red)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(.white)
+                                .cornerRadius(10)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                        }
+                        .padding(.horizontal, 20)
+                        .alert(isPresented: $alert) {
+                            Alert(
+                                title: Text("Delete Account"),
+                                message: Text("Are you sure you want to delete your account? This action cannot be undone."),
+                                primaryButton: .destructive(Text("Yes")) {
+                                    if let userUID = Auth.auth().currentUser?.uid {
+                                        userViewModel.deleteUser(userId: userUID) { result in
+                                            switch result {
+                                            case .success:
+                                                NavigationLink(
+                                                    destination: HomeScreenView(),
+                                                    isActive: $home,
+                                                    label: { EmptyView() }
+                                                )
+                                            case .failure(let error):
+                                                print("Error deleting account: \(error.localizedDescription)")
+                                            }
+                                        }
+                                    }
+                                },
+                                secondaryButton: .cancel(Text("No"))
+                            )
+                        }
                     }
                     .padding(.horizontal, 20)
                     Spacer()

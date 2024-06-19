@@ -85,7 +85,9 @@ struct ProfileView: View {
                                             switch result {
                                             case .success:
                                                 presentationMode.wrappedValue.dismiss()
-                                                home = true
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                                    home = true
+                                                }
                                             case .failure(let error):
                                                 print("Error deleting account: \(error.localizedDescription)")
                                             }

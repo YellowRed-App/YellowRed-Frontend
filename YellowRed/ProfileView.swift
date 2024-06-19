@@ -80,12 +80,13 @@ struct ProfileView: View {
                                 title: Text("Delete Account"),
                                 message: Text("Are you sure you want to delete your account? This action cannot be undone."),
                                 primaryButton: .destructive(Text("Yes")) {
+                                    presentationMode.wrappedValue.dismiss()
                                     if let userUID = Auth.auth().currentUser?.uid {
                                         userViewModel.deleteUser(userId: userUID) { result in
                                             switch result {
                                             case .success:
                                                 presentationMode.wrappedValue.dismiss()
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                                     home = true
                                                 }
                                             case .failure(let error):

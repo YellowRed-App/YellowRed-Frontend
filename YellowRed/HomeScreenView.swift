@@ -75,6 +75,7 @@ struct HomeScreenView: View {
             }
         }
         .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

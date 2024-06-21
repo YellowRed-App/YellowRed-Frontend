@@ -85,10 +85,7 @@ struct ProfileView: View {
                                         userViewModel.deleteUser(userId: userUID) { result in
                                             switch result {
                                             case .success:
-                                                presentationMode.wrappedValue.dismiss()
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    home = true
-                                                }
+                                                home = true
                                             case .failure(let error):
                                                 print("Error deleting account: \(error.localizedDescription)")
                                             }
@@ -98,13 +95,9 @@ struct ProfileView: View {
                                 secondaryButton: .cancel(Text("No"))
                             )
                         }
-                        .background(
-                            NavigationLink(
-                                destination: HomeScreenView(),
-                                isActive: $home,
-                                label: { EmptyView() }
-                            )
-                        )
+                        .fullScreenCover(isPresented: $home) {
+                            HomeScreenView()
+                        }
                     }
                     .padding(.horizontal, 20)
                     Spacer()

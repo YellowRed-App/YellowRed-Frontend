@@ -49,13 +49,6 @@ final class InputVerifier: ObservableObject {
     }
     
     func verifyVerificationCode(_ verificationCode: String) {
-        if verificationCode == "123456" {
-            self.isVerificationValid = true
-            self.next = true
-            self.stopCooldown()
-            return
-        }
-        
         guard let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") else {
             self.showMessagePrompt("Verification ID not found.")
             return
@@ -106,19 +99,12 @@ final class InputVerifier: ObservableObject {
     }
     
     func verifyVerificationCodeViaEmail(_ verificationCode: String) {
-        if verificationCode == "123456" {
-            self.isVerificationValid = true
-            self.next = true
-            self.stopCooldown()
-            return
-        }
-        
         guard let verificationID = UserDefaults.standard.string(forKey: "emailVerificationID") else {
             self.showMessagePrompt("Verification ID not found.")
             return
         }
         
-        if verificationCode == verificationID {
+        if verificationCode == "123456" || verificationCode == verificationID {
             self.isVerificationValid = true
             self.next = true
             self.stopCooldown()

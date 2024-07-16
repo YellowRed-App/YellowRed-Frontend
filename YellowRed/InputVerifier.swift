@@ -104,7 +104,7 @@ final class InputVerifier: ObservableObject {
             return
         }
         
-        if verificationCode == "123456" || verificationCode == verificationID {
+        if verificationCode == verificationID {
             self.isVerificationValid = true
             self.next = true
             self.stopCooldown()

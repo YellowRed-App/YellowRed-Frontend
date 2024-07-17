@@ -33,7 +33,7 @@ final class InputVerifier: ObservableObject {
                 self.showMessagePrompt(error.localizedDescription)
                 return
             }
-            UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
+//            UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
             self.verificationID = verificationID ?? ""
             self.isVerificationEnabled = true
         }
@@ -49,10 +49,10 @@ final class InputVerifier: ObservableObject {
     }
     
     func verifyVerificationCode(_ verificationCode: String) {
-        guard let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") else {
-            self.showMessagePrompt("Verification ID not found.")
-            return
-        }
+//        guard let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") else {
+//            self.showMessagePrompt("Verification ID not found.")
+//            return
+//        }
         
         let credential = PhoneAuthProvider.provider().credential(
             withVerificationID: verificationID,

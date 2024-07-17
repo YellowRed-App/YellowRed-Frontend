@@ -42,7 +42,18 @@ struct YellowRedApp: App {
                 YellowRedView()
             } else {
                 HomeScreenView()
+                    .onAppear(perform: signOutUser)
             }
+        }
+    }
+    
+    private func signOutUser() {
+        do {
+            try Auth.auth().signOut()
+            userAuth.isUserAuthenticated = false
+            userAuth.isUserDataComplete = false
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
         }
     }
 }

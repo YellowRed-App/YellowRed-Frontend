@@ -38,151 +38,153 @@ struct YellowRedView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                LinearGradient(
-                    gradient: Gradient(colors: [.blue, .white]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .edgesIgnoringSafeArea(.all)
-                
-                VStack(spacing: 50) {
-                    Spacer()
-                    
-                    Text("YellowRed")
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
-                        .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                        .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
-                    
-                    ZStack {
-                        Circle()
-                            .fill(.yellow)
-                            .frame(width: 200, height: 200)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .opacity(activeButton == .red ? 0 : 1)
-                            .disabled(activeButton == .red)
-                            .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
-                                guard activeButton != .red else { return }
-                                isPressingYellowButton = pressing
-                                if pressing {
-                                    startCountdown(button: .yellow)
-                                } else {
-                                    endCountdown()
-                                }
-                            }, perform: { })
-                            .fullScreenCover(isPresented: $yellowButton) {
-                                YellowButtonView()
-                            }
-                        
-                        if isPressingYellowButton {
-                            Text("\(yellowCountdown)")
-                                .font(.system(size: 125))
-                                .minimumScaleFactor(0.01)
-                                .lineLimit(1)
-                                .scaledToFit()
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    
-                    ZStack {
-                        Circle()
-                            .fill(.red)
-                            .frame(width: 200, height: 200)
-                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            .opacity(activeButton == .yellow ? 0 : 1)
-                            .disabled(activeButton == .yellow)
-                            .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
-                                guard activeButton != .yellow else { return }
-                                isPressingRedButton = pressing
-                                if pressing {
-                                    startCountdown(button: .red)
-                                } else {
-                                    endCountdown()
-                                }
-                            }, perform: { })
-                            .fullScreenCover(isPresented: $redButton) {
-                                RedButtonView()
-                            }
-                        
-                        if isPressingRedButton {
-                            Text("\(redCountdown)")
-                                .font(.system(size: 125))
-                                .minimumScaleFactor(0.01)
-                                .lineLimit(1)
-                                .scaledToFit()
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        profile = true
-                    }) {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .frame(width: 64, height: 64)
-                            .foregroundColor(.black)
-                    }
-                    .background(
-                        NavigationLink(
-                            destination: ProfileView(),
-                            isActive: $profile,
-                            label: { EmptyView() }
-                        )
+        GeometryReader { geometry in
+            NavigationView {
+                ZStack {
+                    LinearGradient(
+                        gradient: Gradient(colors: [.blue, .white]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
                     )
-                    .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
-                    .disabled(isPressingYellowButton || isPressingRedButton)
-                    .shadow(color: .white.opacity(0.5), radius: 10, x: 0, y: 0)
-                    .padding(.bottom, 40)
-                }
-                .padding(.horizontal, 20)
-                
-                if yellowHint {
-                    Text("Please hold the yellow button for three seconds to activate!")
-                        .font(.subheadline)
-                        .foregroundColor(.black)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 20)
-                        .offset(y: 250)
+                    .edgesIgnoringSafeArea(.all)
+                    
+                    VStack(spacing: geometry.size.height * 0.05) {
+                        Spacer()
+                        
+                        Text("YellowRed")
+                            .font(.largeTitle)
+                            .fontWeight(.heavy)
+                            .foregroundColor(.white)
+                            .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                            .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
+                        
+                        ZStack {
+                            Circle()
+                                .fill(.yellow)
+                                .frame(width: geometry.size.width * 0.5, height: geometry.size.width * 0.5)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                                .opacity(activeButton == .red ? 0 : 1)
+                                .disabled(activeButton == .red)
+                                .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                                    guard activeButton != .red else { return }
+                                    isPressingYellowButton = pressing
+                                    if pressing {
+                                        startCountdown(button: .yellow)
+                                    } else {
+                                        endCountdown()
+                                    }
+                                }, perform: { })
+                                .fullScreenCover(isPresented: $yellowButton) {
+                                    YellowButtonView()
+                                }
+                            
+                            if isPressingYellowButton {
+                                Text("\(yellowCountdown)")
+                                    .font(.system(size: geometry.size.width * 0.3))
+                                    .minimumScaleFactor(0.01)
+                                    .lineLimit(1)
+                                    .scaledToFit()
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        
+                        ZStack {
+                            Circle()
+                                .fill(.red)
+                                .frame(width: geometry.size.width * 0.5, height: geometry.size.width * 0.5)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                                .opacity(activeButton == .yellow ? 0 : 1)
+                                .disabled(activeButton == .yellow)
+                                .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                                    guard activeButton != .yellow else { return }
+                                    isPressingRedButton = pressing
+                                    if pressing {
+                                        startCountdown(button: .red)
+                                    } else {
+                                        endCountdown()
+                                    }
+                                }, perform: { })
+                                .fullScreenCover(isPresented: $redButton) {
+                                    RedButtonView()
+                                }
+                            
+                            if isPressingRedButton {
+                                Text("\(redCountdown)")
+                                    .font(.system(size: geometry.size.width * 0.3))
+                                    .minimumScaleFactor(0.01)
+                                    .lineLimit(1)
+                                    .scaledToFit()
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            profile = true
+                        }) {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .frame(width: geometry.size.width * 0.16, height: geometry.size.width * 0.16)
+                                .foregroundColor(.black)
+                        }
+                        .background(
+                            NavigationLink(
+                                destination: ProfileView(),
+                                isActive: $profile,
+                                label: { EmptyView() }
+                            )
+                        )
                         .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
-                }
-                
-                if redHint {
-                    Text("Please hold the red button for five seconds to activate!")
-                        .font(.subheadline)
-                        .foregroundColor(.black)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 20)
-                        .offset(y: 250)
-                        .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
+                        .disabled(isPressingYellowButton || isPressingRedButton)
+                        .shadow(color: .white.opacity(0.5), radius: 10, x: 0, y: 0)
+                        .padding(.bottom, geometry.size.height * 0.05)
+                    }
+                    .padding(.horizontal, geometry.size.width * 0.05)
+                    
+                    if yellowHint {
+                        Text("Please hold the yellow button for three seconds to activate!")
+                            .font(.subheadline)
+                            .foregroundColor(.black)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal, geometry.size.width * 0.05)
+                            .offset(y: geometry.size.height * 0.3)
+                            .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
+                    }
+                    
+                    if redHint {
+                        Text("Please hold the red button for five seconds to activate!")
+                            .font(.subheadline)
+                            .foregroundColor(.black)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal, geometry.size.width * 0.05)
+                            .offset(y: geometry.size.height * 0.3)
+                            .opacity((isPressingYellowButton || isPressingRedButton) ? 0 : 1)
+                    }
                 }
             }
-        }
-        .onAppear {
-            locationManager.fetchData() {
-                if navigateToYellowButtonView {
-                    yellowButton = true
-                } else if navigateToRedButtonView {
-                    redButton = true
+            .onAppear {
+                locationManager.fetchData() {
+                    if navigateToYellowButtonView {
+                        yellowButton = true
+                    } else if navigateToRedButtonView {
+                        redButton = true
+                    }
+                    GlobalHapticManager.shared.startHapticEngine()
                 }
-                GlobalHapticManager.shared.startHapticEngine()
             }
+            .onChange(of: navigateToYellowButtonView) { newValue in
+                yellowButton = newValue
+            }
+            .onChange(of: navigateToRedButtonView) { newValue in
+                redButton = newValue
+            }
+            .navigationBarBackButtonHidden(true)
         }
-        .onChange(of: navigateToYellowButtonView) { newValue in
-            yellowButton = newValue
-        }
-        .onChange(of: navigateToRedButtonView) { newValue in
-            redButton = newValue
-        }
-        .navigationBarBackButtonHidden(true)
     }
     
     private func startCountdown(button: ActiveButton) {

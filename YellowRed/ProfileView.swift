@@ -18,100 +18,108 @@ struct ProfileView: View {
     var body: some View {
         GeometryReader { geometry in
             NavigationView {
-                ZStack {
-                    VStack(spacing: geometry.size.height * 0.02) {
+                ScrollViewReader { proxy in
+                    ScrollView(.vertical) {
                         VStack(spacing: geometry.size.height * 0.02) {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: geometry.size.width * 0.24, height: geometry.size.width * 0.24)
-                                .foregroundColor(.white)
-                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                            
-                            Text(userViewModel.fullName)
-                                .font(.largeTitle)
-                                .fontWeight(.heavy)
-                                .foregroundColor(.white)
-                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
-                        }
-                        .frame(maxWidth: .infinity, minHeight: geometry.size.height * 0.25)
-                        .background(
-                            LinearGradient(
-                                gradient: Gradient(colors: [.yellow, .red]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-//                            .cornerRadius(25)
-                            .edgesIgnoringSafeArea(.all)
-                        )
-                        
-                        VStack {
-                            SectionView(title: "Personal Info", content:  {
-                                InfoView(title: "Phone Number", value: userViewModel.phoneNumber)
-                                InfoView(title: "Email Address", value: userViewModel.emailAddress)
-                            }, destinationView: AnyView(EditPersonalView(userViewModel: userViewModel)))
-                            SectionView(title: "Emergency Contacts", content:  {
-                                ForEach(userViewModel.emergencyContacts.indices, id: \.self) { index in
-                                    InfoView(title: "Contact \(index + 1)", value: "\(userViewModel.emergencyContacts[index].displayName)")
-                                }
-                            }, destinationView: AnyView(EditEmergencyContactView(userViewModel: userViewModel)))
-                            
-                            SectionView(title: "Button Messages", content:  {
-                                InfoView(title: "Yellow\t", value: userViewModel.yellowMessage)
-                                InfoView(title: "Red\t", value: userViewModel.redMessage)
-                            }, destinationView: AnyView(EditButtonMessageView(userViewModel: userViewModel)))
-                            
-                            Spacer()
-                            
-                            Button(action: {
-                                alert = true
-                            }) {
-                                Text("Delete Account")
-                                    .font(.headline)
-                                    .foregroundColor(.red)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(.white)
-                                    .cornerRadius(10)
+                            VStack(spacing: geometry.size.height * 0.02) {
+                                Image(systemName: "person.circle.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: geometry.size.width * 0.24, height: geometry.size.width * 0.24)
+                                    .foregroundColor(.white)
+                                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                                
+                                Text(userViewModel.fullName)
+                                    .font(.largeTitle)
+                                    .fontWeight(.heavy)
+                                    .foregroundColor(.white)
                                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                             }
-                            .padding(.horizontal, geometry.size.width * 0.05)
-                            .alert(isPresented: $alert) {
-                                Alert(
-                                    title: Text("Delete Account"),
-                                    message: Text("Are you sure you want to delete your account? This action cannot be undone."),
-                                    primaryButton: .destructive(Text("Yes")) {
-                                        presentationMode.wrappedValue.dismiss()
-                                        if let userUID = Auth.auth().currentUser?.uid {
-                                            userViewModel.deleteUser(userId: userUID) { result in
-                                                switch result {
-                                                case .success:
-                                                    home = true
-                                                case .failure(let error):
-                                                    print("Error deleting account: \(error.localizedDescription)")
+                            .frame(maxWidth: .infinity, minHeight: geometry.size.height * 0.25)
+                            .background(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.yellow, .red]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .id("top")
+                            
+                            VStack {
+                                SectionView(title: "Personal Info", content:  {
+                                    InfoView(title: "Phone Number", value: userViewModel.phoneNumber)
+                                    InfoView(title: "Email Address", value: userViewModel.emailAddress)
+                                }, destinationView: AnyView(EditPersonalView(userViewModel: userViewModel)))
+                                SectionView(title: "Emergency Contacts", content:  {
+                                    ForEach(userViewModel.emergencyContacts.indices, id: \.self) { index in
+                                        InfoView(title: "Contact \(index + 1)", value: "\(userViewModel.emergencyContacts[index].displayName)")
+                                    }
+                                }, destinationView: AnyView(EditEmergencyContactView(userViewModel: userViewModel)))
+                                
+                                SectionView(title: "Button Messages", content:  {
+                                    InfoView(title: "Yellow\t", value: userViewModel.yellowMessage)
+                                    InfoView(title: "Red\t", value: userViewModel.redMessage)
+                                }, destinationView: AnyView(EditButtonMessageView(userViewModel: userViewModel)))
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    alert = true
+                                }) {
+                                    Text("Delete Account")
+                                        .font(.headline)
+                                        .foregroundColor(.red)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(.white)
+                                        .cornerRadius(10)
+                                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                                }
+                                .padding(.horizontal, geometry.size.width * 0.05)
+                                .alert(isPresented: $alert) {
+                                    Alert(
+                                        title: Text("Delete Account"),
+                                        message: Text("Are you sure you want to delete your account? This action cannot be undone."),
+                                        primaryButton: .destructive(Text("Yes")) {
+                                            presentationMode.wrappedValue.dismiss()
+                                            if let userUID = Auth.auth().currentUser?.uid {
+                                                userViewModel.deleteUser(userId: userUID) { result in
+                                                    switch result {
+                                                    case .success:
+                                                        home = true
+                                                    case .failure(let error):
+                                                        print("Error deleting account: \(error.localizedDescription)")
+                                                    }
                                                 }
                                             }
-                                        }
-                                    },
-                                    secondaryButton: .cancel(Text("No"))
-                                )
+                                        },
+                                        secondaryButton: .cancel(Text("No"))
+                                    )
+                                }
+                                .fullScreenCover(isPresented: $home) {
+                                    HomeScreenView()
+                                }
                             }
-                            .fullScreenCover(isPresented: $home) {
-                                HomeScreenView()
-                            }
+                            .padding(.horizontal, geometry.size.width * 0.05)
+                            Spacer()
                         }
-                        .padding(.horizontal, geometry.size.width * 0.05)
-                        Spacer()
+                    }
+                    .onAppear {
+                        // Scroll to the top on appearance
+                        proxy.scrollTo("top", anchor: .top)
+                        fetchAllData()
+                    }
+                    .onChange(of: home) { _ in
+                        // Scroll to the top when `home` changes
+                        proxy.scrollTo("top", anchor: .top)
                     }
                 }
-                .background(.white)
+                .background(Color.white)
+                .edgesIgnoringSafeArea(.all)
                 .gesture(dragToDismissGesture())
             }
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: BackButton())
-            .onAppear {
-                fetchAllData()
-            }
         }
     }
     

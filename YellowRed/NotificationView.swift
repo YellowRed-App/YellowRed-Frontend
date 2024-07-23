@@ -50,7 +50,7 @@ struct NotificationView: View {
                     Button(action: {
                         notificationManager.requestNotificationPermission()
                     }) {
-                        Text("Enable Notifications")
+                        Text("Continue")
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)

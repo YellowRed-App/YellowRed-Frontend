@@ -59,7 +59,7 @@ struct LocationView: View {
                     Button(action: {
                         locationManager.requestLocationPermission()
                     }) {
-                        Text("Enable Location")
+                        Text("Continue")
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)

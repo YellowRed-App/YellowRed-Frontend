@@ -42,11 +42,13 @@ struct GetStartedAffiliationView: View {
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                 
-                Text("What Is Your Affiliation With UVA?")
+                Text("What is your affiliation with UVA?")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
+                    .padding(.horizontal, 10)
                 
                 VStack(alignment: .leading, spacing: 10) {
                     RadioButton(

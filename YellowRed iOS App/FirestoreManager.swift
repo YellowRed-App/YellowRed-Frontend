@@ -120,6 +120,13 @@ class FirestoreManager {
         }
     }
     
+    func deleteUser(userId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.delete { error in
+            self.handleCompletion(error, completion: completion)
+        }
+    }
+    
     private func handleCompletion<T>(_ error: Error?, completion: @escaping (Result<T, Error>) -> Void) {
         if let error = error {
             NSLog("Error: \(error.localizedDescription)")

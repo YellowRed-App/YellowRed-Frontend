@@ -104,6 +104,22 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    func deleteUser(userId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        firestoreManager.deleteUser(userId: userId) { result in
+            self.handleResult(result: result, successAction: {
+                DispatchQueue.main.async {
+                    self.userId = nil
+                    self.fullName = ""
+                    self.phoneNumber = ""
+                    self.emailAddress = ""
+                    self.emergencyContacts = []
+                    self.yellowMessage = ""
+                    self.redMessage = ""
+                }
+            }, completion: completion)
+        }
+    }
+    
     private func handleResult(result: Result<Void, Error>, successAction: @escaping () -> Void, completion: @escaping (Result<Void, Error>) -> Void) {
         switch result {
         case .success:

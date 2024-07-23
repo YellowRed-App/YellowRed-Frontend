@@ -95,7 +95,6 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         default:
             break
         }
-        self.next = true
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

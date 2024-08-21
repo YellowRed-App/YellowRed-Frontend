@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseAuth
 
 struct EmergencyContactView: View {
-    @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 3)
+    @State private var emergencyContacts: [EmergencyContact] = Array(repeating: EmergencyContact(), count: 5)
     
     @State private var nextButtonClicked: Bool = false
     @State private var next: Bool = false
@@ -98,7 +98,7 @@ struct EmergencyContactView: View {
                                 .padding(.horizontal, 20)
                         }
                         
-                        if validator.emergencyContactsSelected.count >= 1 && validator.emergencyContactsSelected.count <= 3 && !validator.emergencyContactsDuplicated.isEmpty {
+                        if validator.emergencyContactsSelected.count >= 1 && validator.emergencyContactsSelected.count <= 5 && !validator.emergencyContactsDuplicated.isEmpty {
                             Text("Please choose one to three unique emergency contacts!")
                                 .font(.subheadline)
                                 .foregroundColor(.white)
@@ -107,7 +107,7 @@ struct EmergencyContactView: View {
                         }
                         
                         Button(action: {
-                            if emergencyContacts.count < 3 {
+                            if emergencyContacts.count < 5 {
                                 emergencyContacts.append(EmergencyContact())
                             }
                         }) {
@@ -115,8 +115,8 @@ struct EmergencyContactView: View {
                                 .foregroundColor(.white)
                                 .font(.title)
                         }
-                        .disabled(emergencyContacts.count >= 3)
-                        .opacity(emergencyContacts.count >= 3 ? 0 : 1)
+                        .disabled(emergencyContacts.count >= 5)
+                        .opacity(emergencyContacts.count >= 5 ? 0 : 1)
                         
                         Spacer()
                         

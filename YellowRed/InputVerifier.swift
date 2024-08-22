@@ -28,16 +28,36 @@ final class InputVerifier: ObservableObject {
     private let db = Firestore.firestore()
     
     func sendVerificationCode(to phoneNumber: String) {
+        let formattedPhoneNumber = formatPhoneNumber(phoneNumber)
+        print(formattedPhoneNumber)
         PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { verificationID, error in
             if let error = error {
+                // Print detailed error information
+                print("Error verifying phone number: \(error.localizedDescription)")
+                if let nsError = error as NSError? {
+                    print("Error domain: \(nsError.domain)")
+                    print("Error code: \(nsError.code)")
+                    print("Error userInfo: \(nsError.userInfo)")
+                }
                 self.showMessagePrompt(error.localizedDescription)
                 return
             }
-//            UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
             self.verificationID = verificationID ?? ""
             self.isVerificationEnabled = true
         }
     }
+    
+    func formatPhoneNumber(_ phoneNumber: String) -> String {
+            // Remove non-digit characters
+            let digitsOnly = phoneNumber.filter { $0.isNumber }
+            
+            // Ensure the phone number starts with '+'
+            if !digitsOnly.hasPrefix("+") {
+                return "+" + digitsOnly
+            }
+            
+            return digitsOnly
+        }
     
     func resendVerificationCode(to phoneNumber: String) {
         guard !cooldown else {

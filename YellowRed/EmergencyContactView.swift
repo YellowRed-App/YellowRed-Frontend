@@ -57,7 +57,7 @@ struct EmergencyContactView: View {
                             .foregroundColor(.white)
                             .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 0)
                         
-                        Text("Please get started by choosing up to three emergency contacts. You will be able to change this later.")
+                        Text("Please get started by choosing up to five emergency contacts. You will be able to change this later.")
                             .font(.title3)
                             .fontWeight(.medium)
                             .foregroundColor(.white)
@@ -91,7 +91,7 @@ struct EmergencyContactView: View {
                         .padding(.horizontal, 20)
                         
                         if nextButtonClicked && (validator.emergencyContactsSelected.count < 1 || validator.emergencyContactsSelected.count > 3) {
-                            Text("Please choose one to three emergency contacts!")
+                            Text("Please choose one to five emergency contacts!")
                                 .font(.subheadline)
                                 .foregroundColor(.white)
                                 .multilineTextAlignment(.center)
@@ -99,7 +99,7 @@ struct EmergencyContactView: View {
                         }
                         
                         if validator.emergencyContactsSelected.count >= 1 && validator.emergencyContactsSelected.count <= 5 && !validator.emergencyContactsDuplicated.isEmpty {
-                            Text("Please choose one to three unique emergency contacts!")
+                            Text("Please choose one to five unique emergency contacts!")
                                 .font(.subheadline)
                                 .foregroundColor(.white)
                                 .multilineTextAlignment(.center)
@@ -186,7 +186,7 @@ struct EmergencyContactNoteView: View {
                 .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    Text("YellowRed allows you to communicate with up to three emergency contacts.")
+                    Text("YellowRed allows you to communicate with up to five emergency contacts.")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)

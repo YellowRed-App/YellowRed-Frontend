@@ -79,7 +79,7 @@ struct TutorialView: View {
                                     }
                                 }, perform: { }
                                 )
-                                .alert("This activates the Yellow Button and sends your preselected yellow message and live location to your three emergency contacts.", isPresented: $yellowAlert) {
+                                .alert("This activates the Yellow Button and sends your preselected yellow message and live location to your five emergency contacts.", isPresented: $yellowAlert) {
                                     Button("Got it", role: .cancel) {
                                         disappear = false
                                         yellowDone = true
@@ -129,7 +129,7 @@ struct TutorialView: View {
                                         self.redCountdown = 5
                                     }
                                 }, perform: { })
-                                .alert("This activates the Red Button and sends your preselected red message and live location to your three emergency contacts. This button is for EMERGENCIES ONLY.", isPresented: $redAlert) {
+                                .alert("This activates the Red Button and sends your preselected red message and live location to your five emergency contacts. This button is for EMERGENCIES ONLY.", isPresented: $redAlert) {
                                     Button("Got it", role: .cancel) {
                                         disappear = false
                                         redDone = true

@@ -648,16 +648,16 @@ struct EditEmergencyContactView: View {
                     }
                     .padding(.horizontal, geometry.size.width * 0.05)
                     
-                    if saveButtonClicked && (validator.emergencyContactsSelected.count < 1 || validator.emergencyContactsSelected.count > 3) {
-                        Text("Please choose one to three emergency contacts!")
+                    if saveButtonClicked && (validator.emergencyContactsSelected.count < 1 || validator.emergencyContactsSelected.count > 5) {
+                        Text("Please choose one to five emergency contacts!")
                             .font(.subheadline)
                             .foregroundColor(.red)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, geometry.size.width * 0.05)
                     }
                     
-                    if validator.emergencyContactsSelected.count >= 1 && validator.emergencyContactsSelected.count <= 3 && !validator.emergencyContactsDuplicated.isEmpty {
-                        Text("Please choose one to three unique emergency contacts!")
+                    if validator.emergencyContactsSelected.count >= 1 && validator.emergencyContactsSelected.count <= 5 && !validator.emergencyContactsDuplicated.isEmpty {
+                        Text("Please choose one to five unique emergency contacts!")
                             .font(.subheadline)
                             .foregroundColor(.red)
                             .multilineTextAlignment(.center)
@@ -665,7 +665,7 @@ struct EditEmergencyContactView: View {
                     }
                     
                     Button(action: {
-                        if userViewModel.emergencyContacts.count < 3 {
+                        if userViewModel.emergencyContacts.count < 5 {
                             userViewModel.emergencyContacts.append(EmergencyContact())
                         }
                     }) {
@@ -673,8 +673,8 @@ struct EditEmergencyContactView: View {
                             .foregroundColor(.green)
                             .font(.title)
                     }
-                    .disabled(userViewModel.emergencyContacts.count >= 3)
-                    .opacity(userViewModel.emergencyContacts.count >= 3 ? 0 : 1)
+                    .disabled(userViewModel.emergencyContacts.count >= 5)
+                    .opacity(userViewModel.emergencyContacts.count >= 5 ? 0 : 1)
                     
                     Spacer()
                     
@@ -695,11 +695,11 @@ struct EditEmergencyContactView: View {
                             }
                         } else {
                             alert = true
-                            if validator.emergencyContactsSelected.count < 1 || validator.emergencyContactsSelected.count > 3 {
-                                alertMessage = "You have not chosen one to three emergency contacts!"
+                            if validator.emergencyContactsSelected.count < 1 || validator.emergencyContactsSelected.count > 5 {
+                                alertMessage = "You have not chosen one to five emergency contacts!"
                             }
                             if !validator.emergencyContactsDuplicated.isEmpty {
-                                alertMessage = "You have not chosen one to three unique emergency contacts!"
+                                alertMessage = "You have not chosen one to five unique emergency contacts!"
                             }
                         }
                     }) {
